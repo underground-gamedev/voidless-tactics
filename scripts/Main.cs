@@ -3,83 +3,99 @@ using System;
 
 public class Main : Node
 {
-	[Export]
-	public PackedScene Mob;
+    [Export]
+    public PackedScene Mob;
 
-	private int _score;
-	private Random _random = new Random();
+    private int _score;
+    private Random _random = new Random();
 
-	private Timer _cachedMobTimer;
-	private Timer _cachedScoreTimer;
-	private Timer _cachedStartTimer;
-	private Position2D _cachedStartPosition;
 
-	public override void _Ready()
-	{
-		_cachedMobTimer = GetNode<Timer>("MobTimer");
-		_cachedScoreTimer = GetNode<Timer>("ScoreTimer");
-		_cachedStartTimer = GetNode<Timer>("StartTimer");
-		_cachedStartPosition = GetNode<Position2D>("StartPosition");
+    private UI _ui;
+    private Timer _mobTimer;
+    private Timer _scoreTimer;
+    private Timer _startTimer;
+    private Position2D _startPosition;
+    private Player _player;
 
-		_cachedStartTimer.Connect("timeout", this, nameof(OnStartTimerTimeout));
-		_cachedScoreTimer.Connect("timeout", this, nameof(OnScoreTimerTimeout));
-		_cachedMobTimer.Connect("timeout", this, nameof(OnMobTimerTimeout));
+    public override void _Ready()
+    {
+        _ui = GetNode<UI>("UI");
+        _mobTimer = GetNode<Timer>("MobTimer");
+        _scoreTimer = GetNode<Timer>("ScoreTimer");
+        _startTimer = GetNode<Timer>("StartTimer");
+        _startPosition = GetNode<Position2D>("StartPosition");
+        _player = GetNode<Player>("Player");
 
-		NewGame();
-	}
+        _startTimer.Connect("timeout", this, nameof(OnStartTimerTimeout));
+        _scoreTimer.Connect("timeout", this, nameof(OnScoreTimerTimeout));
+        _mobTimer.Connect("timeout", this, nameof(OnMobTimerTimeout));
+        _player.Connect("Hit", this, nameof(GameOver));
+        _ui.Connect("StartGame", this, nameof(NewGame));
+    }
 
-	public void GameOver()
-	{
-		_cachedMobTimer.Stop();
-		_cachedScoreTimer.Stop();
-	}
+    public void SetScore(int score)
+    {
+        _score = score;
+        _ui.UpdateScore(score);
+    }
 
-	public void NewGame()
-	{
-		_score = 0;
+    public void GameOver()
+    {
+        _mobTimer.Stop();
+        _scoreTimer.Stop();
 
-		var player = GetNode<Player>("Player");
-		player.Start(_cachedStartPosition.Position);
+        _ui.ShowGameOver();
 
-		_cachedStartTimer.Start();
-	}
+        GetTree().CallGroup("mobs", "queue_free");
+    }
 
-	public void OnStartTimerTimeout()
-	{
-		_cachedMobTimer.Start();
-		_cachedScoreTimer.Start();
-	}
+    public void NewGame()
+    {
+        SetScore(0);
 
-	public void OnScoreTimerTimeout()
-	{
-		_score++;
-	}
+        _ui.ShowMessage("Get Ready!");
 
-	public void OnMobTimerTimeout()
-	{
-		var mobSpawnLocation = GetNode<PathFollow2D>("MobPath/MobSpawnLocation");
-		mobSpawnLocation.Offset = _random.Next();
+        _player.Start(_startPosition.Position);
 
-		var mobInstance = Mob.Instance<RigidBody2D>();
-		AddChild(mobInstance);
+        _startTimer.Start();
+    }
 
-		float direction = mobSpawnLocation.Rotation + Mathf.Pi / 2;
-		mobInstance.Position = mobSpawnLocation.Position;
+    public void OnStartTimerTimeout()
+    {
+        _mobTimer.Start();
+        _scoreTimer.Start();
+    }
 
-		direction += RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
-		mobInstance.Rotation = direction;
+    public void OnScoreTimerTimeout()
+    {
+        SetScore(_score + 1);
+    }
 
-		//var minSpeed = mobInstance.MinSpeed;
-		//var maxSpeed = mobInstance.MaxSpeed;
-		mobInstance.LinearVelocity = new Vector2(RandRange(150f, 250f), 0).Rotated(direction);
-	}
+    public void OnMobTimerTimeout()
+    {
+        var mobSpawnLocation = GetNode<PathFollow2D>("MobPath/MobSpawnLocation");
+        mobSpawnLocation.Offset = _random.Next();
 
-	private float RandRange(float min, float max)
-	{
-		return (float)_random.NextDouble() * (max - min) + min;
-	}
-	public override void _Process(float delta)
-	{
-		
-	}
+        var mobInstance = Mob.Instance<Mob>();
+        AddChild(mobInstance);
+
+        float direction = mobSpawnLocation.Rotation + Mathf.Pi / 2;
+        mobInstance.Position = mobSpawnLocation.Position;
+
+        direction += RandRange(-Mathf.Pi / 4, Mathf.Pi / 4);
+        mobInstance.Rotation = direction;
+
+        var minSpeed = mobInstance.MinSpeed;
+        var maxSpeed = mobInstance.MaxSpeed;
+        mobInstance.LinearVelocity = new Vector2(RandRange(minSpeed, maxSpeed), 0).Rotated(direction);
+    }
+
+    private float RandRange(float min, float max)
+    {
+        return (float)_random.NextDouble() * (max - min) + min;
+    }
+    public override void _Process(float delta)
+    {
+        
+    }
 }

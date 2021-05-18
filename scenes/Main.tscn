@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/Mob.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scripts/Main.cs" type="Script" id=3]
+[ext_resource path="res://scenes/UI.tscn" type="PackedScene" id=4]
 
 [sub_resource type="Curve2D" id=1]
 _data = {
@@ -12,6 +13,8 @@ _data = {
 [node name="Main" type="Node"]
 script = ExtResource( 3 )
 Mob = ExtResource( 2 )
+
+[node name="UI" parent="." instance=ExtResource( 4 )]
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -31,3 +34,4 @@ curve = SubResource( 1 )
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+visible = false

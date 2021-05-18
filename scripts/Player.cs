@@ -9,14 +9,14 @@ public class Player : Area2D
     [Export]
     public int Speed = 300;
     private Vector2 _screenSize;
-    private AnimatedSprite _cachedAnimatedSprite;
-    private CollisionShape2D _cachedCollisionShape;
+    private AnimatedSprite _animatedSprite;
+    private CollisionShape2D _collisionShape;
 
     public override void _Ready()
     {
         _screenSize = GetViewport().Size;
-        _cachedAnimatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
-        _cachedCollisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
+        _animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
+        _collisionShape = GetNode<CollisionShape2D>("CollisionShape2D");
         Connect("body_entered", this, nameof(OnPlayerBodyEnter));
     }
 
@@ -24,7 +24,7 @@ public class Player : Area2D
     {
         Position = pos;
         Show();
-        _cachedCollisionShape.Disabled = false;
+        _collisionShape.Disabled = false;
     }
 
     public override void _Process(float delta)
@@ -48,12 +48,12 @@ public class Player : Area2D
     {
         Hide();
         EmitSignal(nameof(Hit));
-        _cachedCollisionShape.SetDeferred("disabled", true);
+        _collisionShape.SetDeferred("disabled", true);
     }
 
     private void SetAnimation(Vector2 direction)
     {
-        var animatedSprite = _cachedAnimatedSprite;
+        var animatedSprite = _animatedSprite;
         if (direction.Length() == 0)
         {
             animatedSprite.Stop();
