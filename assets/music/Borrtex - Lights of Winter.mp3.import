@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Borrtex - Lights of Winter.mp3-c0c0e47b563104ca8adc89bee1dfd209.mp3str"
+
+[deps]
+
+source_file="res://assets/music/Borrtex - Lights of Winter.mp3"
+dest_files=[ "res://.import/Borrtex - Lights of Winter.mp3-c0c0e47b563104ca8adc89bee1dfd209.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

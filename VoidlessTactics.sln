@@ -1,6 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoidlessTactics", "VoidlessTactics.csproj", "{03DF45EB-9A92-466C-8B78-D284F1F7CED2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoidlessTactics", "VoidlessTactics.csproj", "{C1D040AD-A434-4694-9B78-33DF60E92768}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{03DF45EB-9A92-466C-8B78-D284F1F7CED2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{03DF45EB-9A92-466C-8B78-D284F1F7CED2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{03DF45EB-9A92-466C-8B78-D284F1F7CED2}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{03DF45EB-9A92-466C-8B78-D284F1F7CED2}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{03DF45EB-9A92-466C-8B78-D284F1F7CED2}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{03DF45EB-9A92-466C-8B78-D284F1F7CED2}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{C1D040AD-A434-4694-9B78-33DF60E92768}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1D040AD-A434-4694-9B78-33DF60E92768}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1D040AD-A434-4694-9B78-33DF60E92768}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{C1D040AD-A434-4694-9B78-33DF60E92768}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{C1D040AD-A434-4694-9B78-33DF60E92768}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{C1D040AD-A434-4694-9B78-33DF60E92768}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

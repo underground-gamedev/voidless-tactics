@@ -1,0 +1,172 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=1]
+[ext_resource path="res://scripts/scenes/MainMenu.cs" type="Script" id=2]
+[ext_resource path="res://assets/music/Borrtex - Lights of Winter.mp3" type="AudioStream" id=3]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.398773, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1 )
+
+[sub_resource type="GradientTexture" id=2]
+gradient = SubResource( 1 )
+
+[sub_resource type="DynamicFontData" id=3]
+antialiased = false
+hinting = 0
+font_path = "res://assets/fonts/8bitlim.ttf"
+
+[sub_resource type="DynamicFont" id=4]
+size = 70
+extra_spacing_char = 2
+font_data = SubResource( 3 )
+
+[sub_resource type="CanvasItemMaterial" id=5]
+particles_animation = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id=6]
+offsets = PoolRealArray( 0, 0.516779 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 35
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 50
+font_data = ExtResource( 1 )
+
+[node name="MainMenu" type="Node"]
+script = ExtResource( 2 )
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="Background" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.445435
+margin_top = 0.55455
+margin_right = 0.445435
+margin_bottom = 0.554565
+texture = SubResource( 2 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleName" type="Label" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -257.773
+margin_top = 86.591
+margin_right = 257.0
+margin_bottom = 241.591
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "Voidless Tactics
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleEffect" type="CPUParticles2D" parent="TitleName"]
+material = SubResource( 5 )
+position = Vector2( 268.372, -15.9917 )
+emitting = false
+amount = 400
+lifetime = 5.0
+lifetime_randomness = 0.03
+emission_shape = 2
+emission_rect_extents = Vector2( 300, 20 )
+direction = Vector2( 2.765, 0 )
+spread = 0.0
+gravity = Vector2( 0, -10 )
+orbit_velocity_random = 0.14
+radial_accel = 0.1
+tangential_accel_random = 1.0
+damping_random = 0.4
+scale_amount = 1.2
+color_ramp = SubResource( 6 )
+anim_speed = 1.0
+anim_offset = 1.0
+
+[node name="ProtoMark" type="ColorRect" parent="TitleName"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -142.595
+margin_top = -3.08095
+margin_right = -0.594543
+margin_bottom = 20.9191
+color = Color( 0.776471, 0.458824, 0.180392, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProtoLabel2" type="Label" parent="TitleName/ProtoMark"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -67.3279
+margin_top = -21.311
+margin_right = 94.6721
+margin_bottom = 18.689
+custom_fonts/font = SubResource( 7 )
+text = "prototype"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_top = 126.0
+grow_horizontal = 2
+grow_vertical = 2
+hint_tooltip = "Some Tooltip"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ContinueButton" type="Button" parent="Menu"]
+margin_right = 188.0
+margin_bottom = 56.0
+custom_fonts/font = SubResource( 8 )
+disabled = true
+text = "Continue"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewGameButton" type="Button" parent="Menu"]
+margin_top = 60.0
+margin_right = 188.0
+margin_bottom = 116.0
+rect_pivot_offset = Vector2( 114.864, 20.5 )
+custom_fonts/font = SubResource( 8 )
+text = "New Game"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ExitButton" type="Button" parent="Menu"]
+margin_top = 120.0
+margin_right = 188.0
+margin_bottom = 176.0
+rect_pivot_offset = Vector2( 114.864, 20.5 )
+custom_fonts/font = SubResource( 8 )
+text = "Exit"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
