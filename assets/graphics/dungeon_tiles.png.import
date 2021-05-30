@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/frame_14_delay-0.1s.png-6872116b98aabbe3aec0bb4707509b2d.stex"
+path="res://.import/dungeon_tiles.png-51826ee7fc57cce48277b121eea680b9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/lantern/frame_14_delay-0.1s.png"
-dest_files=[ "res://.import/frame_14_delay-0.1s.png-6872116b98aabbe3aec0bb4707509b2d.stex" ]
+source_file="res://assets/graphics/dungeon_tiles.png"
+dest_files=[ "res://.import/dungeon_tiles.png-51826ee7fc57cce48277b121eea680b9.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/frame_11_delay-0.1s.png-90ed9fe60dca539880abfa11510f5f0b.stex"
+path="res://.import/player.png-5359493e7cdce5bffc596cb7013e80ff.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/lantern/frame_11_delay-0.1s.png"
-dest_files=[ "res://.import/frame_11_delay-0.1s.png-90ed9fe60dca539880abfa11510f5f0b.stex" ]
+source_file="res://assets/graphics/player.png"
+dest_files=[ "res://.import/player.png-5359493e7cdce5bffc596cb7013e80ff.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
