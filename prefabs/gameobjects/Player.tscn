@@ -40,16 +40,15 @@ animations = [ {
 script = ExtResource( 2 )
 
 [node name="MovementArea" type="TileMap" parent="."]
-position = Vector2( -8.439, -8.602 )
+position = Vector2( -8.442, -8.989 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( -65537, 0, 0, -131072, 0, 0, -131071, 0, 0, -1, 0, 0, -65536, 0, 0, -65535, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0 )
+tile_data = PoolIntArray( -1, 0, 0, -65536, 0, 0, -65535, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 131071, 0, 0, 65536, 0, 0, 65537, 0, 0 )
 
 [node name="PlayerSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -12.0182 )
 frames = SubResource( 4 )
-frame = 1
 playing = true
 __meta__ = {
 "_edit_lock_": true

@@ -43,11 +43,13 @@ public class Character : Node2D
             var localPos = availPos - pos;
             highlightMovement.SetCell((int)localPos.x, (int)localPos.y, highlightTile);
         }
+        highlightMovement.SetCell(0, 0, -1);
     }
 
     public async void MoveTo(int targetX, int targetY)
     {
         if (moved) return;
+        if (new Vector2(targetX, targetY) == pos) return;
 
         int x = (int)pos.x;
         int y = (int)pos.y;
@@ -59,7 +61,15 @@ public class Character : Node2D
             return;
         }
 
+        var cost = path.Length - 1;
+
+        if (cost > movePoints)
+        {
+            return;
+        }
+
         moved = true;
+        var storeVisible = highlightMovement.Visible;
         highlightMovement.Visible = false;
         foreach(var pos in path)
         {
@@ -68,7 +78,7 @@ public class Character : Node2D
             await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
         }
         moved = false;
-        highlightMovement.Visible = true;
+        highlightMovement.Visible = storeVisible;
         SetHighlightAvailableMovement(true);
     }
 }

@@ -52,5 +52,6 @@ public class TacticBattle : Node
 
 		tacticMap.Generate();
 		player.BindMap(tacticMap, FindStartPosition(tacticMap));
+        player.SetHighlightAvailableMovement(true);
 	}
 }

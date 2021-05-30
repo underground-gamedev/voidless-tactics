@@ -94,7 +94,7 @@ public class TacticMap: Node
             {
                 continue;
             }
-            var cost = path.Count();
+            var cost = path.Count() - 1;
 
             if (cost <= range)
             {

@@ -28,7 +28,7 @@ script = ExtResource( 2 )
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 158.526, 89.9109 )
 current = true
-zoom = Vector2( 0.5, 0.5 )
+zoom = Vector2( 0.35, 0.35 )
 script = ExtResource( 5 )
 
 [node name="BackgroundColor" type="ColorRect" parent="Camera2D"]
@@ -54,4 +54,5 @@ height = 16
 visible = false
 position = Vector2( 71.498, 76.8576 )
 frames = SubResource( 11 )
+frame = 1
 playing = true
