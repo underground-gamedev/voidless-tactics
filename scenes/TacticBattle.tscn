@@ -1,22 +1,31 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://prefabs/gameobjects/TacticMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/scenes/TacticBattle.cs" type="Script" id=2]
 [ext_resource path="res://prefabs/gameobjects/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/graphics/enemy.png" type="Texture" id=4]
 [ext_resource path="res://scripts/DraggingCamera.gd" type="Script" id=5]
+[ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=6]
 
-[sub_resource type="AtlasTexture" id=9]
+[sub_resource type="DynamicFont" id=5]
+size = 32
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 32
+font_data = ExtResource( 6 )
+
+[sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 16, 32 )
 
-[sub_resource type="AtlasTexture" id=10]
+[sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 4 )
 region = Rect2( 16, 0, 16, 32 )
 
-[sub_resource type="SpriteFrames" id=11]
+[sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ SubResource( 9 ), SubResource( 10 ) ],
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
 "loop": true,
 "name": "default",
 "speed": 2.0
@@ -24,6 +33,105 @@ animations = [ {
 
 [node name="TacticBattle" type="Node"]
 script = ExtResource( 2 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UIBackground" type="ColorRect" parent="CanvasLayer"]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -136.0
+color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopLine" type="ColorRect" parent="CanvasLayer/UIBackground"]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_right = 1.0
+margin_bottom = 4.0
+color = Color( 0.992157, 1, 0.988235, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ActionMenu" type="VBoxContainer" parent="CanvasLayer"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -184.0
+margin_top = -128.0
+margin_right = -8.0
+margin_bottom = -3.0
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AttackButton" type="Button" parent="CanvasLayer/ActionMenu"]
+margin_right = 176.0
+margin_bottom = 39.0
+custom_fonts/font = SubResource( 5 )
+text = "Attack"
+flat = true
+
+[node name="MoveButton" type="Button" parent="CanvasLayer/ActionMenu"]
+margin_top = 43.0
+margin_right = 176.0
+margin_bottom = 82.0
+custom_fonts/font = SubResource( 5 )
+text = "Move"
+flat = true
+
+[node name="WaitButton" type="Button" parent="CanvasLayer/ActionMenu"]
+margin_top = 86.0
+margin_right = 176.0
+margin_bottom = 125.0
+custom_fonts/font = SubResource( 5 )
+text = "Wait"
+flat = true
+
+[node name="Labels" type="VBoxContainer" parent="CanvasLayer"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = -120.0
+margin_right = 224.0
+margin_bottom = -8.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveLabel" type="Label" parent="CanvasLayer/Labels"]
+margin_right = 208.0
+margin_bottom = 33.0
+custom_fonts/font = SubResource( 6 )
+text = "Move Range: 6"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AttackLabel" type="Label" parent="CanvasLayer/Labels"]
+margin_top = 37.0
+margin_right = 208.0
+margin_bottom = 70.0
+custom_fonts/font = SubResource( 6 )
+text = "Attack: 5"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthLabel" type="Label" parent="CanvasLayer/Labels"]
+margin_top = 74.0
+margin_right = 208.0
+margin_bottom = 107.0
+custom_fonts/font = SubResource( 6 )
+text = "Health: 10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 158.526, 89.9109 )
@@ -53,6 +161,6 @@ height = 16
 [node name="Enemy" type="AnimatedSprite" parent="."]
 visible = false
 position = Vector2( 71.498, 76.8576 )
-frames = SubResource( 11 )
+frames = SubResource( 3 )
 frame = 1
 playing = true

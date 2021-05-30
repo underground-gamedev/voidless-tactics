@@ -56,14 +56,14 @@ public class Character : Node2D
 
         var path = map.Pathfind(new Vector2(x, y), new Vector2(targetX, targetY));
 
-        if (path == null || path.Length == 0)
+        if (path == null)
         {
             return;
         }
 
         var cost = path.Length - 1;
 
-        if (cost > movePoints)
+        if (cost <= 0 || cost > movePoints)
         {
             return;
         }
@@ -79,6 +79,7 @@ public class Character : Node2D
         }
         moved = false;
         highlightMovement.Visible = storeVisible;
+        movePoints = 0;
         SetHighlightAvailableMovement(true);
     }
 }
