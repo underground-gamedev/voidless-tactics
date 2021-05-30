@@ -14,7 +14,7 @@ region = Rect2( 0, 0, 16, 32 )
 atlas = ExtResource( 4 )
 region = Rect2( 16, 0, 16, 32 )
 
-[sub_resource type="SpriteFrames" id=5]
+[sub_resource type="SpriteFrames" id=11]
 animations = [ {
 "frames": [ SubResource( 9 ), SubResource( 10 ) ],
 "loop": true,
@@ -28,7 +28,7 @@ script = ExtResource( 2 )
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2( 158.526, 89.9109 )
 current = true
-zoom = Vector2( 0.25, 0.25 )
+zoom = Vector2( 0.5, 0.5 )
 script = ExtResource( 5 )
 
 [node name="BackgroundColor" type="ColorRect" parent="Camera2D"]
@@ -38,18 +38,20 @@ margin_right = 50000.0
 margin_bottom = 50000.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color( 0.160784, 0.160784, 0.160784, 1 )
+color = Color( 0.156863, 0.145098, 0.184314, 1 )
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
 [node name="Map" parent="." instance=ExtResource( 1 )]
+width = 24
+height = 16
 
 [node name="Player" parent="." instance=ExtResource( 3 )]
 
 [node name="Enemy" type="AnimatedSprite" parent="."]
 visible = false
 position = Vector2( 71.498, 76.8576 )
-frames = SubResource( 5 )
+frames = SubResource( 11 )
 playing = true

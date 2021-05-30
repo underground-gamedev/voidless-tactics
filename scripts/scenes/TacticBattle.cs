@@ -36,7 +36,7 @@ public class TacticBattle : Node
 		var y = (int)tilePos.y;
 
 
-		if (x < 0 || x > tacticMap.Width || y < 0 || y > tacticMap.Height)
+		if (x < 0 || x >= tacticMap.Width || y < 0 || y >= tacticMap.Height)
 		{
 			// Out of bounds
 			return;

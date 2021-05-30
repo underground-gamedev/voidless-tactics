@@ -3,12 +3,17 @@ using System;
 
 public class Character : Node2D
 {
+    [Export]
+    private int movePoints = 6;
     private Vector2 pos;
     private TacticMap map;
     private bool moved;
 
+    private TileMap highlightMovement;
+
     public override void _Ready()
     {
+        highlightMovement = GetNode<TileMap>("MovementArea");
     }
 
     public void SyncWithMap(TileMap tilemap)
@@ -21,6 +26,23 @@ public class Character : Node2D
         this.map = map;
         this.pos = pos;
         SyncWithMap(map.TileMap);
+    }
+
+    public void SetHighlightAvailableMovement(bool enabled)
+    {            
+        highlightMovement.Clear();
+        if (!enabled)
+        {
+            return;
+        }
+
+        var availablePositions = map.GetAllAvailablePathDest(pos, movePoints);
+        var highlightTile = highlightMovement.TileSet.FindTileByName("normal_move");
+        foreach (var availPos in availablePositions)
+        {
+            var localPos = availPos - pos;
+            highlightMovement.SetCell((int)localPos.x, (int)localPos.y, highlightTile);
+        }
     }
 
     public async void MoveTo(int targetX, int targetY)
@@ -38,6 +60,7 @@ public class Character : Node2D
         }
 
         moved = true;
+        highlightMovement.Visible = false;
         foreach(var pos in path)
         {
             this.pos = pos;
@@ -45,5 +68,7 @@ public class Character : Node2D
             await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
         }
         moved = false;
+        highlightMovement.Visible = true;
+        SetHighlightAvailableMovement(true);
     }
 }
