@@ -7,25 +7,25 @@
 [ext_resource path="res://scripts/DraggingCamera.gd" type="Script" id=5]
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=6]
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=1]
 size = 32
 font_data = ExtResource( 6 )
 
-[sub_resource type="DynamicFont" id=6]
+[sub_resource type="DynamicFont" id=2]
 size = 32
 font_data = ExtResource( 6 )
 
-[sub_resource type="AtlasTexture" id=1]
+[sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 4 )
 region = Rect2( 0, 0, 16, 32 )
 
-[sub_resource type="AtlasTexture" id=2]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 4 )
 region = Rect2( 16, 0, 16, 32 )
 
-[sub_resource type="SpriteFrames" id=3]
+[sub_resource type="SpriteFrames" id=5]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"frames": [ SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
 "name": "default",
 "speed": 2.0
@@ -73,7 +73,7 @@ __meta__ = {
 [node name="AttackButton" type="Button" parent="CanvasLayer/ActionMenu"]
 margin_right = 176.0
 margin_bottom = 39.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 1 )
 text = "Attack"
 flat = true
 
@@ -81,7 +81,7 @@ flat = true
 margin_top = 43.0
 margin_right = 176.0
 margin_bottom = 82.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 1 )
 text = "Move"
 flat = true
 
@@ -89,7 +89,7 @@ flat = true
 margin_top = 86.0
 margin_right = 176.0
 margin_bottom = 125.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 1 )
 text = "Wait"
 flat = true
 
@@ -107,7 +107,7 @@ __meta__ = {
 [node name="MoveLabel" type="Label" parent="CanvasLayer/Labels"]
 margin_right = 208.0
 margin_bottom = 33.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 2 )
 text = "Move Range: 6"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -117,7 +117,7 @@ __meta__ = {
 margin_top = 37.0
 margin_right = 208.0
 margin_bottom = 70.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 2 )
 text = "Attack: 5"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -127,7 +127,7 @@ __meta__ = {
 margin_top = 74.0
 margin_right = 208.0
 margin_bottom = 107.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 2 )
 text = "Health: 10"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -161,6 +161,6 @@ height = 16
 [node name="Enemy" type="AnimatedSprite" parent="."]
 visible = false
 position = Vector2( 71.498, 76.8576 )
-frames = SubResource( 3 )
+frames = SubResource( 5 )
 frame = 1
 playing = true

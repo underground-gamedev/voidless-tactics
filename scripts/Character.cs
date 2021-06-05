@@ -79,7 +79,7 @@ public class Character : Node2D
         }
         moved = false;
         highlightMovement.Visible = storeVisible;
-        movePoints = 0;
+        //movePoints = 0;
         SetHighlightAvailableMovement(true);
     }
 }

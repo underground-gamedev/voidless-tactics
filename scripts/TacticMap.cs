@@ -116,6 +116,14 @@ public class TacticMap: Node
         return results.ToArray();
     }
 
+	private List<(int, int)> GetNeighbours(int x, int y)
+	{
+		var neighbours = new List<(int, int)>() {
+			(x+1, y), (x-1, y), (x, y+1), (x, y-1),
+		};
+		return neighbours;
+	}
+
 	private void PreparePathfind()
 	{
 		aStar = new AStar2D();
@@ -133,9 +141,7 @@ public class TacticMap: Node
 					continue;
 				}
 
-				var neighbours = new List<(int, int)>() {
-					(x+1, y), (x-1, y), (x, y+1), (x, y-1),
-				};
+				var neighbours = GetNeighbours(x, y);
 
 				foreach (var (neighX, neighY) in neighbours)
 				{
@@ -163,23 +169,119 @@ public class TacticMap: Node
 		return this.solid[x, y];
 	}
 
-	public void Generate()
+	private HashSet<(int, int)> SelectArea(int startX, int startY)
 	{
-		var map = this;
-		this.solid = new bool[width, height];
+		var area = new HashSet<(int, int)>();
+		var checkedPositions = new HashSet<(int, int)>();
+		var uncheckedPositions = new HashSet<(int, int)>();
+		uncheckedPositions.Add((startX, startY));
+		while (uncheckedPositions.Count > 0)
+		{
+			var currentPosition = uncheckedPositions.First();
+			var (currX, currY) = currentPosition;
+			uncheckedPositions.Remove(currentPosition);
+			checkedPositions.Add(currentPosition);
 
+			if (GetSolid(currX, currY))
+			{
+				continue;
+			}
+
+			area.Add(currentPosition);
+
+			foreach (var neighbour in GetNeighbours(currX, currY))
+			{
+				var (neighX, neighY) = neighbour;
+				if (!uncheckedPositions.Contains(neighbour) && !checkedPositions.Contains(neighbour))
+				{
+					uncheckedPositions.Add(neighbour);
+				}
+			}
+		}
+
+		return area;
+	}
+
+	private void CalculateCellularGeneration()
+	{
+		bool[,] buffMap = solid.Clone() as bool[,];
 		for (int x = 0; x < width; x++)
 		{
-			map.SetSolid(x, 0, true);
-			map.SetSolid(x, height-1, true);
+			for (int y = 0; y < height; y++)
+			{
+				var neighbourCount = 0;
+				var neighbourCells = new (int, int)[] {
+					(0, 1), (0, -1), (1, 0), (-1, 0), 
+					(-1, -1), (-1, 1), (1, -1), (1, 1),
+				};
+
+				foreach (var (neighX, neighY) in neighbourCells)
+				{
+					if (GetSolid(x + neighX, y + neighY)) 
+					{
+						neighbourCount += 1;
+					}
+				}
+
+				buffMap[x, y] = neighbourCount > 4 || neighbourCount <= 0;
+			}
+		}
+
+		var tmp = buffMap;
+		buffMap = solid;
+		solid = tmp;
+	}
+
+	private void MakeBorder()
+	{
+		for (int x = 0; x < width; x++)
+		{
+			SetSolid(x, 0, true);
+			SetSolid(x, height-1, true);
 		}
 
 		for (int y = 0; y < height; y++)
 		{
-			map.SetSolid(0, y, true);
-			map.SetSolid(width-1, y, true);
+			SetSolid(0, y, true);
+			SetSolid(width-1, y, true);
+		}
+	}
+
+	private HashSet<(int, int)> FindAllFloor()
+	{
+		var floorPositions = new HashSet<(int, int)>();
+		for (int x = 0; x < width; x++)
+		{
+			for (int y = 0; y < height; y++)
+			{
+				if (!GetSolid(x, y)) {
+					floorPositions.Add((x, y));
+				}
+			}
+		}
+		return floorPositions;
+	}
+
+	private List<HashSet<(int, int)>> FindAllIndependedAreas()
+	{
+		var floorPositions = FindAllFloor();
+
+		// find all areas
+		var independAreas = new List<HashSet<(int, int)>>();
+		while (floorPositions.Count > 0)
+		{
+			var targetPos = floorPositions.First();
+			var (targetX, targetY) = targetPos;
+			var area = SelectArea(targetX, targetY);
+			independAreas.Add(area);
+			floorPositions.RemoveWhere(x => area.Contains(x));
 		}
 
+		return independAreas;
+	}
+
+	private void RandomFill()
+	{
 		var rand = new Random();
 		for (int x = 0; x < width; x++)
 		{
@@ -188,41 +290,36 @@ public class TacticMap: Node
 				var roll = rand.NextDouble();
 				if (roll > fillPrecent)
 				{
-					map.SetSolid(x, y, true);
+					this.SetSolid(x, y, true);
 				}
 			}
 		}
+	}
 
-		bool[,] buffMap = solid.Clone() as bool[,];
+	private void RawGenerate()
+	{
+		this.solid = new bool[width, height];
+
+		RandomFill();
+
 		for (int _i = 0; _i < generationCicleCount; _i++)
 		{
-			for (int x = 0; x < width; x++)
-			{
-				for (int y = 0; y < height; y++)
-				{
-					var neighbourCount = 0;
-					var neighbourCells = new (int, int)[] {
-						(0, 1), (0, -1), (1, 0), (-1, 0), 
-						(-1, -1), (-1, 1), (1, -1), (1, 1),
-					};
-
-					foreach (var (neighX, neighY) in neighbourCells)
-					{
-						if (map.GetSolid(x + neighX, y + neighY)) 
-						{
-							neighbourCount += 1;
-						}
-					}
-
-					buffMap[x, y] = neighbourCount > 4 || neighbourCount == 0;
-				}
-			}
-
-			var tmp = buffMap;
-			buffMap = solid;
-			solid = tmp;
+			CalculateCellularGeneration();
 		}
 
+		MakeBorder();
+
+		var independAreas = FindAllIndependedAreas();
+		if (independAreas.Count > 1)
+		{
+			GD.PrintErr("Independed areas detected. Regenerate start");
+			RawGenerate();
+		}
+	}
+
+	public void Generate()
+	{
+		RawGenerate();
 		Sync();
 	}
 }
