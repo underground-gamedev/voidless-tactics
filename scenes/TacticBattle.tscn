@@ -1,11 +1,15 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://prefabs/gameobjects/TacticMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/scenes/TacticBattle.cs" type="Script" id=2]
 [ext_resource path="res://prefabs/gameobjects/Player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/graphics/enemy.png" type="Texture" id=4]
 [ext_resource path="res://scripts/DraggingCamera.gd" type="Script" id=5]
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=6]
+[ext_resource path="res://scripts/SolidMapGenerator.cs" type="Script" id=7]
+[ext_resource path="res://scripts/HumanController.cs" type="Script" id=8]
+[ext_resource path="res://assets/graphics/tileset.png" type="Texture" id=9]
+[ext_resource path="res://scripts/VisualLayer.cs" type="Script" id=10]
+[ext_resource path="res://scripts/PathfindLayer.cs" type="Script" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -15,39 +19,72 @@ font_data = ExtResource( 6 )
 size = 32
 font_data = ExtResource( 6 )
 
-[sub_resource type="AtlasTexture" id=3]
-atlas = ExtResource( 4 )
-region = Rect2( 0, 0, 16, 32 )
-
-[sub_resource type="AtlasTexture" id=4]
-atlas = ExtResource( 4 )
-region = Rect2( 16, 0, 16, 32 )
-
-[sub_resource type="SpriteFrames" id=5]
-animations = [ {
-"frames": [ SubResource( 3 ), SubResource( 4 ) ],
-"loop": true,
-"name": "default",
-"speed": 2.0
-} ]
+[sub_resource type="TileSet" id=6]
+resource_local_to_scene = true
+1/name = "floor"
+1/texture = ExtResource( 9 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 160, 112 )
+1/tile_mode = 1
+1/autotile/bitmask_mode = 1
+1/autotile/bitmask_flags = [ Vector2( 0, 0 ), 432, Vector2( 0, 1 ), 438, Vector2( 0, 2 ), 54, Vector2( 1, 0 ), 504, Vector2( 1, 1 ), 511, Vector2( 1, 2 ), 63, Vector2( 1, 4 ), 48, Vector2( 2, 0 ), 216, Vector2( 2, 1 ), 219, Vector2( 2, 2 ), 27, Vector2( 2, 4 ), 24, Vector2( 3, 0 ), 178, Vector2( 3, 1 ), 58, Vector2( 3, 2 ), 176, Vector2( 3, 3 ), 146, Vector2( 3, 4 ), 50, Vector2( 4, 0 ), 154, Vector2( 4, 1 ), 184, Vector2( 4, 2 ), 56, Vector2( 4, 3 ), 16, Vector2( 4, 4 ), 56, Vector2( 5, 0 ), 144, Vector2( 5, 1 ), 18, Vector2( 5, 2 ), 152, Vector2( 5, 3 ), 146, Vector2( 5, 4 ), 26, Vector2( 6, 0 ), 434, Vector2( 6, 1 ), 62, Vector2( 6, 2 ), 218, Vector2( 6, 3 ), 440, Vector2( 6, 4 ), 186, Vector2( 7, 0 ), 182, Vector2( 7, 1 ), 59, Vector2( 7, 2 ), 155, Vector2( 7, 3 ), 248 ]
+1/autotile/icon_coordinate = Vector2( 1, 1 )
+1/autotile/tile_size = Vector2( 16, 16 )
+1/autotile/spacing = 0
+1/autotile/occluder_map = [  ]
+1/autotile/navpoly_map = [  ]
+1/autotile/priority_map = [  ]
+1/autotile/z_index_map = [  ]
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "fall"
+2/texture = ExtResource( 9 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 0, 48, 48, 32 )
+2/tile_mode = 1
+2/autotile/bitmask_mode = 1
+2/autotile/bitmask_flags = [ Vector2( 0, 0 ), 48, Vector2( 0, 1 ), 16, Vector2( 1, 0 ), 56, Vector2( 2, 0 ), 24 ]
+2/autotile/icon_coordinate = Vector2( 1, 0 )
+2/autotile/tile_size = Vector2( 16, 16 )
+2/autotile/spacing = 0
+2/autotile/occluder_map = [  ]
+2/autotile/navpoly_map = [  ]
+2/autotile/priority_map = [  ]
+2/autotile/z_index_map = [  ]
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
 
 [node name="TacticBattle" type="Node"]
 script = ExtResource( 2 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="."]
 
-[node name="UIBackground" type="ColorRect" parent="CanvasLayer"]
+[node name="UIBackground" type="ColorRect" parent="UI"]
 modulate = Color( 1, 1, 1, 0.611765 )
-anchor_top = 1.0
+anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -136.0
+margin_left = -200.0
 color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TopLine" type="ColorRect" parent="CanvasLayer/UIBackground"]
+[node name="TopLine" type="ColorRect" parent="UI/UIBackground"]
 modulate = Color( 1, 1, 1, 0.611765 )
 anchor_right = 1.0
 margin_bottom = 4.0
@@ -56,76 +93,80 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ActionMenu" type="VBoxContainer" parent="CanvasLayer"]
+[node name="ActionMenu" type="VBoxContainer" parent="UI"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -184.0
-margin_top = -128.0
+margin_top = -242.135
 margin_right = -8.0
-margin_bottom = -3.0
+margin_bottom = -4.13525
 alignment = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AttackButton" type="Button" parent="CanvasLayer/ActionMenu"]
+[node name="AttackButton" type="Button" parent="UI/ActionMenu"]
+margin_top = 113.0
 margin_right = 176.0
-margin_bottom = 39.0
+margin_bottom = 152.0
 custom_fonts/font = SubResource( 1 )
 text = "Attack"
 flat = true
+align = 0
 
-[node name="MoveButton" type="Button" parent="CanvasLayer/ActionMenu"]
-margin_top = 43.0
+[node name="MoveButton" type="Button" parent="UI/ActionMenu"]
+margin_top = 156.0
 margin_right = 176.0
-margin_bottom = 82.0
+margin_bottom = 195.0
 custom_fonts/font = SubResource( 1 )
 text = "Move"
 flat = true
+align = 0
 
-[node name="WaitButton" type="Button" parent="CanvasLayer/ActionMenu"]
-margin_top = 86.0
+[node name="WaitButton" type="Button" parent="UI/ActionMenu"]
+margin_top = 199.0
 margin_right = 176.0
-margin_bottom = 125.0
+margin_bottom = 238.0
 custom_fonts/font = SubResource( 1 )
-text = "Wait"
+text = "End Turn"
 flat = true
+align = 0
 
-[node name="Labels" type="VBoxContainer" parent="CanvasLayer"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 16.0
-margin_top = -120.0
-margin_right = 224.0
-margin_bottom = -8.0
+[node name="Labels" type="VBoxContainer" parent="UI"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -187.0
+margin_top = 8.0
+margin_bottom = 112.0
+alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MoveLabel" type="Label" parent="CanvasLayer/Labels"]
-margin_right = 208.0
+[node name="MoveLabel" type="Label" parent="UI/Labels"]
+margin_right = 187.0
 margin_bottom = 33.0
 custom_fonts/font = SubResource( 2 )
-text = "Move Range: 6"
+text = "Move: 6"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AttackLabel" type="Label" parent="CanvasLayer/Labels"]
+[node name="AttackLabel" type="Label" parent="UI/Labels"]
 margin_top = 37.0
-margin_right = 208.0
+margin_right = 187.0
 margin_bottom = 70.0
 custom_fonts/font = SubResource( 2 )
-text = "Attack: 5"
+text = "Atk: 5"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HealthLabel" type="Label" parent="CanvasLayer/Labels"]
+[node name="HealthLabel" type="Label" parent="UI/Labels"]
 margin_top = 74.0
-margin_right = 208.0
+margin_right = 187.0
 margin_bottom = 107.0
 custom_fonts/font = SubResource( 2 )
 text = "Health: 10"
@@ -152,15 +193,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="SolidMapGenerator" type="Node" parent="."]
+script = ExtResource( 7 )
+seed = 5
+
 [node name="Map" parent="." instance=ExtResource( 1 )]
 width = 24
 height = 16
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
+[node name="PathfindLayer" type="Node" parent="Map"]
+script = ExtResource( 11 )
 
-[node name="Enemy" type="AnimatedSprite" parent="."]
-visible = false
-position = Vector2( 71.498, 76.8576 )
-frames = SubResource( 5 )
-frame = 1
-playing = true
+[node name="VisualLayer" type="Node" parent="Map"]
+script = ExtResource( 10 )
+
+[node name="TileMap" type="TileMap" parent="Map/VisualLayer"]
+tile_set = SubResource( 6 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 65535, 1, 0, 0, 1, 1, 1, 1, 1, 2, 1, 2, 131071, 1, 131072, 65536, 1, 65537, 65537, 1, 65537, 65538, 1, 65538, 196606, 1, 196612, 196607, 2, 65536, 131072, 1, 131072, 131073, 1, 131073, 131074, 1, 131074, 262142, 2, 65536, 196608, 2, 0, 196609, 2, 1, 196610, 2, 2 )
+
+[node name="Players" type="Node" parent="."]
+
+[node name="HumanTeam" type="Node" parent="Players"]
+script = ExtResource( 8 )
+IsMyTurn = true
+
+[node name="PlayerUnit" parent="Players/HumanTeam" instance=ExtResource( 3 )]
+movePoints = 5

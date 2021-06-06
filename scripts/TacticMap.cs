@@ -2,324 +2,124 @@ using Godot;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 
-public class TacticMap: Node
+public class TacticMap: Node, IEnumerable<MapCell>
 {
-	[Export]
-	private int width = 20;
-	[Export]
-	private int height = 20;
-    [Export]
-    private int generationCicleCount = 7;
-    [Export]
-    private float fillPrecent = 0.45f;
-
-	private bool[,] solid;
-	private AStar2D aStar;
-
 	public int Width { get => width; }
 	public int Height { get => height; }
+
 	public int TileCount { get => width * height; }
 
-	public TileMap TileMap => GetNode<TileMap>("TileMap");
+	[Signal]
+	public delegate void OnSync(TacticMap map);
 
-	public void SetSolid(int x, int y, bool solid) 
+	[Export]
+	private int width = 30;
+	[Export]
+	private int height = 20;
+
+	public PathfindLayer PathfindLayer => GetNode<PathfindLayer>("PathfindLayer");
+	public VisualLayer VisualLayer => GetNode<VisualLayer>("VisualLayer");
+
+	public TacticMap()
 	{
-		this.solid[x, y] = solid;
+		InitCells();
 	}
 
-	private void Visualize()
+	public override void _Ready()
 	{
-		var destMap = TileMap;
-		destMap.Clear();
-
-		var tileset = destMap.TileSet;
-		var wall = tileset.FindTileByName("wall");
-		var floor = tileset.FindTileByName("floor");
-        var fall = tileset.FindTileByName("fall");
-
-		for (int x = 0; x < Width; x++)
+		var mapLayers = this.GetChilds<IMapLayer>(".");
+		foreach (var layer in mapLayers)
 		{
-			for (int y = 0; y < Height; y++)
-			{
-				var isSolid = GetSolid(x, y);
-				var targetTile = isSolid ? wall : floor;
-                if (!GetSolid(x, y-1) && isSolid) { targetTile = fall; }
-				destMap.SetCell(x, y, targetTile);
-			}
-		}
-
-		destMap.UpdateBitmaskRegion(
-			new Vector2(),
-			OS.WindowSize
-		);
-	}
-
-	private int xyToIdx(int x, int y)
-	{
-		return y * width + x;
-	}
-
-    private Vector2 idxToXy(int idx)
-    {
-        int x = idx % width;
-        int y = idx / width;
-        return new Vector2(x, y);
-    }
-
-	public Vector2[] Pathfind(Vector2 src, Vector2 dest)
-	{
-		int srcIdx = xyToIdx((int)src.x, (int)src.y);
-		int destIdx = xyToIdx((int)dest.x, (int)dest.y);
-		return aStar.GetPointPath(srcIdx, destIdx);
-	}
-
-    public Vector2[] GetAllAvailablePathDest(Vector2 src, int range)
-    {
-        var results = new List<Vector2>();
-
-        var pointsToCheck = new HashSet<Vector2>() {src};
-        var checkedPoints = new HashSet<Vector2>();
-        //var calculatedCosts = new Dictionary<Vector2, int>();
-        var srcIdx = xyToIdx((int)src.x, (int)src.y);
-        while (pointsToCheck.Count > 0)
-        {
-            var pointToCheck = pointsToCheck.First();
-            pointsToCheck.Remove(pointToCheck);
-            checkedPoints.Add(pointToCheck);
-
-            var targetIdx = xyToIdx((int)pointToCheck.x, (int)pointToCheck.y);
-            var path = aStar.GetPointPath(srcIdx, targetIdx);
-            if (path == null || path.Count() == 0)
-            {
-                continue;
-            }
-            var cost = path.Count() - 1;
-
-            if (cost <= range)
-            {
-                results.Add(pointToCheck);
-                if (cost == range) continue;
-            }
-
-            foreach(var neighIdx in aStar.GetPointConnections(targetIdx))
-            {
-                var neighPos = idxToXy(neighIdx);
-                if (checkedPoints.Contains(neighPos) || pointsToCheck.Contains(neighPos)) {
-                    continue;
-                }
-
-                pointsToCheck.Add(neighPos);
-            }
-        }
-
-        return results.ToArray();
-    }
-
-	private List<(int, int)> GetNeighbours(int x, int y)
-	{
-		var neighbours = new List<(int, int)>() {
-			(x+1, y), (x-1, y), (x, y+1), (x, y-1),
-		};
-		return neighbours;
-	}
-
-	private void PreparePathfind()
-	{
-		aStar = new AStar2D();
-		for (int idx = 0; idx < TileCount; idx++)
-		{
-			aStar.AddPoint(idx, idxToXy(idx));
-		}
-
-		for (int x = 0; x < width; x++)
-		{
-			for (int y = 0; y < height; y++)
-			{
-				if (GetSolid(x, y))
-				{
-					continue;
-				}
-
-				var neighbours = GetNeighbours(x, y);
-
-				foreach (var (neighX, neighY) in neighbours)
-				{
-					if (!GetSolid(neighX, neighY))
-					{
-						aStar.ConnectPoints(xyToIdx(x, y),
-											xyToIdx(neighX, neighY));
-					}
-				}
-			}
+			Connect(nameof(OnSync), (Godot.Object) layer, nameof(IMapLayer.OnSync));
 		}
 	}
+
+	public TacticMap(int width, int height)
+	{
+		this.width = width;
+		this.height = height;
+		InitCells();
+	}
+
 	public void Sync()
 	{
-		Visualize();
-		PreparePathfind();
+		EmitSignal(nameof(OnSync), this);
 	}
 
-	public bool GetSolid(int x, int y)
+	private void InitCells()
 	{
-		if (x < 0 || x >= width || y < 0 || y >= height)
-		{
-			return true;
-		}
-		return this.solid[x, y];
-	}
-
-	private HashSet<(int, int)> SelectArea(int startX, int startY)
-	{
-		var area = new HashSet<(int, int)>();
-		var checkedPositions = new HashSet<(int, int)>();
-		var uncheckedPositions = new HashSet<(int, int)>();
-		uncheckedPositions.Add((startX, startY));
-		while (uncheckedPositions.Count > 0)
-		{
-			var currentPosition = uncheckedPositions.First();
-			var (currX, currY) = currentPosition;
-			uncheckedPositions.Remove(currentPosition);
-			checkedPositions.Add(currentPosition);
-
-			if (GetSolid(currX, currY))
-			{
-				continue;
-			}
-
-			area.Add(currentPosition);
-
-			foreach (var neighbour in GetNeighbours(currX, currY))
-			{
-				var (neighX, neighY) = neighbour;
-				if (!uncheckedPositions.Contains(neighbour) && !checkedPositions.Contains(neighbour))
-				{
-					uncheckedPositions.Add(neighbour);
-				}
-			}
-		}
-
-		return area;
-	}
-
-	private void CalculateCellularGeneration()
-	{
-		bool[,] buffMap = solid.Clone() as bool[,];
+		cells = new MapCell[width, height];
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
-				var neighbourCount = 0;
-				var neighbourCells = new (int, int)[] {
-					(0, 1), (0, -1), (1, 0), (-1, 0), 
-					(-1, -1), (-1, 1), (1, -1), (1, 1),
-				};
-
-				foreach (var (neighX, neighY) in neighbourCells)
-				{
-					if (GetSolid(x + neighX, y + neighY)) 
-					{
-						neighbourCount += 1;
-					}
-				}
-
-				buffMap[x, y] = neighbourCount > 4 || neighbourCount <= 0;
+				cells[x, y] = new MapCell(x, y);
 			}
 		}
-
-		var tmp = buffMap;
-		buffMap = solid;
-		solid = tmp;
 	}
 
-	private void MakeBorder()
-	{
-		for (int x = 0; x < width; x++)
-		{
-			SetSolid(x, 0, true);
-			SetSolid(x, height-1, true);
-		}
+	private MapCell[,] cells;
 
-		for (int y = 0; y < height; y++)
-		{
-			SetSolid(0, y, true);
-			SetSolid(width-1, y, true);
-		}
+	public MapCell CellBy(int x, int y)
+	{
+		return cells[x, y];
 	}
 
-	private HashSet<(int, int)> FindAllFloor()
+	public bool IsOutOfBounds(int x, int y)
 	{
-		var floorPositions = new HashSet<(int, int)>();
-		for (int x = 0; x < width; x++)
-		{
-			for (int y = 0; y < height; y++)
-			{
-				if (!GetSolid(x, y)) {
-					floorPositions.Add((x, y));
-				}
-			}
-		}
-		return floorPositions;
+		return x < 0 || x >= width || y < 0 || y >= height;
 	}
 
-	private List<HashSet<(int, int)>> FindAllIndependedAreas()
+	public List<MapCell> DirectNeighboursFor(int x, int y)
 	{
-		var floorPositions = FindAllFloor();
-
-		// find all areas
-		var independAreas = new List<HashSet<(int, int)>>();
-		while (floorPositions.Count > 0)
-		{
-			var targetPos = floorPositions.First();
-			var (targetX, targetY) = targetPos;
-			var area = SelectArea(targetX, targetY);
-			independAreas.Add(area);
-			floorPositions.RemoveWhere(x => area.Contains(x));
-		}
-
-		return independAreas;
+		return NeighboursByDirections(x, y, new List<(int, int)>() {
+			(0, -1), (-1, 0), (1, 0), (0, 1),
+		});
 	}
 
-	private void RandomFill()
+	public List<MapCell> DiagonalNeighboursFor(int x, int y)
 	{
-		var rand = new Random();
+		return NeighboursByDirections(x, y, new List<(int, int)>() {
+			(-1, -1), (1, -1), (-1, 1),  (1, 1),
+		});
+	}
+
+	public List<MapCell> AllNeighboursFor(int x, int y)
+	{
+		return NeighboursByDirections(x, y, new List<(int, int)>() {
+			(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1),
+		});
+	}
+
+	private List<MapCell> NeighboursByDirections(int x, int y, List<(int, int)> directions)
+	{
+		var neigh = new List<MapCell>();
+		foreach (var (dirX, dirY) in directions)
+		{
+			var neighX = x + dirX;
+			var neighY = y + dirY;
+
+			if (IsOutOfBounds(neighX, neighY)) continue;
+			neigh.Add(CellBy(neighX, neighY));
+		}
+		return neigh;
+	}
+
+	public IEnumerator<MapCell> GetEnumerator()
+	{
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
-				var roll = rand.NextDouble();
-				if (roll > fillPrecent)
-				{
-					this.SetSolid(x, y, true);
-				}
+				yield return CellBy(x, y);
 			}
 		}
 	}
 
-	private void RawGenerate()
+	IEnumerator IEnumerable.GetEnumerator()
 	{
-		this.solid = new bool[width, height];
-
-		RandomFill();
-
-		for (int _i = 0; _i < generationCicleCount; _i++)
-		{
-			CalculateCellularGeneration();
-		}
-
-		MakeBorder();
-
-		var independAreas = FindAllIndependedAreas();
-		if (independAreas.Count > 1)
-		{
-			GD.PrintErr("Independed areas detected. Regenerate start");
-			RawGenerate();
-		}
-	}
-
-	public void Generate()
-	{
-		RawGenerate();
-		Sync();
+		return this.GetEnumerator();
 	}
 }
