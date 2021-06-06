@@ -13,6 +13,7 @@ public class Character : Node2D
     private bool moved;
 
     private TileMap highlightMovement;
+    private bool highlightEnabled;
 
     public int MovePoints { get => movePoints; set => movePoints = value; }
 
@@ -24,19 +25,35 @@ public class Character : Node2D
     public void SyncWithMap(TileMap tilemap)
     {
         var (x, y) = cell.Position;
+        SyncWithMap(tilemap, x, y);
+    }
+
+    public void SyncWithMap(TileMap tilemap, int x, int y)
+    {
         GlobalPosition = tilemap.GlobalPosition + tilemap.CellSize * (new Vector2(x, y) + new Vector2(0.5f, 0.5f));
+    }
+
+    private void SetCell(MapCell cell)
+    {
+        if (this.cell != null)
+        {
+            this.cell.Character = null;
+        }
+        this.cell = cell;
+        cell.Character = this;
     }
 
     public void BindMap(TacticMap map, MapCell cell)
     {
         this.map = map;
-        this.cell = cell;
+        SetCell(cell);
         SyncWithMap(map.VisualLayer.TileMap);
     }
 
     public void SetHighlightAvailableMovement(bool enabled)
     {            
         highlightMovement.Clear();
+        highlightEnabled = enabled;
         if (!enabled) return;
         if (moveActions == 0) return;
 
@@ -54,6 +71,7 @@ public class Character : Node2D
     public void OnTurnStart()
     {
         moveActions = 1;
+        SetHighlightAvailableMovement(highlightEnabled);
     }
 
     public async void MoveTo(int targetX, int targetY)
@@ -82,10 +100,11 @@ public class Character : Node2D
         moved = true;
         var storeVisible = highlightMovement.Visible;
         highlightMovement.Visible = false;
+
+        SetCell(map.CellBy(targetX, targetY));
         foreach(var (posX, posY) in path)
         {
-            cell = map.CellBy(posX, posY);
-            SyncWithMap(map.VisualLayer.TileMap);
+            SyncWithMap(map.VisualLayer.TileMap, posX, posY);
             await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
         }
         moved = false;

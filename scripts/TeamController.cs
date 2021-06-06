@@ -7,7 +7,7 @@ public class TeamController : Node
     protected bool IsMyTurn;
     protected TacticMap tacticMap;
 
-    private List<Character> characters = new List<Character>();
+    protected List<Character> characters = new List<Character>();
 
     public void BindMap(TacticMap map)
     {
@@ -16,12 +16,9 @@ public class TeamController : Node
 
     public void Init()
     {
-        foreach(var child in GetChildren()) 
+        foreach(var child in this.GetChilds<Character>(".")) 
         {
-            if (child is Character charChild)
-            {
-                AddCharacter(charChild);
-            }
+            AddCharacter(child);
         }
     }
 
@@ -31,7 +28,7 @@ public class TeamController : Node
 		{
 			for (int y = 0; y < map.Height; y++)
 			{
-				if (!map.GetSolid(x, y)) {
+				if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
 					return map.CellBy(x, y);
 				}
 			}
@@ -44,15 +41,22 @@ public class TeamController : Node
     {
         characters.Add(character);
         character.controller = this;
-		character.BindMap(tacticMap, FindStartPosition(tacticMap));
+        var pos = FindStartPosition(tacticMap);
+		character.BindMap(tacticMap, pos);
         character.SetHighlightAvailableMovement(false);
     }
 
     public void OnTurnStart()
     {
+        IsMyTurn = true;
         foreach (var character in characters)
         {
             character.OnTurnStart();
         }
+    }
+
+    public void OnTurnEnd()
+    {
+        IsMyTurn = false; 
     }
 }

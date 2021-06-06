@@ -3,7 +3,7 @@ public class MapCell
     Character character;
     bool solid;
 
-    public Character Character { get => character; set => value = character; }
+    public Character Character { get => character; set => character = value; }
     public bool Solid { get => solid; set => solid = value; }
     public int X { get; }
     public int Y { get; }

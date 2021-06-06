@@ -49,6 +49,7 @@ tile_data = PoolIntArray( -1, 0, 0, -65536, 0, 0, -65535, 0, 0, 65535, 0, 0, 0, 
 [node name="PlayerSprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -12.0182 )
 frames = SubResource( 4 )
+frame = 1
 playing = true
 __meta__ = {
 "_edit_lock_": true

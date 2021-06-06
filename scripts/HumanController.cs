@@ -15,7 +15,30 @@ public class HumanController: TeamController
         if (!IsMyTurn) return;
         if (tacticMap.IsOutOfBounds(x, y)) return;
 
-		activeCharacter?.MoveTo(x, y);
+        var targetCharacter = tacticMap.GetCharacter(x, y);
+        if (targetCharacter == null)
+        {
+            activeCharacter?.MoveTo(x, y);
+        }
+        else if (characters.Contains(targetCharacter))
+        {
+            SetActiveCharacter(targetCharacter);
+        }
+        else
+        {
+        }
+    }
+
+    public void SetActiveCharacter(Character character)
+    {
+        if (activeCharacter != null)
+        {
+            activeCharacter.SetHighlightAvailableMovement(false);
+        }
+        activeCharacter = character;
+        activeCharacter.SetHighlightAvailableMovement(true);
+        EmitSignal(nameof(OnActiveCharacterChanged), activeCharacter);
+
     }
 
     public override void AddCharacter(Character character)
@@ -24,9 +47,7 @@ public class HumanController: TeamController
 
         if (activeCharacter is null)
         {
-            activeCharacter = character;
-            activeCharacter.SetHighlightAvailableMovement(true);
-            EmitSignal(nameof(OnActiveCharacterChanged), activeCharacter);
+            SetActiveCharacter(character);
         }
     }
 }
