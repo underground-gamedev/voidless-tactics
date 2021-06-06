@@ -1,14 +1,16 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public class Character : Node2D
 {
     [Export]
     private int movePoints = 6;
-    public TeamController controller;
+    public AbstractController controller;
 
     private int moveActions = 1;
     private MapCell cell;
+    public MapCell Cell => cell;
     private TacticMap map;
     private bool moved;
 
@@ -74,7 +76,7 @@ public class Character : Node2D
         SetHighlightAvailableMovement(highlightEnabled);
     }
 
-    public async void MoveTo(int targetX, int targetY)
+    public async Task MoveTo(int targetX, int targetY)
     {
         if (moved) return;
         if (moveActions == 0) return;
@@ -105,7 +107,7 @@ public class Character : Node2D
         foreach(var (posX, posY) in path)
         {
             SyncWithMap(map.VisualLayer.TileMap, posX, posY);
-            await ToSignal(GetTree().CreateTimer(0.1f), "timeout");
+            await this.Wait(0.1f);
         }
         moved = false;
         highlightMovement.Visible = storeVisible;

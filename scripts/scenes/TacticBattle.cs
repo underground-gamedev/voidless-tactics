@@ -1,13 +1,14 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class TacticBattle : Node
 {
 	private TacticMap tacticMap;
-	private List<TeamController> controllers;
+	private List<AbstractController> controllers;
 
-	TeamController activeController;
+	AbstractController activeController;
 
 	public override void _Ready()
 	{
@@ -16,7 +17,7 @@ public class TacticBattle : Node
 		solidMapGen.Generate(tacticMap);
 		tacticMap.Sync();
 
-		controllers = this.GetChilds<TeamController>("Players");
+		controllers = this.GetChilds<AbstractController>("Players");
 		foreach (var controller in controllers)
 		{
 			controller.BindMap(tacticMap);
@@ -28,20 +29,43 @@ public class TacticBattle : Node
 				controller.Connect(nameof(HumanController.OnActiveCharacterChanged), this, nameof(UpdateCharacterDescription));
 				activeController = controller;
 			}
+			else if (controller is AIController)
+			{
+				controller.Connect(nameof(AIController.OnEndTurn), this, nameof(EndTurn));
+			}
 		}
 
 		var button = GetNode<Button>("UI/ActionMenu/EndTurnButton");
-		button.Connect("pressed", this, nameof(EndTurn));
+		button.Connect("pressed", this, nameof(HumanEndTurn));
 	}
 
-	private void EndTurn()
+	private async void HumanEndTurn()
+	{
+		if (activeController is HumanController)
+		{
+			await EndTurn();
+		}
+	}
+
+	private async Task ShowTurnLabel(AbstractController controller)
+	{
+		var text = controller is HumanController ? "Player Turn" : "Enemy Turn";
+		var turnLine = GetNode<Control>("UI/TurnHighlight");
+		var label = turnLine.GetNode<Label>("TurnLabel");
+		label.Text = text;
+		turnLine.Visible = true;
+		await this.Wait(1);
+		turnLine.Visible = false;
+	}
+	private async Task EndTurn()
 	{
 		var activeId = controllers.IndexOf(activeController);
 		var nextId = (activeId + 1) % controllers.Count;
 		var nextController = controllers[nextId];
 		activeController.OnTurnEnd();
-		nextController.OnTurnStart();
 		activeController = nextController;
+		await ShowTurnLabel(nextController);
+		nextController.OnTurnStart();
 	}
 
 	private void UpdateCharacterDescription(Character activeCharacter)

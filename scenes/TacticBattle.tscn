@@ -1,15 +1,21 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://prefabs/gameobjects/TacticMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/scenes/TacticBattle.cs" type="Script" id=2]
 [ext_resource path="res://prefabs/gameobjects/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scripts/controllers/AIController.cs" type="Script" id=4]
 [ext_resource path="res://scripts/DraggingCamera.gd" type="Script" id=5]
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=6]
 [ext_resource path="res://scripts/SolidMapGenerator.cs" type="Script" id=7]
-[ext_resource path="res://scripts/HumanController.cs" type="Script" id=8]
+[ext_resource path="res://scripts/controllers/HumanController.cs" type="Script" id=8]
 [ext_resource path="res://assets/graphics/tileset.png" type="Texture" id=9]
 [ext_resource path="res://scripts/VisualLayer.cs" type="Script" id=10]
 [ext_resource path="res://scripts/PathfindLayer.cs" type="Script" id=11]
+[ext_resource path="res://prefabs/gameobjects/Enemy.tscn" type="PackedScene" id=12]
+
+[sub_resource type="DynamicFont" id=4]
+size = 42
+font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -19,7 +25,7 @@ font_data = ExtResource( 6 )
 size = 32
 font_data = ExtResource( 6 )
 
-[sub_resource type="TileSet" id=6]
+[sub_resource type="TileSet" id=3]
 resource_local_to_scene = true
 1/name = "floor"
 1/texture = ExtResource( 9 )
@@ -83,6 +89,7 @@ margin_left = -200.0
 margin_top = -138.0
 color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -91,6 +98,52 @@ modulate = Color( 1, 1, 1, 0.611765 )
 anchor_right = 1.0
 margin_bottom = 4.0
 color = Color( 0.992157, 1, 0.988235, 1 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TurnHighlight" type="Control" parent="UI"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="UI/TurnHighlight"]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -29.127
+margin_bottom = 28.873
+color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopLine" type="ColorRect" parent="UI/TurnHighlight/Background"]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_right = 1.0
+margin_bottom = 4.0
+color = Color( 0.992157, 1, 0.988235, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TurnLabel" type="Label" parent="UI/TurnHighlight"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = 1.0
+margin_top = -21.0
+margin_right = -2.0
+margin_bottom = 22.0
+custom_fonts/font = SubResource( 4 )
+text = "Enemy Turn"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -110,27 +163,27 @@ __meta__ = {
 }
 
 [node name="AttackButton" type="Button" parent="UI/ActionMenu"]
-margin_top = 113.0
+margin_top = 112.0
 margin_right = 176.0
-margin_bottom = 152.0
+margin_bottom = 151.0
 custom_fonts/font = SubResource( 1 )
 text = "Attack"
 flat = true
 align = 0
 
 [node name="MoveButton" type="Button" parent="UI/ActionMenu"]
-margin_top = 156.0
+margin_top = 155.0
 margin_right = 176.0
-margin_bottom = 195.0
+margin_bottom = 194.0
 custom_fonts/font = SubResource( 1 )
 text = "Move"
 flat = true
 align = 0
 
 [node name="EndTurnButton" type="Button" parent="UI/ActionMenu"]
-margin_top = 199.0
+margin_top = 198.0
 margin_right = 176.0
-margin_bottom = 238.0
+margin_bottom = 237.0
 custom_fonts/font = SubResource( 1 )
 text = "End Turn"
 flat = true
@@ -139,17 +192,19 @@ align = 0
 [node name="Labels" type="VBoxContainer" parent="UI"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -49.0
-margin_right = 187.0
+margin_left = 10.9536
+margin_top = -56.7185
+margin_right = 187.954
+margin_bottom = -8.71851
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MoveLabel" type="Label" parent="UI/Labels"]
-margin_top = 8.0
-margin_right = 187.0
-margin_bottom = 41.0
+margin_top = 7.0
+margin_right = 177.0
+margin_bottom = 40.0
 custom_fonts/font = SubResource( 2 )
 text = "Move: 6"
 __meta__ = {
@@ -190,7 +245,7 @@ script = ExtResource( 11 )
 script = ExtResource( 10 )
 
 [node name="TileMap" type="TileMap" parent="Map/VisualLayer"]
-tile_set = SubResource( 6 )
+tile_set = SubResource( 3 )
 cell_size = Vector2( 16, 16 )
 format = 1
 tile_data = PoolIntArray( 65535, 1, 0, 0, 1, 1, 1, 1, 1, 2, 1, 2, 131071, 1, 131072, 65536, 1, 65537, 65537, 1, 65537, 65538, 1, 65538, 196606, 1, 196612, 196607, 2, 65536, 131072, 1, 131072, 131073, 1, 131073, 131074, 1, 131074, 262142, 2, 65536, 196608, 2, 0, 196609, 2, 1, 196610, 2, 2 )
@@ -206,3 +261,12 @@ movePoints = 5
 
 [node name="PlayerUnit2" parent="Players/HumanTeam" instance=ExtResource( 3 )]
 movePoints = 7
+
+[node name="ComputerTeam" type="Node" parent="Players"]
+script = ExtResource( 4 )
+
+[node name="EnemyUnit" parent="Players/ComputerTeam" instance=ExtResource( 12 )]
+movePoints = 3
+
+[node name="EnemyUnit2" parent="Players/ComputerTeam" instance=ExtResource( 12 )]
+movePoints = 3

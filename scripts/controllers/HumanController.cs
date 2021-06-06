@@ -1,6 +1,6 @@
 using Godot;
 
-public class HumanController: TeamController
+public class HumanController: AbstractController
 {
     private Character activeCharacter;
     private Character hoverCharacter;
@@ -9,6 +9,21 @@ public class HumanController: TeamController
     public delegate void OnActiveCharacterChanged(Character activeCharacter);
     [Signal]
     public delegate void OnHoverCharacterChanged(Character hoverCharacter);
+
+	protected override MapCell FindStartPosition(TacticMap map)
+	{
+		for (int x = 0; x < map.Width; x++)
+		{
+			for (int y = 0; y < map.Height; y++)
+			{
+				if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
+					return map.CellBy(x, y);
+				}
+			}
+		}
+
+		return null;
+	}
 
     public void OnCellClick(int x, int y)
     {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Godot;
 
 public static class GDHelpers
@@ -15,5 +16,12 @@ public static class GDHelpers
         }
 
         return result;
+    }
+
+    public static Task Wait(this Node node, float time)
+    {
+        return Task.Run(async () => {
+            await node.ToSignal(node.GetTree().CreateTimer(time), "timeout");
+        });
     }
 }

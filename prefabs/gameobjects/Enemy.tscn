@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://assets/graphics/player.png" type="Texture" id=1]
+[ext_resource path="res://assets/graphics/enemy.png" type="Texture" id=1]
 [ext_resource path="res://scripts/Character.cs" type="Script" id=2]
 [ext_resource path="res://assets/graphics/movement_highlight.png" type="Texture" id=3]
 
@@ -40,6 +40,7 @@ animations = [ {
 script = ExtResource( 2 )
 
 [node name="MovementArea" type="TileMap" parent="."]
+modulate = Color( 0.921569, 0.423529, 0.423529, 1 )
 position = Vector2( -8.442, -8.989 )
 tile_set = SubResource( 1 )
 cell_size = Vector2( 16, 16 )
@@ -49,6 +50,7 @@ tile_data = PoolIntArray( -1, 0, 0, -65536, 0, 0, -65535, 0, 0, 65535, 0, 0, 0, 
 [node name="Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -12.0182 )
 frames = SubResource( 4 )
+frame = 1
 playing = true
 __meta__ = {
 "_edit_lock_": true
