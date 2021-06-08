@@ -7,22 +7,14 @@ public class Character : Node2D
     [Export]
     private int movePoints = 6;
     public AbstractController controller;
-
     private int moveActions = 1;
     private MapCell cell;
     public MapCell Cell => cell;
     private TacticMap map;
     private bool moved;
 
-    private TileMap highlightMovement;
-    private bool highlightEnabled;
-
+    public int MoveActions => moveActions;
     public int MovePoints { get => movePoints; set => movePoints = value; }
-
-    public override void _Ready()
-    {
-        highlightMovement = GetNode<TileMap>("MovementArea");
-    }
 
     public void SyncWithMap(TileMap tilemap)
     {
@@ -52,10 +44,18 @@ public class Character : Node2D
         SyncWithMap(map.VisualLayer.TileMap);
     }
 
-    public void SetHighlightAvailableMovement(bool enabled)
+    public void OnTurnStart()
+    {
+        moveActions = 1;
+    }
+
+    /*public void SetHighlightAvailableMovement(bool enabled)
     {            
+        var highlightMovement = TileMap;
+
         highlightMovement.Clear();
-        highlightEnabled = enabled;
+        highlightMovement.Visible = enabled;
+
         if (!enabled) return;
         if (moveActions == 0) return;
 
@@ -67,14 +67,7 @@ public class Character : Node2D
             var localY = availY - cell.Y;
             highlightMovement.SetCell((int)localX, (int)localY, highlightTile);
         }
-        highlightMovement.SetCell(0, 0, -1);
-    }
-
-    public void OnTurnStart()
-    {
-        moveActions = 1;
-        SetHighlightAvailableMovement(highlightEnabled);
-    }
+    }*/
 
     public async Task MoveTo(int targetX, int targetY)
     {
@@ -100,8 +93,8 @@ public class Character : Node2D
         }
 
         moved = true;
-        var storeVisible = highlightMovement.Visible;
-        highlightMovement.Visible = false;
+        /*var storeVisible = highlightMovement.Visible;
+        highlightMovement.Visible = false;*/
 
         SetCell(map.CellBy(targetX, targetY));
         foreach(var (posX, posY) in path)
@@ -110,10 +103,10 @@ public class Character : Node2D
             await this.Wait(0.1f);
         }
         moved = false;
-        highlightMovement.Visible = storeVisible;
+        /*highlightMovement.Visible = storeVisible;*/
 
         moveActions -= 1;
 
-        SetHighlightAvailableMovement(true);
+        //SetHighlightAvailableMovement(true);
     }
 }

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/movement_highlight.png-36b4498ea29471bf21355eaaab5bdb81.stex"
+path="res://.import/tile000.png-a7c867bf929b7e5a66c9d35be7718f1d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/movement_highlight.png"
-dest_files=[ "res://.import/movement_highlight.png-36b4498ea29471bf21355eaaab5bdb81.stex" ]
+source_file="res://assets/graphics/movement/tile000.png"
+dest_files=[ "res://.import/tile000.png-a7c867bf929b7e5a66c9d35be7718f1d.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

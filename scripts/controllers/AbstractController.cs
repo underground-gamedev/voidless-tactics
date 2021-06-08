@@ -30,7 +30,6 @@ public abstract class AbstractController : Node
         character.controller = this;
         var pos = FindStartPosition(tacticMap);
 		character.BindMap(tacticMap, pos);
-        character.SetHighlightAvailableMovement(false);
     }
 
     public virtual void OnTurnStart()

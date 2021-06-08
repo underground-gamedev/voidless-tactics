@@ -1,8 +1,15 @@
+using System.Linq;
 using Godot;
 
 public class HumanController: AbstractController
 {
+    private enum ActiveCharacterStates
+    {
+        None, Move, Attack,
+    }
+
     private Character activeCharacter;
+    private ActiveCharacterStates activeState;
     private Character hoverCharacter;
 
     [Signal]
@@ -33,36 +40,54 @@ public class HumanController: AbstractController
         var targetCharacter = tacticMap.GetCharacter(x, y);
         if (targetCharacter == null)
         {
-            activeCharacter?.MoveTo(x, y);
+            switch (activeState)
+            {
+                case ActiveCharacterStates.Move: 
+                activeCharacter?.MoveTo(x, y); 
+                SwitchToNone();
+                break;
+            }
         }
         else if (characters.Contains(targetCharacter))
         {
             SetActiveCharacter(targetCharacter);
         }
-        else
-        {
-        }
     }
 
     public void SetActiveCharacter(Character character)
     {
-        if (activeCharacter != null)
-        {
-            activeCharacter.SetHighlightAvailableMovement(false);
-        }
         activeCharacter = character;
-        activeCharacter.SetHighlightAvailableMovement(true);
+        activeState = ActiveCharacterStates.None;
+        if (!SwitchToMove()) SwitchToNone();
         EmitSignal(nameof(OnActiveCharacterChanged), activeCharacter);
+    }
+    
+    public bool SwitchToNone()
+    {
+        var moveHighlight = tacticMap.MoveHighlightLayer;
+        activeState = ActiveCharacterStates.None;
+        moveHighlight.Clear();
 
+        return true;
     }
 
-    public override void AddCharacter(Character character)
+    public bool SwitchToMove()
     {
-        base.AddCharacter(character);
+        if (activeCharacter == null) { return false; }
+        if (!IsMyTurn) { return false; }
+        if (activeCharacter.MoveActions == 0) { return false; }
 
-        if (activeCharacter is null)
+        var moveHighlight = tacticMap.MoveHighlightLayer;
+        moveHighlight.Clear();
+        activeState = ActiveCharacterStates.Move;
+
+        var availablePositions = tacticMap.PathfindLayer.GetAllAvailablePathDest(activeCharacter.Cell, activeCharacter.MovePoints);
+        var availableCells = availablePositions.Select(pos => tacticMap.CellBy(pos.Item1, pos.Item2)).Where(cell => cell.Character == null).ToList();
+        foreach (var (availX, availY) in availableCells.Select(cell => cell.Position))
         {
-            SetActiveCharacter(character);
+            moveHighlight.Highlight(availX, availY, MoveHighlightType.NormalMove);
         }
+
+        return true;
     }
 }
