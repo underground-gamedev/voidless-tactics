@@ -17,20 +17,20 @@ public class HumanController: AbstractController
     [Signal]
     public delegate void OnHoverCharacterChanged(Character hoverCharacter);
 
-	protected override MapCell FindStartPosition(TacticMap map)
-	{
-		for (int x = 0; x < map.Width; x++)
-		{
-			for (int y = 0; y < map.Height; y++)
-			{
-				if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
-					return map.CellBy(x, y);
-				}
-			}
-		}
+    protected override MapCell FindStartPosition(TacticMap map)
+    {
+        for (int x = 0; x < map.Width; x++)
+        {
+            for (int y = 0; y < map.Height; y++)
+            {
+                if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
+                    return map.CellBy(x, y);
+                }
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     public void OnCellClick(int x, int y)
     {

@@ -29,7 +29,7 @@ public abstract class AbstractController : Node
         characters.Add(character);
         character.controller = this;
         var pos = FindStartPosition(tacticMap);
-		character.BindMap(tacticMap, pos);
+        character.BindMap(tacticMap, pos);
     }
 
     public virtual void OnTurnStart()

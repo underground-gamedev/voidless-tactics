@@ -7,20 +7,20 @@ public class AIController : AbstractController
     [Signal]
     public delegate void OnEndTurn();
 
-	protected override MapCell FindStartPosition(TacticMap map)
-	{
-		for (int x = map.Width-1; x > 0; x--)
-		{
-			for (int y = 0; y < map.Height; y++)
-			{
-				if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
-					return map.CellBy(x, y);
-				}
-			}
-		}
+    protected override MapCell FindStartPosition(TacticMap map)
+    {
+        for (int x = map.Width-1; x > 0; x--)
+        {
+            for (int y = 0; y < map.Height; y++)
+            {
+                if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
+                    return map.CellBy(x, y);
+                }
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
     public override async void OnTurnStart()
     {
