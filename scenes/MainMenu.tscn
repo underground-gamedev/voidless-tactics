@@ -51,6 +51,7 @@ margin_left = 0.445435
 margin_top = 0.55455
 margin_right = 0.445435
 margin_bottom = 0.554565
+mouse_filter = 2
 texture = SubResource( 2 )
 expand = true
 stretch_mode = 1

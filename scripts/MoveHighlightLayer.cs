@@ -6,7 +6,8 @@ public enum MoveHighlightType
 {
     None,
     NormalMove,
-    Attack
+    Attack,
+    Active,
 }
 
 public class MoveHighlightLayer : Node, IMapLayer

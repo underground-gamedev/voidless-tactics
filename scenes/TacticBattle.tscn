@@ -1,10 +1,10 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://prefabs/gameobjects/TacticMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/scenes/TacticBattle.cs" type="Script" id=2]
 [ext_resource path="res://prefabs/gameobjects/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scripts/controllers/AIController.cs" type="Script" id=4]
-[ext_resource path="res://scripts/DraggingCamera.gd" type="Script" id=5]
+[ext_resource path="res://scripts/DraggingCamera.cs" type="Script" id=5]
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=6]
 [ext_resource path="res://scripts/SolidMapGenerator.cs" type="Script" id=7]
 [ext_resource path="res://scripts/controllers/HumanController.cs" type="Script" id=8]
@@ -14,13 +14,14 @@
 [ext_resource path="res://prefabs/gameobjects/Enemy.tscn" type="PackedScene" id=12]
 [ext_resource path="res://prefabs/tileset/normal_move.tres" type="Texture" id=13]
 [ext_resource path="res://scripts/MoveHighlightLayer.cs" type="Script" id=14]
+[ext_resource path="res://assets/graphics/movement_highlight.png" type="Texture" id=15]
+[ext_resource path="res://scripts/TacticHUD.cs" type="Script" id=16]
+[ext_resource path="res://prefabs/gameobjects/ActionMenuButton.tscn" type="PackedScene" id=17]
+[ext_resource path="res://scripts/ActionContainer.cs" type="Script" id=18]
+[ext_resource path="res://assets/graphics/end_turn_icon.png" type="Texture" id=19]
 
 [sub_resource type="DynamicFont" id=1]
 size = 42
-font_data = ExtResource( 6 )
-
-[sub_resource type="DynamicFont" id=2]
-size = 32
 font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFont" id=3]
@@ -76,24 +77,7 @@ resource_local_to_scene = true
 2/shapes = [  ]
 2/z_index = 0
 
-[sub_resource type="StreamTexture" id=6]
-load_path = "res://.import/movement_highlight.png-36b4498ea29471bf21355eaaab5bdb81.stex"
-
 [sub_resource type="TileSet" id=5]
-1/name = "Attack"
-1/texture = SubResource( 6 )
-1/tex_offset = Vector2( 0, 0 )
-1/modulate = Color( 1, 1, 1, 1 )
-1/region = Rect2( 48, 0, 16, 16 )
-1/tile_mode = 0
-1/occluder_offset = Vector2( 0, 0 )
-1/navigation_offset = Vector2( 0, 0 )
-1/shape_offset = Vector2( 0, 0 )
-1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-1/shape_one_way = false
-1/shape_one_way_margin = 0.0
-1/shapes = [  ]
-1/z_index = 0
 2/name = "NormalMove"
 2/texture = ExtResource( 13 )
 2/tex_offset = Vector2( 0, 0 )
@@ -108,45 +92,98 @@ load_path = "res://.import/movement_highlight.png-36b4498ea29471bf21355eaaab5bdb
 2/shape_one_way_margin = 0.0
 2/shapes = [  ]
 2/z_index = 0
+3/name = "Attack"
+3/texture = ExtResource( 15 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 48, 0, 16, 16 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 0, 0 )
+3/navigation_offset = Vector2( 0, 0 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape_one_way = false
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
+3/z_index = 0
+4/name = "Active"
+4/texture = ExtResource( 15 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 96, 0, 16, 16 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
+4/shapes = [  ]
+4/z_index = 0
 
 [node name="TacticBattle" type="Node"]
 script = ExtResource( 2 )
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource( 16 )
 
-[node name="UIBackground" type="ColorRect" parent="UI"]
+[node name="EndTurnButton" type="Control" parent="HUD"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -84.0
+margin_top = -44.0
+margin_right = 85.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="HUD/EndTurnButton"]
 modulate = Color( 1, 1, 1, 0.611765 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0705882, 0.0705882, 0.0705882, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" parent="HUD/EndTurnButton" instance=ExtResource( 17 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 1.0
+margin_right = -3.0
+margin_bottom = 0.0
+text = "End Turn"
+align = 2
+
+[node name="EndTurn" type="TextureButton" parent="HUD/EndTurnButton/Button"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -200.0
-margin_top = -138.0
-color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+margin_left = -157.34
+margin_top = -37.3147
+margin_right = -141.34
+margin_bottom = -21.3147
+rect_scale = Vector2( 2, 2 )
+texture_normal = ExtResource( 19 )
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="TopLine" type="ColorRect" parent="UI/UIBackground"]
-modulate = Color( 1, 1, 1, 0.611765 )
-anchor_right = 1.0
-margin_bottom = 4.0
-color = Color( 0.992157, 1, 0.988235, 1 )
-__meta__ = {
-"_edit_lock_": true,
-"_edit_use_anchors_": false
-}
-
-[node name="TurnHighlight" type="Control" parent="UI"]
-visible = false
+[node name="TurnHighlight" type="Control" parent="HUD"]
+pause_mode = 1
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
+input_pass_on_modal_close_click = false
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
-[node name="Background" type="ColorRect" parent="UI/TurnHighlight"]
+[node name="Background" type="ColorRect" parent="HUD/TurnHighlight"]
 modulate = Color( 1, 1, 1, 0.611765 )
 anchor_top = 0.5
 anchor_right = 1.0
@@ -158,7 +195,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TopLine" type="ColorRect" parent="UI/TurnHighlight/Background"]
+[node name="TopLine" type="ColorRect" parent="HUD/TurnHighlight/Background"]
 modulate = Color( 1, 1, 1, 0.611765 )
 anchor_right = 1.0
 margin_bottom = 4.0
@@ -167,7 +204,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TurnLabel" type="Label" parent="UI/TurnHighlight"]
+[node name="TurnLabel" type="Label" parent="HUD/TurnHighlight"]
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -183,63 +220,95 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ActionMenu" type="VBoxContainer" parent="UI"]
+[node name="ActionContainer" type="MarginContainer" parent="HUD"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -184.0
-margin_top = -242.135
-margin_right = -8.0
-margin_bottom = -4.13525
+margin_left = -127.0
+margin_top = -17.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 1
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource( 18 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+ButtonPrefab = ExtResource( 17 )
+
+[node name="UIBackground" type="ColorRect" parent="HUD/ActionContainer"]
+self_modulate = Color( 1, 1, 1, 0.611765 )
+margin_right = 127.0
+margin_bottom = 17.0
+mouse_filter = 2
+color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopLine" type="ColorRect" parent="HUD/ActionContainer/UIBackground"]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_right = 1.0
+margin_bottom = 3.0
+color = Color( 0.992157, 1, 0.988235, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Actions" type="VBoxContainer" parent="HUD/ActionContainer"]
+margin_right = 127.0
+margin_bottom = 17.0
 alignment = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AttackButton" type="Button" parent="UI/ActionMenu"]
-margin_top = 112.0
-margin_right = 176.0
-margin_bottom = 151.0
-custom_fonts/font = SubResource( 2 )
-text = "Attack"
-flat = true
-align = 0
-
-[node name="MoveButton" type="Button" parent="UI/ActionMenu"]
-margin_top = 155.0
-margin_right = 176.0
-margin_bottom = 194.0
-custom_fonts/font = SubResource( 2 )
-text = "Move"
-flat = true
-align = 0
-
-[node name="EndTurnButton" type="Button" parent="UI/ActionMenu"]
-margin_top = 198.0
-margin_right = 176.0
-margin_bottom = 237.0
-custom_fonts/font = SubResource( 2 )
-text = "End Turn"
-flat = true
-align = 0
-
-[node name="Labels" type="VBoxContainer" parent="UI"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_left = 10.9536
-margin_top = -56.7185
-margin_right = 187.954
-margin_bottom = -8.71851
-alignment = 1
+[node name="Labels" type="Control" parent="HUD"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -249.0
+margin_bottom = 43.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MoveLabel" type="Label" parent="UI/Labels"]
+[node name="Background" type="ColorRect" parent="HUD/Labels"]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopLine" type="ColorRect" parent="HUD/Labels/Background"]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_right = 1.0
+margin_bottom = 4.0
+color = Color( 0.992157, 1, 0.988235, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Labels" type="VBoxContainer" parent="HUD/Labels"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
 margin_top = 7.0
-margin_right = 177.0
-margin_bottom = 40.0
+margin_right = -10.0
+margin_bottom = -1.0
+mouse_filter = 2
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoveLabel" type="Label" parent="HUD/Labels/Labels"]
+margin_top = 2.0
+margin_right = 231.0
+margin_bottom = 35.0
 custom_fonts/font = SubResource( 3 )
 text = "Move: 6"
 __meta__ = {
@@ -247,6 +316,7 @@ __meta__ = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
+pause_mode = 1
 position = Vector2( 158.526, 89.9109 )
 current = true
 zoom = Vector2( 0.35, 0.35 )
@@ -259,6 +329,7 @@ margin_right = 50000.0
 margin_bottom = 50000.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color( 0.156863, 0.145098, 0.184314, 1 )
 __meta__ = {
 "_edit_lock_": true,
@@ -292,13 +363,13 @@ script = ExtResource( 14 )
 tile_set = SubResource( 5 )
 cell_size = Vector2( 16, 16 )
 format = 1
-tile_data = PoolIntArray( -1, 1, 0, -65536, 1, 0, -65535, 1, 0, -65534, 1, 0, 65534, 1, 0, 65535, 2, 0, 0, 2, 0, 1, 2, 0, 2, 2, 0, 3, 1, 0, 131070, 1, 0, 131071, 2, 0, 65536, 2, 0, 65537, 2, 0, 65538, 2, 0, 65539, 1, 0, 196607, 1, 0, 131072, 2, 0, 131073, 2, 0, 131074, 2, 0, 131075, 1, 0, 196608, 1, 0, 196609, 1, 0, 196610, 1, 0 )
+tile_data = PoolIntArray( -1, 3, 0, -65536, 3, 0, -65535, 3, 0, -65534, 3, 0, 65534, 3, 0, 65535, 2, 0, 0, 2, 0, 1, 2, 0, 2, 4, 0, 3, 3, 0, 131070, 3, 0, 131071, 2, 0, 65536, 2, 0, 65537, 2, 0, 65538, 2, 0, 65539, 3, 0, 196607, 3, 0, 131072, 2, 0, 131073, 2, 0, 131074, 2, 0, 131075, 3, 0, 196608, 3, 0, 196609, 3, 0, 196610, 3, 0 )
 
 [node name="Players" type="Node" parent="."]
 
 [node name="HumanTeam" type="Node" parent="Players"]
 script = ExtResource( 8 )
-IsMyTurn = true
+isMyTurn = true
 
 [node name="PlayerUnit" parent="Players/HumanTeam" instance=ExtResource( 3 )]
 movePoints = 5

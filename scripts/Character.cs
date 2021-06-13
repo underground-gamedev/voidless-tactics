@@ -49,6 +49,16 @@ public class Character : Node2D
         moveActions = 1;
     }
 
+    public bool MoveAvailable()
+    {
+        return moveActions > 0;
+    }
+
+    public bool AttackAvailable()
+    {
+        return true;
+    }
+
     /*public void SetHighlightAvailableMovement(bool enabled)
     {            
         var highlightMovement = TileMap;
@@ -92,9 +102,8 @@ public class Character : Node2D
             return;
         }
 
+        moveActions -= 1;
         moved = true;
-        /*var storeVisible = highlightMovement.Visible;
-        highlightMovement.Visible = false;*/
 
         SetCell(map.CellBy(targetX, targetY));
         foreach(var (posX, posY) in path)
@@ -103,10 +112,5 @@ public class Character : Node2D
             await this.Wait(0.1f);
         }
         moved = false;
-        /*highlightMovement.Visible = storeVisible;*/
-
-        moveActions -= 1;
-
-        //SetHighlightAvailableMovement(true);
     }
 }

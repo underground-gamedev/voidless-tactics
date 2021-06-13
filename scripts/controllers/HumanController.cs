@@ -1,21 +1,25 @@
+using System;
 using System.Linq;
 using Godot;
 
 public class HumanController: AbstractController
 {
-    private enum ActiveCharacterStates
+    private BaseControllerState state;
+
+    private void SetStartState()
     {
-        None, Move, Attack,
+        if (state != null)
+        {
+            state.OnLeave();
+        }
+        state = new UnselectedControllerState(this, tacticMap);
     }
 
-    private Character activeCharacter;
-    private ActiveCharacterStates activeState;
-    private Character hoverCharacter;
-
-    [Signal]
-    public delegate void OnActiveCharacterChanged(Character activeCharacter);
-    [Signal]
-    public delegate void OnHoverCharacterChanged(Character hoverCharacter);
+    public override void Init()
+    {
+        base.Init();
+        SetStartState();
+    }
 
     protected override MapCell FindStartPosition(TacticMap map)
     {
@@ -32,9 +36,19 @@ public class HumanController: AbstractController
         return null;
     }
 
+    private void ChangeState(BaseControllerState nextState)
+    {
+        if (!nextState.Initialized) {
+            throw new InvalidProgramException($"Invalid controller state initialization, recheck code. OnCellClick: {state.GetType().Name} -> {nextState.GetType().Name}");
+        }
+        state = nextState;
+    }
+
     public void OnCellClick(int x, int y)
     {
-        if (!IsMyTurn) return;
+        ChangeState(state.CellClick(x, y));
+        /*
+        if (!isMyTurn) return;
         if (tacticMap.IsOutOfBounds(x, y)) return;
 
         var targetCharacter = tacticMap.GetCharacter(x, y);
@@ -52,8 +66,21 @@ public class HumanController: AbstractController
         {
             SetActiveCharacter(targetCharacter);
         }
+        */
     }
 
+    public void OnActionSelected(string actionName)
+    {
+        ChangeState(state.MenuActionSelected(actionName));
+    }
+
+    public override void OnTurnEnd()
+    {
+        base.OnTurnEnd();
+        SetStartState();
+    }
+
+/*
     public void SetActiveCharacter(Character character)
     {
         activeCharacter = character;
@@ -74,7 +101,7 @@ public class HumanController: AbstractController
     public bool SwitchToMove()
     {
         if (activeCharacter == null) { return false; }
-        if (!IsMyTurn) { return false; }
+        if (!isMyTurn) { return false; }
         if (activeCharacter.MoveActions == 0) { return false; }
 
         var moveHighlight = tacticMap.MoveHighlightLayer;
@@ -90,4 +117,5 @@ public class HumanController: AbstractController
 
         return true;
     }
+    */
 }

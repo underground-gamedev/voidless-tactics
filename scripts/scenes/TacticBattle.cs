@@ -11,7 +11,10 @@ public class TacticBattle : Node
     AbstractController activeController;
 
     public override void _Ready()
-    {
+    { 
+        var hud = GetNode<TacticHUD>("HUD");
+        UserInterfaceService.SetHUD(hud);
+
         tacticMap = GetNode<TacticMap>("Map");
         var solidMapGen = GetNode<SolidMapGenerator>("SolidMapGenerator");
         solidMapGen.Generate(tacticMap);
@@ -26,7 +29,7 @@ public class TacticBattle : Node
             if (controller is HumanController)
             {
                 tacticMap.VisualLayer.Connect(nameof(VisualLayer.OnCellClick), controller, nameof(HumanController.OnCellClick));
-                controller.Connect(nameof(HumanController.OnActiveCharacterChanged), this, nameof(UpdateCharacterDescription));
+                UserInterfaceService.GetHUD<TacticHUD>().Connect(nameof(TacticHUD.ActionSelected), controller, nameof(HumanController.OnActionSelected));
                 activeController = controller;
             }
             else if (controller is AIController)
@@ -35,8 +38,7 @@ public class TacticBattle : Node
             }
         }
 
-        var button = GetNode<Button>("UI/ActionMenu/EndTurnButton");
-        button.Connect("pressed", this, nameof(HumanEndTurn));
+        hud.Connect(nameof(TacticHUD.EndTurnPressed), this, nameof(HumanEndTurn));
     }
 
     private async void HumanEndTurn()
@@ -46,17 +48,6 @@ public class TacticBattle : Node
             await EndTurn();
         }
     }
-
-    private async Task ShowTurnLabel(AbstractController controller)
-    {
-        var text = controller is HumanController ? "Player Turn" : "Enemy Turn";
-        var turnLine = GetNode<Control>("UI/TurnHighlight");
-        var label = turnLine.GetNode<Label>("TurnLabel");
-        label.Text = text;
-        turnLine.Visible = true;
-        await this.Wait(1);
-        turnLine.Visible = false;
-    }
     private async Task EndTurn()
     {
         var activeId = controllers.IndexOf(activeController);
@@ -64,13 +55,10 @@ public class TacticBattle : Node
         var nextController = controllers[nextId];
         activeController.OnTurnEnd();
         activeController = nextController;
-        await ShowTurnLabel(nextController);
-        nextController.OnTurnStart();
-    }
 
-    private void UpdateCharacterDescription(Character activeCharacter)
-    {
-        var moveLabel = GetNode<Label>("UI/Labels/MoveLabel");
-        moveLabel.Text = $"Move: {activeCharacter.MovePoints}";
+        var turnText = activeController is HumanController ? "Player Turn" : "Enemy Turn";
+        await UserInterfaceService.GetHUD<TacticHUD>().ShowTurnLabel(turnText);
+
+        nextController.OnTurnStart();
     }
 }

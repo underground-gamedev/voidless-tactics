@@ -10,7 +10,12 @@ public class VisualLayer: Node, IMapLayer
     [Signal]
     public delegate void OnCellClick(int x, int y);
 
-    public override void _Input(InputEvent inputEvent)
+    public override void _Ready()
+    {
+        base._Ready();
+    }
+
+    public override void _UnhandledInput(InputEvent inputEvent)
     {
         if (!inputEvent.IsActionPressed("map_move")) { return; }
 

@@ -1,20 +1,23 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 
 public abstract class AbstractController : Node
 {
     [Export]
-    protected bool IsMyTurn;
+    protected bool isMyTurn;
     protected TacticMap tacticMap;
 
     protected List<Character> characters = new List<Character>();
+
+    public IReadOnlyList<Character> Characters => characters.AsReadOnly();
 
     public void BindMap(TacticMap map)
     {
         tacticMap = map;
     }
 
-    public void Init()
+    public virtual void Init()
     {
         foreach(var child in this.GetChilds<Character>(".")) 
         {
@@ -32,9 +35,22 @@ public abstract class AbstractController : Node
         character.BindMap(tacticMap, pos);
     }
 
+    public virtual void RemoveCharacter(Character character)
+    {
+        if (!characters.Contains(character))
+        {
+            throw new ArgumentException("Expected character from current team");
+        }
+
+        character.Cell.Character = null;
+        characters.Remove(character);
+        character.GetParent().RemoveChild(character);
+        character.QueueFree();
+    }
+
     public virtual void OnTurnStart()
     {
-        IsMyTurn = true;
+        isMyTurn = true;
         foreach (var character in characters)
         {
             character.OnTurnStart();
@@ -43,6 +59,11 @@ public abstract class AbstractController : Node
 
     public virtual void OnTurnEnd()
     {
-        IsMyTurn = false; 
+        isMyTurn = false; 
+    }
+
+    public bool IsMyTurn() 
+    {
+        return isMyTurn;
     }
 }
