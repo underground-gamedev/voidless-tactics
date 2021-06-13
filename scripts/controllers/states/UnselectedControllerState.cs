@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Threading.Tasks;
 
 public class UnselectedControllerState: BaseControllerState
 {
@@ -11,7 +12,7 @@ public class UnselectedControllerState: BaseControllerState
         this.Init(controller, map);
     }
 
-    protected override BaseControllerState CharacterClick(Character character)
+    protected override Task<BaseControllerState> CharacterClick(Character character)
     {
         var fromMyTeam = controller.Characters.Contains(character);
         if (fromMyTeam)

@@ -31,6 +31,8 @@ public class ActionContainer : MarginContainer
             child.QueueFree();
         }
 
+        GetNode<Control>("Background").RectSize = new Vector2(0, 0);
+
         foreach (var actionName in actions)
         {
             var button = ButtonPrefab.Instance<SelfIdentificateButton>();

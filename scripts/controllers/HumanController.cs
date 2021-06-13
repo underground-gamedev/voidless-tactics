@@ -44,34 +44,14 @@ public class HumanController: AbstractController
         state = nextState;
     }
 
-    public void OnCellClick(int x, int y)
+    public async void OnCellClick(int x, int y)
     {
-        ChangeState(state.CellClick(x, y));
-        /*
-        if (!isMyTurn) return;
-        if (tacticMap.IsOutOfBounds(x, y)) return;
-
-        var targetCharacter = tacticMap.GetCharacter(x, y);
-        if (targetCharacter == null)
-        {
-            switch (activeState)
-            {
-                case ActiveCharacterStates.Move: 
-                activeCharacter?.MoveTo(x, y); 
-                SwitchToNone();
-                break;
-            }
-        }
-        else if (characters.Contains(targetCharacter))
-        {
-            SetActiveCharacter(targetCharacter);
-        }
-        */
+        ChangeState(await state.CellClick(x, y));
     }
 
-    public void OnActionSelected(string actionName)
+    public async void OnActionSelected(string actionName)
     {
-        ChangeState(state.MenuActionSelected(actionName));
+        ChangeState(await state.MenuActionSelected(actionName));
     }
 
     public override void OnTurnEnd()

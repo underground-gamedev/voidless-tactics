@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class MoveCharacterState: ActiveCharacterState
 {
@@ -10,17 +11,25 @@ public class MoveCharacterState: ActiveCharacterState
     {
     }
 
-    protected override BaseControllerState EmptyCellClick(int x, int y)
+    protected override Task<BaseControllerState> CharacterClick(Character character)
+    {
+        if (active == character) { return NextState(new ActiveCharacterState(active)); }
+        return base.CharacterClick(active);
+    }
+
+    protected override async Task<BaseControllerState> EmptyCellClick(int x, int y)
     {
         if (availableCells.Contains((x, y))) {
-            active?.MoveTo(x, y); 
+            await active?.MoveTo(x, y); 
         }
-        return NextState(new ActiveCharacterState(active));
+        return await NextState(new ActiveCharacterState(active));
     }
 
     public override void OnEnter()
     {
         base.OnEnter();
+        UserInterfaceService.GetHUD<TacticHUD>()?.HideMenuWithActions();
+
         availableCells = map.GetAvailableMoveCells(active).Select(cell => cell.Position).ToList();
 
         var highlightLayer = map.MoveHighlightLayer;

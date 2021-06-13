@@ -6,8 +6,15 @@ public class Character : Node2D
 {
     [Export]
     private int movePoints = 6;
-    public AbstractController controller;
+    [Export]
+    private int health = 5;
+    [Export]
+    private int attackDamage = 2;
+
     private int moveActions = 1;
+    private int fullActions = 1;
+
+    public AbstractController controller;
     private MapCell cell;
     public MapCell Cell => cell;
     private TacticMap map;
@@ -15,6 +22,10 @@ public class Character : Node2D
 
     public int MoveActions => moveActions;
     public int MovePoints { get => movePoints; set => movePoints = value; }
+
+    public int Health { get => health; }
+
+    public int AttackDamage { get => attackDamage; }
 
     public void SyncWithMap(TileMap tilemap)
     {
@@ -47,6 +58,7 @@ public class Character : Node2D
     public void OnTurnStart()
     {
         moveActions = 1;
+        fullActions = 1;
     }
 
     public bool MoveAvailable()
@@ -56,7 +68,7 @@ public class Character : Node2D
 
     public bool AttackAvailable()
     {
-        return true;
+        return fullActions > 0;
     }
 
     /*public void SetHighlightAvailableMovement(bool enabled)
@@ -112,5 +124,26 @@ public class Character : Node2D
             await this.Wait(0.1f);
         }
         moved = false;
+    }
+
+    public void Attack(Character target)
+    {
+        target.Hit(attackDamage);
+        fullActions -= 1;
+    }
+
+    public void Hit(int damage)
+    {
+        health -= damage;
+
+        if (health <= 0)
+        {
+            Kill();
+        }
+    }
+
+    public void Kill()
+    {
+        controller.RemoveCharacter(this);
     }
 }

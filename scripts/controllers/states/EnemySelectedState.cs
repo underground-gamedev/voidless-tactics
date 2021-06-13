@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class EnemySelectedState: BaseControllerState
 {
@@ -10,9 +11,9 @@ public class EnemySelectedState: BaseControllerState
         this.enemy = enemy;
     }
 
-    protected override BaseControllerState CharacterClick(Character character)
+    protected override Task<BaseControllerState> CharacterClick(Character character)
     {
-        if (character == enemy) return this;
+        if (character == enemy) return Async(this);
 
         var fromMyTeam = controller.Characters.Contains(character);
         if (fromMyTeam)
@@ -23,7 +24,7 @@ public class EnemySelectedState: BaseControllerState
         return NextState(new EnemySelectedState(character));
     }
 
-    protected override BaseControllerState EmptyCellClick(int x, int y)
+    protected override Task<BaseControllerState> EmptyCellClick(int x, int y)
     {
         return NextState(new UnselectedControllerState());
     }

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 public class BaseControllerState
 {
@@ -9,6 +10,11 @@ public class BaseControllerState
 
     protected BaseControllerState() {}
 
+    protected Task<BaseControllerState> Async(BaseControllerState result)
+    {
+        return Task.Run(() => result);
+    }
+
     protected void Init(AbstractController controller, TacticMap map)
     {
         this.controller = controller;
@@ -16,39 +22,39 @@ public class BaseControllerState
         this.initialized = true;
     }
 
-    protected BaseControllerState NextState(BaseControllerState next)
+    protected Task<BaseControllerState> NextState(BaseControllerState next)
     {
         this.OnLeave();
         next.Init(controller, map);
         next.OnEnter();
-        return next;
+        return Async(next);
     }
 
-    public virtual BaseControllerState CellClick(int x, int y)
+    public virtual async Task<BaseControllerState> CellClick(int x, int y)
     { 
         if (!controller.IsMyTurn()) return this;
         if (map.IsOutOfBounds(x ,y)) return this;
 
         var targetCharacter = map.GetCharacter(x, y);
-        if (targetCharacter == null) return EmptyCellClick(x, y);
 
-        return CharacterClick(targetCharacter);
+        if (targetCharacter == null) return await EmptyCellClick(x, y);
+
+        return await CharacterClick(targetCharacter);
     }
 
-    protected virtual BaseControllerState CharacterClick(Character character)
+    protected virtual Task<BaseControllerState> CharacterClick(Character character)
     {
-        return this;
+        return Async(this);
     }
 
-    protected virtual BaseControllerState EmptyCellClick(int x, int y)
+    protected virtual Task<BaseControllerState> EmptyCellClick(int x, int y)
     {
-        return this;
+        return Async(this);
     }
 
-    public virtual BaseControllerState MenuActionSelected(string action)
+    public virtual Task<BaseControllerState> MenuActionSelected(string action)
     {
-        GD.Print($"handle menu action selected {action}");
-        return this;
+        return Async(this);
     }
 
     public virtual void OnEnter() {}

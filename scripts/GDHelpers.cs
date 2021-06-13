@@ -18,10 +18,8 @@ public static class GDHelpers
         return result;
     }
 
-    public static Task Wait(this Node node, float time)
+    public static async Task Wait(this Node node, float time)
     {
-        return Task.Run(async () => {
-            await node.ToSignal(node.GetTree().CreateTimer(time), "timeout");
-        });
+        await node.ToSignal(node.GetTree().CreateTimer(time), "timeout");
     }
 }

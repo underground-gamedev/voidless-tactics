@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class ActiveCharacterState: BaseControllerState
 {
@@ -14,9 +15,9 @@ public class ActiveCharacterState: BaseControllerState
         this.active = character;
     }
 
-    protected override BaseControllerState CharacterClick(Character character)
+    protected override Task<BaseControllerState> CharacterClick(Character character)
     {
-        if (character == active) return this;
+        if (character == active) return Async(this);
 
         var fromMyTeam = controller.Characters.Contains(character);
         if (fromMyTeam)
@@ -26,7 +27,7 @@ public class ActiveCharacterState: BaseControllerState
         return NextState(new EnemySelectedState(character));
     }
 
-    public override BaseControllerState MenuActionSelected(string action)
+    public override Task<BaseControllerState> MenuActionSelected(string action)
     {
         if (action == AttackAction)
         {
@@ -36,10 +37,10 @@ public class ActiveCharacterState: BaseControllerState
             return NextState(new MoveCharacterState(active));
         }
 
-        return this;
+        return Async(this);
     }
 
-    protected override BaseControllerState EmptyCellClick(int x, int y)
+    protected override Task<BaseControllerState> EmptyCellClick(int x, int y)
     {
         return NextState(new UnselectedControllerState());
     }
@@ -61,7 +62,7 @@ public class ActiveCharacterState: BaseControllerState
         var availableActions = new List<string>();
         if (active.AttackAvailable()) availableActions.Add(AttackAction);
         if (active.MoveAvailable()) availableActions.Add(MoveAction);
-        hud?.DisplayMenuWithActions(availableActions);
+        hud?.DisplayMenuWithActions(active.GetGlobalTransformWithCanvas().origin + new Godot.Vector2(20f, 0.5f), availableActions);
     }
 
     public override void OnLeave()

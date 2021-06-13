@@ -238,7 +238,7 @@ __meta__ = {
 }
 ButtonPrefab = ExtResource( 17 )
 
-[node name="UIBackground" type="ColorRect" parent="HUD/ActionContainer"]
+[node name="Background" type="ColorRect" parent="HUD/ActionContainer"]
 self_modulate = Color( 1, 1, 1, 0.611765 )
 margin_right = 127.0
 margin_bottom = 17.0
@@ -248,7 +248,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TopLine" type="ColorRect" parent="HUD/ActionContainer/UIBackground"]
+[node name="TopLine" type="ColorRect" parent="HUD/ActionContainer/Background"]
 modulate = Color( 1, 1, 1, 0.611765 )
 anchor_right = 1.0
 margin_bottom = 3.0
@@ -268,8 +268,8 @@ __meta__ = {
 [node name="Labels" type="Control" parent="HUD"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -249.0
-margin_bottom = 43.0
+margin_left = -220.0
+margin_bottom = 116.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -305,10 +305,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="HealthLabel" type="Label" parent="HUD/Labels/Labels"]
+margin_top = 1.0
+margin_right = 202.0
+margin_bottom = 34.0
+custom_fonts/font = SubResource( 3 )
+text = "Health: 6"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DamageLabel" type="Label" parent="HUD/Labels/Labels"]
+margin_top = 38.0
+margin_right = 202.0
+margin_bottom = 71.0
+custom_fonts/font = SubResource( 3 )
+text = "Damage: 6"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="MoveLabel" type="Label" parent="HUD/Labels/Labels"]
-margin_top = 2.0
-margin_right = 231.0
-margin_bottom = 35.0
+margin_top = 75.0
+margin_right = 202.0
+margin_bottom = 108.0
 custom_fonts/font = SubResource( 3 )
 text = "Move: 6"
 __meta__ = {
@@ -373,9 +393,12 @@ isMyTurn = true
 
 [node name="PlayerUnit" parent="Players/HumanTeam" instance=ExtResource( 3 )]
 movePoints = 5
+health = 7
 
 [node name="PlayerUnit2" parent="Players/HumanTeam" instance=ExtResource( 3 )]
 movePoints = 7
+health = 3
+attackDamage = 3
 
 [node name="ComputerTeam" type="Node" parent="Players"]
 script = ExtResource( 4 )

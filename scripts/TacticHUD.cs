@@ -47,7 +47,9 @@ public class TacticHUD: Node
         }
 
         labels.Visible = true;
-        labels.GetNode<Label>("Labels/MoveLabel").Text = $"Move range: {character.MovePoints}";
+        labels.GetNode<Label>("Labels/HealthLabel").Text = $"Health: {character.Health}";
+        labels.GetNode<Label>("Labels/DamageLabel").Text = $"Damage: {character.AttackDamage}";
+        labels.GetNode<Label>("Labels/MoveLabel").Text = $"Move: {character.MovePoints}";
     }
 
     public void ResetCharacterDisplay()
@@ -55,21 +57,23 @@ public class TacticHUD: Node
         labels.Visible = false;
     }
 
-    public void DisplayMenuWithActions(List<string> actions)
+    public void DisplayMenuWithActions(Vector2 screenPosition, List<string> actionList)
     {
-        if (actions is null || actions.Count == 0)
+        if (actionList is null || actionList.Count == 0)
         {
             HideMenuWithActions();
             return;
         }
 
-        this.actions.Visible = true;
-        this.actions.SetActions(actions);
+        screenPosition.y -= actions.RectSize.y;
+        actions.RectPosition = screenPosition;
+        actions.Visible = true;
+        actions.SetActions(actionList);
     }
 
     public void HideMenuWithActions()
     {
-        this.actions.Visible = false;
+        actions.Visible = false;
     }
     
     public async Task ShowTurnLabel(string text)
