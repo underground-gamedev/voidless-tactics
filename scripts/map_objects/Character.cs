@@ -10,7 +10,7 @@ public class Character : MapObject
     private AbstractController controller;
     public AbstractController Controller {
         get => controller;
-        set => controller = Controller;
+        set => controller = value;
     }
     private bool moved;
 
