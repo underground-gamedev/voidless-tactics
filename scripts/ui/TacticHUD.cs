@@ -47,9 +47,9 @@ public class TacticHUD: Node
         }
 
         labels.Visible = true;
-        labels.GetNode<Label>("Labels/HealthLabel").Text = $"Health: {character.Health}";
-        labels.GetNode<Label>("Labels/DamageLabel").Text = $"Damage: {character.AttackDamage}";
-        labels.GetNode<Label>("Labels/MoveLabel").Text = $"Move: {character.MovePoints}";
+        labels.GetNode<Label>("Labels/HealthLabel").Text = $"Health: {character.BasicStats.Health.ActualValue}";
+        labels.GetNode<Label>("Labels/DamageLabel").Text = $"Damage: {character.BasicStats.Damage.ActualValue}";
+        labels.GetNode<Label>("Labels/MoveLabel").Text = $"Speed: {character.BasicStats.Speed.ActualValue}";
     }
 
     public void ResetCharacterDisplay()

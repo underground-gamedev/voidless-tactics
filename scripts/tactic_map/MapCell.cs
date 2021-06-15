@@ -1,9 +1,9 @@
 public class MapCell
 {
-    Character character;
+    MapObject mapObject;
     bool solid;
 
-    public Character Character { get => character; set => character = value; }
+    public MapObject MapObject { get => mapObject; set => mapObject = value; }
     public bool Solid { get => solid; set => solid = value; }
     public int X { get; }
     public int Y { get; }

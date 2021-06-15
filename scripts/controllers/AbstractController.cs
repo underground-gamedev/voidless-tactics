@@ -30,7 +30,7 @@ public abstract class AbstractController : Node
     public virtual void AddCharacter(Character character)
     {
         characters.Add(character);
-        character.controller = this;
+        character.Controller = this;
         var pos = FindStartPosition(tacticMap);
         character.BindMap(tacticMap, pos);
     }
@@ -42,10 +42,10 @@ public abstract class AbstractController : Node
             throw new ArgumentException("Expected character from current team");
         }
 
-        character.Cell.Character = null;
         characters.Remove(character);
-        character.GetParent().RemoveChild(character);
-        character.QueueFree();
+        if (character.Controller == this) {
+            character.Controller = null;
+        }
     }
 
     public virtual void OnTurnStart()

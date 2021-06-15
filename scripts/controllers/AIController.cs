@@ -29,8 +29,8 @@ public class AIController : AbstractController
 		await this.Wait(1);
 		foreach (var character in characters)
 		{
-			var availablePositions = tacticMap.PathfindLayer.GetAllAvailablePathDest(character.Cell, character.MovePoints);
-			var availableCells = availablePositions.Select(pos => tacticMap.CellBy(pos.Item1, pos.Item2)).Where(cell => cell.Character == null).ToList();
+			var availablePositions = tacticMap.PathfindLayer.GetAllAvailablePathDest(character.Cell, character.BasicStats.Speed.ActualValue);
+			var availableCells = availablePositions.Select(pos => tacticMap.CellBy(pos.Item1, pos.Item2)).Where(cell => cell.MapObject == null).ToList();
 			var randIndex = rand.Next(0, availableCells.Count);
 			if (randIndex > availableCells.Count) continue;
 			var target = availableCells[randIndex];

@@ -14,7 +14,7 @@ public class MoveCharacterState: ActiveCharacterState
     protected override Task<BaseControllerState> CharacterClick(Character character)
     {
         if (active == character) { return NextState(new ActiveCharacterState(active)); }
-        return base.CharacterClick(active);
+        return base.CharacterClick(character);
     }
 
     protected override async Task<BaseControllerState> EmptyCellClick(int x, int y)

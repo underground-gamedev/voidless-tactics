@@ -12,11 +12,11 @@ public static class TacticMapProperties
 
     public static Character GetCharacter(this TacticMap map, int x, int y)
     {
-        return map.CellBy(x, y).Character;
+        return map.CellBy(x, y).MapObject as Character;
     }
 
     public static void SetCharacter(this TacticMap map1, int x, int y, Character character)
     {
-        map1.CellBy(x, y).Character = character;
+        map1.CellBy(x, y).MapObject = character;
     }
 }
