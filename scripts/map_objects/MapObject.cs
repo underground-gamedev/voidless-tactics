@@ -5,6 +5,7 @@ public class MapObject: Node2D
     protected MapCell cell;
     public MapCell Cell => cell;
     protected TacticMap map;
+    public TacticMap Map => map;
 
     public void SyncWithMap(TileMap tilemap)
     {
@@ -12,7 +13,7 @@ public class MapObject: Node2D
         SyncWithMap(tilemap, x, y);
     }
 
-    protected void SyncWithMap(TileMap tilemap, int x, int y)
+    public void SyncWithMap(TileMap tilemap, int x, int y)
     {
         var offset = tilemap.CellSize * (new Vector2(x, y) + new Vector2(0.5f, 0.5f));
         GlobalPosition = tilemap.GlobalPosition + offset;

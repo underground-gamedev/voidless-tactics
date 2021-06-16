@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 public class MoveCharacterState: ActiveCharacterState
 {
-    private List<(int, int)> availableCells;
+    private List<MoveCell> availableCells;
 
     public MoveCharacterState(Character character):base(character)
     {
@@ -19,8 +19,8 @@ public class MoveCharacterState: ActiveCharacterState
 
     protected override async Task<BaseControllerState> EmptyCellClick(int x, int y)
     {
-        if (availableCells.Contains((x, y))) {
-            await active?.MoveTo(x, y); 
+        if (availableCells.Any(cell => cell.MapCell.Position == (x, y))) {
+            await active.Components.FindChild<IMoveComponent>().MoveTo(active.Map.CellBy(x, y));
         }
         return await NextState(new ActiveCharacterState(active));
     }
@@ -30,12 +30,19 @@ public class MoveCharacterState: ActiveCharacterState
         base.OnEnter();
         UserInterfaceService.GetHUD<TacticHUD>()?.HideMenuWithActions();
 
-        availableCells = map.GetAvailableMoveCells(active).Select(cell => cell.Position).ToList();
+        var moveComponent = active.Components.FindChild<IMoveComponent>();
+        if (moveComponent?.MoveAvailable() != true) {
+            availableCells = new List<MoveCell>();
+            return;
+        }
 
         var highlightLayer = map.MoveHighlightLayer;
-        foreach (var (x, y) in availableCells)
+        availableCells = moveComponent.GetMoveAvailableCells();
+        foreach (var moveCell in availableCells)
         {
-            highlightLayer.Highlight(x, y, MoveHighlightType.NormalMove);
+            var (x, y) = moveCell.MapCell.Position;
+            var highlightType = moveCell.ActionNeed == 1 ? MoveHighlightType.NormalMove : MoveHighlightType.Attack;
+            highlightLayer.Highlight(x, y, highlightType);
         }
     }
 

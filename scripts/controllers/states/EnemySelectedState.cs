@@ -42,11 +42,18 @@ public class EnemySelectedState: BaseControllerState
 
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
-        foreach (var cell in map.GetAvailableMoveCells(enemy))
-        {
-            highlightLayer.Highlight(cell.X, cell.Y, MoveHighlightType.NormalMove);
-        }
+
         highlightLayer.Highlight(enemy.Cell.X, enemy.Cell.Y, MoveHighlightType.Active);
+
+        var moveComponent = enemy.Components.FindChild<IMoveComponent>();
+        if (moveComponent is null) return;
+
+        var moveCells = moveComponent.GetMoveAvailableCells();
+        foreach (var cell in moveCells)
+        {
+            var (x, y) = cell.MapCell.Position;
+            highlightLayer.Highlight(x, y, MoveHighlightType.NormalMove);
+        }
     }
 
     public override void OnLeave()

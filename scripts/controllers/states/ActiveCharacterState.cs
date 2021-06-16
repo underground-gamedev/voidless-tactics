@@ -60,8 +60,8 @@ public class ActiveCharacterState: BaseControllerState
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
 
         var availableActions = new List<string>();
-        if (active.AttackAvailable()) availableActions.Add(AttackAction);
-        if (active.MoveAvailable()) availableActions.Add(MoveAction);
+        // if (responses.Contains(CharacterAction.Attack)) availableActions.Add(AttackAction);
+        if (active.Components.FindChild<IMoveComponent>()?.MoveAvailable() == true) availableActions.Add(MoveAction);
         hud?.DisplayMenuWithActions(active.GetGlobalTransformWithCanvas().origin + new Godot.Vector2(20f, 0.5f), availableActions);
     }
 
