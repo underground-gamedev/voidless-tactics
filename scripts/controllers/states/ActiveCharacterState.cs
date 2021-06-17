@@ -9,6 +9,7 @@ public class ActiveCharacterState: BaseControllerState
 
     protected const string AttackAction = "Attack";
     protected const string MoveAction = "Move";
+    protected const string SpellAction = "Cast";
 
     public ActiveCharacterState(Character character)
     {
@@ -29,12 +30,11 @@ public class ActiveCharacterState: BaseControllerState
 
     public override Task<BaseControllerState> MenuActionSelected(string action)
     {
-        if (action == AttackAction)
+        switch (action)
         {
-            return NextState(new AttackCharacterState(active));
-        } else if (action == MoveAction)
-        {
-            return NextState(new MoveCharacterState(active));
+            case AttackAction: return NextState(new AttackCharacterState(active));
+            case MoveAction: return NextState(new MoveCharacterState(active));
+            case SpellAction: return NextState(new SpellSelectState(active));
         }
 
         return Async(this);
@@ -62,6 +62,7 @@ public class ActiveCharacterState: BaseControllerState
         var availableActions = new List<string>();
         if (active.Components.FindChild<IAttackComponent>()?.AttackAvailable() == true) availableActions.Add(AttackAction);
         if (active.Components.FindChild<IMoveComponent>()?.MoveAvailable() == true) availableActions.Add(MoveAction);
+        if (active.Components.FindChild<ISpellComponent>()?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
         hud?.DisplayMenuWithActions(active.GetGlobalTransformWithCanvas().origin + new Godot.Vector2(20f, 0.5f), availableActions);
     }
 
