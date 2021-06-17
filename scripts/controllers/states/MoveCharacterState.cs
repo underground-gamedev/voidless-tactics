@@ -37,7 +37,7 @@ public class MoveCharacterState: ActiveCharacterState
         }
 
         var highlightLayer = map.MoveHighlightLayer;
-        availableCells = moveComponent.GetMoveAvailableCells();
+        availableCells = moveComponent.GetMoveArea();
         foreach (var moveCell in availableCells)
         {
             var (x, y) = moveCell.MapCell.Position;

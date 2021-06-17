@@ -32,7 +32,7 @@ public class AIController : AbstractController
             var moveComponent = character.Components.FindChild<IMoveComponent>();
             if (moveComponent?.MoveAvailable() != true) continue;
 
-            var availableCells = moveComponent.GetMoveAvailableCells();
+            var availableCells = moveComponent.GetMoveArea();
             if (availableCells.Count == 0) continue;
 
             var randIndex = rand.Next(0, availableCells.Count);

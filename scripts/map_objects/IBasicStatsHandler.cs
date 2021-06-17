@@ -1,4 +1,4 @@
-public interface IBasicStatsHandler
+public interface IBasicStatsPresenter
 {
     BasicStats BasicStats { get; }
 }

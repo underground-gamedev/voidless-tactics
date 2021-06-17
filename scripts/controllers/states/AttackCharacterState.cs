@@ -7,9 +7,12 @@ public class AttackCharacterState: BaseControllerState
 {
 
     private Character active;
+    private IAttackComponent attackComponent;
+
     public AttackCharacterState(Character character)
     {
         active = character;
+        attackComponent = active.Components.FindChild<IAttackComponent>();
     }
 
     protected override Task<BaseControllerState> EmptyCellClick(int x, int y)
@@ -27,14 +30,16 @@ public class AttackCharacterState: BaseControllerState
             return NextState(new ActiveCharacterState(character));
         }
 
-        if (!character.AttackAvailable())
+        if (!attackComponent.AttackAvailable())
         {
             return NextState(new ActiveCharacterState(active));
         }
 
-        if (map.DirectNeighboursFor(active.Cell.X, active.Cell.Y).Contains(character.Cell))
+        var attackArea = attackComponent.GetAttackArea();
+        var targetComponent = character.Components.FindChild<ITargetComponent>();
+        if (targetComponent != null && attackArea.Contains(character.Cell))
         {
-            active.Attack(character);
+            attackComponent.Attack(targetComponent);
         }
 
         return NextState(new ActiveCharacterState(active));
@@ -56,7 +61,7 @@ public class AttackCharacterState: BaseControllerState
         UserInterfaceService.GetHUD<TacticHUD>()?.HideMenuWithActions();
 
         var highlightLayer = map.MoveHighlightLayer;
-        foreach (var cell in map.DirectNeighboursFor(active.Cell.X, active.Cell.Y))
+        foreach (var cell in attackComponent.GetAttackArea())
         {
             highlightLayer.Highlight(cell.X, cell.Y, MoveHighlightType.Attack);
         }

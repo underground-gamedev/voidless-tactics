@@ -55,10 +55,10 @@ public class MoveComponent : Node, IMoveComponent
     public override void _Ready()
     {
         mapObject = this.FindParent<MapObject>();
-        basicStats = (mapObject as IBasicStatsHandler).BasicStats;
+        basicStats = (mapObject as IBasicStatsPresenter).BasicStats;
     }
 
-    public List<MoveCell> GetMoveAvailableCells()
+    public List<MoveCell> GetMoveArea()
     {
         var map = mapObject.Map;
         var pathfinder = mapObject.Map.PathfindLayer;
@@ -119,35 +119,4 @@ public class MoveComponent : Node, IMoveComponent
         }
         moved = false;
     }
-
-    /*
-    public Character parent;
-
-    public HashSet<CharacterAction> CanInitiate()
-    {
-        if (parent.BasicStats.MoveActions.ActualValue <= 0) return new HashSet<CharacterAction>();
-        return new HashSet<CharacterAction>() { CharacterAction.Move };
-    }
-
-    public HashSet<CharacterAction> CanResponse()
-    {
-        return new HashSet<CharacterAction>() {};
-    }
-
-    public async Task InitiateAction(CharacterAction action, object arg)
-    {
-        if (action != CharacterAction.Move) { return; }
-
-        var targetPosition = arg as MapCell;
-        await MoveTo(targetPosition.X, targetPosition.Y);
-    }
-
-    public Task TakeResponse(CharacterAction action, object arg)
-    {
-        return new Task(() => {});
-    }
-    private async Task MoveTo(int targetX, int targetY)
-    {
-    }
-    */
 }

@@ -48,7 +48,7 @@ public class EnemySelectedState: BaseControllerState
         var moveComponent = enemy.Components.FindChild<IMoveComponent>();
         if (moveComponent is null) return;
 
-        var moveCells = moveComponent.GetMoveAvailableCells();
+        var moveCells = moveComponent.GetMoveArea();
         foreach (var cell in moveCells)
         {
             var (x, y) = cell.MapCell.Position;

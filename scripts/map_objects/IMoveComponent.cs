@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 public interface IMoveComponent
 {
     bool MoveAvailable();
-    List<MoveCell> GetMoveAvailableCells();
+    List<MoveCell> GetMoveArea();
     
     Task MoveTo(MapCell cell);
 }
