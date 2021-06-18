@@ -41,7 +41,7 @@ public class MoveCharacterState: ActiveCharacterState
         foreach (var moveCell in availableCells)
         {
             var (x, y) = moveCell.MapCell.Position;
-            var highlightType = moveCell.ActionNeed == 1 ? MoveHighlightType.NormalMove : MoveHighlightType.Attack;
+            var highlightType = moveCell.ActionNeed == 1 ? MoveHighlightType.NormalMove : MoveHighlightType.LongMove;
             highlightLayer.Highlight(x, y, highlightType);
         }
     }

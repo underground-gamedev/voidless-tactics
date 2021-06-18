@@ -22,6 +22,7 @@ public class TacticMap: Node, IEnumerable<MapCell>
     public PathfindLayer PathfindLayer => GetNode<PathfindLayer>("PathfindLayer");
     public VisualLayer VisualLayer => GetNode<VisualLayer>("VisualLayer");
     public MoveHighlightLayer MoveHighlightLayer => GetNode<MoveHighlightLayer>("MoveHighlightLayer");
+    public ManaLayer ManaLayer => GetNode<ManaLayer>("ManaLayer");
 
     public TacticMap()
     {

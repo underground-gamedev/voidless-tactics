@@ -25,8 +25,16 @@ public class SolidMapGenerator : Node
         var solidMap = RawGenerate(map.Width, map.Height);
         foreach (var cell in map)
         {
-            map.SetSolid(cell.X, cell.Y, solidMap[cell.X, cell.Y]);
+            var solid = solidMap[cell.X, cell.Y];
+            map.SetSolid(cell.X, cell.Y, solid);
+
+            if (!solid)
+            {
+                cell.Mana.ManaType = rand.NextDouble() <= 0.5f ? ManaType.Nature : ManaType.Fire;
+                cell.Mana.Density = rand.NextDouble() / 2;
+            }
         }
+
     }
 
     private static void Set(bool[,] map, int x, int y, bool value)

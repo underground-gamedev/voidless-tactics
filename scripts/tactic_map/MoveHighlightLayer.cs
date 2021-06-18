@@ -6,6 +6,7 @@ public enum MoveHighlightType
 {
     None,
     NormalMove,
+    LongMove,
     Attack,
     Active,
 }
