@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 public class Character : MapObject, IBasicStatsPresenter
@@ -16,8 +17,6 @@ public class Character : MapObject, IBasicStatsPresenter
 
     public void OnTurnStart()
     {
-        BasicStats.MoveActions.ActualValue = BasicStats.MoveActions.MaxValue;
-        BasicStats.FullActions.ActualValue = BasicStats.FullActions.MaxValue;
     }
 
     public void Kill()
@@ -26,5 +25,11 @@ public class Character : MapObject, IBasicStatsPresenter
         GetParent().RemoveChild(this);
         Cell.MapObject = null;
         QueueFree();
+    }
+
+    public void OnTurnEnd()
+    {
+        BasicStats.MoveActions.ActualValue = BasicStats.MoveActions.MaxValue;
+        BasicStats.FullActions.ActualValue = BasicStats.FullActions.MaxValue;
     }
 }

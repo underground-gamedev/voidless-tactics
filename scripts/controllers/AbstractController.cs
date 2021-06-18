@@ -59,6 +59,10 @@ public abstract class AbstractController : Node
     public virtual void OnTurnEnd()
     {
         isMyTurn = false; 
+        foreach (var character in characters)
+        {
+            character.OnTurnEnd();
+        }
     }
 
     public bool IsMyTurn() 
