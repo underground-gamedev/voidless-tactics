@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public abstract class AbstractController : Node
 {
-    [Export]
     protected bool isMyTurn;
     protected TacticMap tacticMap;
 

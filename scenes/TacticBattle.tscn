@@ -387,17 +387,16 @@ tile_data = PoolIntArray( -1, 3, 0, -65536, 3, 0, -65535, 3, 0, -65534, 3, 0, 65
 
 [node name="Players" type="Node" parent="."]
 
-[node name="HumanTeam" type="Node" parent="Players"]
+[node name="Test Team 1" type="Node" parent="Players"]
 script = ExtResource( 8 )
-isMyTurn = true
 
-[node name="PlayerUnit" parent="Players/HumanTeam" instance=ExtResource( 3 )]
+[node name="PlayerUnit" parent="Players/Test Team 1" instance=ExtResource( 3 )]
 
-[node name="PlayerUnit2" parent="Players/HumanTeam" instance=ExtResource( 3 )]
+[node name="PlayerUnit2" parent="Players/Test Team 1" instance=ExtResource( 3 )]
 
-[node name="ComputerTeam" type="Node" parent="Players"]
+[node name="Test Team 2" type="Node" parent="Players"]
 script = ExtResource( 4 )
 
-[node name="EnemyUnit" parent="Players/ComputerTeam" instance=ExtResource( 12 )]
+[node name="EnemyUnit" parent="Players/Test Team 2" instance=ExtResource( 12 )]
 
-[node name="EnemyUnit2" parent="Players/ComputerTeam" instance=ExtResource( 12 )]
+[node name="EnemyUnit2" parent="Players/Test Team 2" instance=ExtResource( 12 )]

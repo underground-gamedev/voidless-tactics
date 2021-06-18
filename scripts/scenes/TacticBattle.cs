@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 public class TacticBattle : Node
@@ -30,15 +31,16 @@ public class TacticBattle : Node
             {
                 tacticMap.VisualLayer.Connect(nameof(VisualLayer.OnCellClick), controller, nameof(HumanController.OnCellClick));
                 UserInterfaceService.GetHUD<TacticHUD>().Connect(nameof(TacticHUD.ActionSelected), controller, nameof(HumanController.OnActionSelected));
-                activeController = controller;
             }
             else if (controller is AIController)
             {
                 controller.Connect(nameof(AIController.OnEndTurn), this, nameof(EndTurn));
             }
         }
-
         hud.Connect(nameof(TacticHUD.EndTurnPressed), this, nameof(HumanEndTurn));
+
+        activeController = controllers.First();
+        activeController.OnTurnStart();
     }
 
     private async void HumanEndTurn()
@@ -56,7 +58,7 @@ public class TacticBattle : Node
         activeController.OnTurnEnd();
         activeController = nextController;
 
-        var turnText = activeController is HumanController ? "Player Turn" : "Enemy Turn";
+        var turnText = $"{activeController.Name} Turn";
         await UserInterfaceService.GetHUD<TacticHUD>().ShowTurnLabel(turnText);
 
         nextController.OnTurnStart();
