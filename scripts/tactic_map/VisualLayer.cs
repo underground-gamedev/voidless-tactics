@@ -9,6 +9,8 @@ public class VisualLayer: Node, IMapLayer
     public TileMap TileMap => GetNode<TileMap>("TileMap");
     [Signal]
     public delegate void OnCellClick(int x, int y);
+    [Signal]
+    public delegate void OnCellHover(int x, int y);
 
     public override void _Ready()
     {
@@ -17,7 +19,7 @@ public class VisualLayer: Node, IMapLayer
 
     public override void _UnhandledInput(InputEvent inputEvent)
     {
-        if (!inputEvent.IsActionPressed("map_move")) { return; }
+        if (!inputEvent.IsActionPressed("map_move") && !(inputEvent is InputEventMouseMotion)) return;
 
         var tilemap = TileMap;
         var camera2D = GetNode<Camera2D>("/root/TacticBattle/Camera2D");
@@ -27,7 +29,13 @@ public class VisualLayer: Node, IMapLayer
         var x = (int)tilePos.x;
         var y = (int)tilePos.y;
 
-        EmitSignal(nameof(OnCellClick), x, y);
+        if (inputEvent.IsActionPressed("map_move")) {
+            EmitSignal(nameof(OnCellClick), x, y);
+        }
+        else if (inputEvent is InputEventMouseMotion)
+        {
+            EmitSignal(nameof(OnCellHover), x, y);
+        }
     }
 
     private void Visualize(TacticMap map)

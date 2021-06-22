@@ -8,6 +8,8 @@ public class MagicShotSpell: Node, ISpell
     private int range;
     [Export]
     private int damage;
+    [Export]
+    private float cost;
 
     Character character;
 
@@ -31,6 +33,9 @@ public class MagicShotSpell: Node, ISpell
         }
 
         character.BasicStats.FullActions.ActualValue -= 1;
+        character.Cell.Mana.Density -= cost;
+        character.Map.Sync();
+
         return Task.CompletedTask;
     }
 
@@ -74,6 +79,10 @@ public class MagicShotSpell: Node, ISpell
 
     public bool CastAvailable()
     {
+        var mana = character.Cell.Mana;
+        if (mana.ManaType == ManaType.None) return false;
+        if (mana.Density < cost)  return false;
+
         return character.BasicStats.FullActions.ActualValue > 0;
     }
 }

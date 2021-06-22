@@ -15,7 +15,9 @@ public class SpellComponent : Node, ISpellComponent
 
     public List<string> GetAvailableSpellNames()
     {
-        return Spells.Select(spell => (spell as Node).Name).ToList();
+        return Spells.Where(spell => spell.CastAvailable())
+                     .Select(spell => (spell as Node).Name)
+                     .ToList();
     }
 
     public ISpell GetSpellByName(string name)

@@ -30,6 +30,7 @@ public class ActiveCharacterState: BaseControllerState
 
     public override Task<BaseControllerState> MenuActionSelected(string action)
     {
+        if (!controller.IsMyTurn()) return Async(this);
         switch (action)
         {
             case AttackAction: return NextState(new AttackCharacterState(active));

@@ -30,6 +30,7 @@ public class TacticBattle : Node
             if (controller is HumanController)
             {
                 tacticMap.VisualLayer.Connect(nameof(VisualLayer.OnCellClick), controller, nameof(HumanController.OnCellClick));
+                tacticMap.VisualLayer.Connect(nameof(VisualLayer.OnCellHover), controller, nameof(HumanController.OnCellHover));
                 UserInterfaceService.GetHUD<TacticHUD>().Connect(nameof(TacticHUD.ActionSelected), controller, nameof(HumanController.OnActionSelected));
             }
             else if (controller is AIController)
@@ -50,6 +51,7 @@ public class TacticBattle : Node
             await EndTurn();
         }
     }
+
     private async Task EndTurn()
     {
         var activeId = controllers.IndexOf(activeController);

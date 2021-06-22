@@ -32,7 +32,6 @@ script = ExtResource( 2 )
 [node name="Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -12.0182 )
 frames = SubResource( 3 )
-frame = 1
 playing = true
 __meta__ = {
 "_edit_lock_": true
@@ -50,11 +49,12 @@ actualValue = 8
 [node name="Damage" type="Node" parent="Stats"]
 script = ExtResource( 4 )
 statName = "Damage"
+actualValue = 3
 
 [node name="Speed" type="Node" parent="Stats"]
 script = ExtResource( 4 )
 statName = "Speed"
-actualValue = 9
+actualValue = 4
 
 [node name="MoveActions" type="Node" parent="Stats"]
 script = ExtResource( 4 )
@@ -84,10 +84,12 @@ script = ExtResource( 9 )
 
 [node name="Magic Shot" type="Node" parent="Components/SpellComponent"]
 script = ExtResource( 8 )
-range = 5
-damage = 4
+range = 6
+damage = 2
+cost = 0.1
 
 [node name="Magic Touch" type="Node" parent="Components/SpellComponent"]
 script = ExtResource( 8 )
 range = 1
-damage = 8
+damage = 6
+cost = 0.2

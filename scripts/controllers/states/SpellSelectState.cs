@@ -55,6 +55,6 @@ public class SpellSelectState: BaseControllerState
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.HideMenuWithActions();
-        hud?.ResetCharacterDisplay();
+        hud?.HideCharacterDisplay();
     }
 }

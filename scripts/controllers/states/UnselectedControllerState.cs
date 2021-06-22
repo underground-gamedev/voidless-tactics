@@ -22,4 +22,27 @@ public class UnselectedControllerState: BaseControllerState
 
         return NextState(new EnemySelectedState(character));
     }
+
+    protected override Task<BaseControllerState> CharacterHover(Character character)
+    {
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.DisplayCharacter(character);
+        hud?.DisplayCellInfo(character.Cell);
+        return Async(this);
+    }
+
+    protected override Task<BaseControllerState> EmptyCellHover(MapCell cell)
+    {
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.HideCharacterDisplay();
+        hud?.DisplayCellInfo(cell);
+        return Async(this);
+    }
+    
+    public override void OnLeave()
+    {
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.HideCharacterDisplay();
+        hud?.HideCellInfo();
+    }
 }

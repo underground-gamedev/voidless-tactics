@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public abstract class AbstractController : Node
 {
+    [Export]
+    private bool spawnLeft;
     protected bool isMyTurn;
     protected TacticMap tacticMap;
 
@@ -24,7 +26,34 @@ public abstract class AbstractController : Node
         }
     }
 
-    protected abstract MapCell FindStartPosition(TacticMap map);
+    protected virtual MapCell FindStartPosition(TacticMap map) {
+        if (spawnLeft)
+        {
+            for (int x = 0; x < map.Width; x++)
+            {
+                for (int y = 0; y < map.Height; y++)
+                {
+                    if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
+                        return map.CellBy(x, y);
+                    }
+                }
+            }
+        }
+        else
+        {
+            for (int x = map.Width-1; x > 0; x--)
+            {
+                for (int y = 0; y < map.Height; y++)
+                {
+                    if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
+                        return map.CellBy(x, y);
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 
     public virtual void AddCharacter(Character character)
     {

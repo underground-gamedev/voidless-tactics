@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Godot;
@@ -5,7 +6,8 @@ using Godot;
 public class TacticHUD: Node
 {
     private Control turnHighlight;
-    private Control labels;
+    private Control characterInfo;
+    private Control cellInfo;
     private ActionContainer actions;
  
     [Signal]
@@ -19,12 +21,15 @@ public class TacticHUD: Node
         turnHighlight = GetNode<Control>("TurnHighlight");
         turnHighlight.Visible = false;
 
-        labels = GetNode<Control>("Labels");
-        labels.Visible = false;
+        characterInfo = GetNode<Control>("Labels");
+        characterInfo.Visible = false;
 
         actions = GetNode<ActionContainer>("ActionContainer");
         actions.Visible = false;
         actions.Connect(nameof(ActionContainer.ActionSelected), this, nameof(OnActionSelected));
+
+        cellInfo = GetNode<Control>("CellInfo");
+        cellInfo.Visible = false;
 
         GetNode<Button>("EndTurnButton/Button").Connect("pressed", this, nameof(OnEndTurnPressed));
     }
@@ -42,19 +47,40 @@ public class TacticHUD: Node
     public void DisplayCharacter(Character character)
     {
         if (character == null) { 
-            ResetCharacterDisplay(); 
+            HideCharacterDisplay(); 
             return;
         }
 
-        labels.Visible = true;
-        labels.GetNode<Label>("Labels/HealthLabel").Text = $"Health: {character.BasicStats.Health.ActualValue}";
-        labels.GetNode<Label>("Labels/DamageLabel").Text = $"Damage: {character.BasicStats.Damage.ActualValue}";
-        labels.GetNode<Label>("Labels/MoveLabel").Text = $"Speed: {character.BasicStats.Speed.ActualValue}";
+        characterInfo.Visible = true;
+        characterInfo.GetNode<Label>("Labels/HealthLabel").Text = $"Health: {character.BasicStats.Health.ActualValue}";
+        characterInfo.GetNode<Label>("Labels/DamageLabel").Text = $"Damage: {character.BasicStats.Damage.ActualValue}";
+        characterInfo.GetNode<Label>("Labels/MoveLabel").Text = $"Speed: {character.BasicStats.Speed.ActualValue}";
+    }
+    public void HideCharacterDisplay()
+    {
+        characterInfo.Visible = false;
     }
 
-    public void ResetCharacterDisplay()
+    public void DisplayCellInfo(MapCell cell)
     {
-        labels.Visible = false;
+        if (cell == null)
+        {
+            HideCellInfo();
+            return;
+        }
+
+        var mana = cell.Mana;
+        cellInfo.Visible = true;
+        cellInfo.GetNode<Label>("Labels/ManaTypeLabel").Text = $"Mana: {mana.ManaType.ToString()}";
+        
+        var densityValue = Math.Round(mana.Density * 100, 0, MidpointRounding.ToEven);
+        var densityString = mana.ManaType == ManaType.None ? "-" : densityValue.ToString() + "%";
+        cellInfo.GetNode<Label>("Labels/DensityLabel").Text = $"Density: {densityString}";
+    }
+
+    public void HideCellInfo()
+    {
+        cellInfo.Visible = false;
     }
 
     public void DisplayMenuWithActions(Vector2 screenPosition, List<string> actionList)

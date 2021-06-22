@@ -1,3 +1,6 @@
+using System;
+using Godot;
+
 public class ManaCell
 {
     private ManaType manaType;
@@ -11,7 +14,12 @@ public class ManaCell
     public double Density
     {
         get => density;
-        set => density = value;
+        set {
+            if (value > 1) value = 1;
+            if (value < 0) value = 0;
+            density = value;
+            if (value <= 0.01) manaType = ManaType.None;
+        } 
     }
 
     public ManaCell(ManaType type, double density)
