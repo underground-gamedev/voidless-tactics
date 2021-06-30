@@ -83,6 +83,11 @@ public class TacticHUD: Node
         cellInfo.Visible = false;
     }
 
+    public void OnCameraDrag(Vector2 deltaScreenPosition)
+	{
+        actions.RectGlobalPosition -= deltaScreenPosition;
+    }
+
     public void DisplayMenuWithActions(Vector2 screenPosition, List<string> actionList)
     {
         if (actionList is null || actionList.Count == 0)
