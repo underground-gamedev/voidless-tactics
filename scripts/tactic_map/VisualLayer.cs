@@ -12,11 +12,6 @@ public class VisualLayer: Node, IMapLayer
     [Signal]
     public delegate void OnCellHover(int x, int y);
 
-    public override void _Ready()
-    {
-        base._Ready();
-    }
-
     public override void _UnhandledInput(InputEvent inputEvent)
     {
         if (!inputEvent.IsActionPressed("map_move") && !(inputEvent is InputEventMouseMotion)) return;
@@ -29,12 +24,14 @@ public class VisualLayer: Node, IMapLayer
         var x = (int)tilePos.x;
         var y = (int)tilePos.y;
 
-        if (inputEvent.IsActionPressed("map_move")) {
-            EmitSignal(nameof(OnCellClick), x, y);
-        }
-        else if (inputEvent is InputEventMouseMotion)
+        if (inputEvent is InputEventMouseMotion)
         {
             EmitSignal(nameof(OnCellHover), x, y);
+        }
+
+        if (inputEvent.IsActionPressed("map_move"))
+        {
+            EmitSignal(nameof(OnCellClick), x, y);
         }
     }
 

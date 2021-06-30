@@ -46,19 +46,13 @@ public class ActiveCharacterState: BaseControllerState
         return NextState(new UnselectedControllerState());
     }
 
-    private void DisplayOnHUD(Character character)
-    {
-        var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayCharacter(character);
-    }
-
     public override void OnEnter()
     {
-        DisplayOnHUD(active);
         map.MoveHighlightLayer.Clear();
         map.MoveHighlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.DisplayCharacter(active);
 
         var availableActions = new List<string>();
         if (active.Components.FindChild<IAttackComponent>()?.AttackAvailable() == true) availableActions.Add(AttackAction);
@@ -69,10 +63,10 @@ public class ActiveCharacterState: BaseControllerState
 
     public override void OnLeave()
     {
-        DisplayOnHUD(null);
         map.MoveHighlightLayer.Clear();
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.HideCharacterDisplay();
         hud?.HideMenuWithActions();
     }
 }

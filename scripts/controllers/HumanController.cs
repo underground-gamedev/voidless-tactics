@@ -34,9 +34,9 @@ public class HumanController: AbstractController
         ChangeState(await state.CellClick(x, y));
     }
 
-    public async void OnCellHover(int x, int y)
+    public void OnCellHover(int x, int y)
     {
-        ChangeState(await state.CellHover(x, y));
+        state.CellHover(x, y);
     }
 
     public async void OnActionSelected(string actionName)

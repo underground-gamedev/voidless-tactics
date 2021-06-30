@@ -50,28 +50,32 @@ public class BaseControllerState
         return Async(this);
     }
 
-    public async Task<BaseControllerState> CellHover(int x, int y)
+    public void CellHover(int x, int y)
     {
-        if (!controller.IsMyTurn()) return this;
-        if (map.IsOutOfBounds(x, y)) return this;
-        return await GenericCellHover(map.CellBy(x, y));
+        if (!controller.IsMyTurn()) return;
+        if (map.IsOutOfBounds(x, y)) return;
+        GenericCellHover(map.CellBy(x, y));
     }
 
-    protected virtual async Task<BaseControllerState> GenericCellHover(MapCell cell)
+    protected virtual void GenericCellHover(MapCell cell)
     {
         var targetCharacter = cell.MapObject as Character;
-        if (targetCharacter != null) return await CharacterHover(targetCharacter);
-        return await EmptyCellHover(cell);
+        if (targetCharacter != null)
+        {
+            CharacterHover(targetCharacter);
+        }
+        else
+        {
+            EmptyCellHover(cell);
+        }
     }
 
-    protected virtual Task<BaseControllerState> EmptyCellHover(MapCell cell)
+    protected virtual void EmptyCellHover(MapCell cell)
     {
-        return Async(this);
     }
 
-    protected virtual Task<BaseControllerState> CharacterHover(Character character)
+    protected virtual void CharacterHover(Character character)
     {
-        return Async(this);
     }
 
     public virtual Task<BaseControllerState> MenuActionSelected(string action)

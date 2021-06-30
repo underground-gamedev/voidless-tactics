@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-public class MoveCharacterState: ActiveCharacterState
+public class MoveCharacterState: BaseControllerState
 {
+    protected Character active;
     private List<MoveCell> availableCells;
 
-    public MoveCharacterState(Character character):base(character)
+    public MoveCharacterState(Character character)
     {
+        this.active = character;
     }
 
     protected override Task<BaseControllerState> CharacterClick(Character character)
     {
         if (active == character) { return NextState(new ActiveCharacterState(active)); }
-        return base.CharacterClick(character);
+
+        var fromMyTeam = controller.Characters.Contains(character);
+        if (fromMyTeam) { return NextState(new ActiveCharacterState(character)); }
+        return NextState(new EnemySelectedState(character));
     }
 
     protected override async Task<BaseControllerState> EmptyCellClick(int x, int y)
@@ -27,8 +32,12 @@ public class MoveCharacterState: ActiveCharacterState
 
     public override void OnEnter()
     {
-        base.OnEnter();
-        UserInterfaceService.GetHUD<TacticHUD>()?.HideMenuWithActions();
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.DisplayCharacter(active);
+
+        var highlightLayer = map.MoveHighlightLayer;
+        highlightLayer.Clear();
+        highlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
 
         var moveComponent = active.Components.FindChild<IMoveComponent>();
         if (moveComponent?.MoveAvailable() != true) {
@@ -36,7 +45,6 @@ public class MoveCharacterState: ActiveCharacterState
             return;
         }
 
-        var highlightLayer = map.MoveHighlightLayer;
         availableCells = moveComponent.GetMoveArea();
         foreach (var moveCell in availableCells)
         {
@@ -45,25 +53,22 @@ public class MoveCharacterState: ActiveCharacterState
             highlightLayer.Highlight(x, y, highlightType);
         }
     }
-    protected override Task<BaseControllerState> CharacterHover(Character character)
+    protected override void CharacterHover(Character character)
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.DisplayCharacter(character);
         hud?.DisplayCellInfo(character.Cell);
-        return Async(this);
     }
 
-    protected override Task<BaseControllerState> EmptyCellHover(MapCell cell)
+    protected override void EmptyCellHover(MapCell cell)
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.DisplayCharacter(active);
         hud?.DisplayCellInfo(cell);
-        return Async(this);
     }
 
     public override void OnLeave()
     {
-        base.OnLeave();
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
 

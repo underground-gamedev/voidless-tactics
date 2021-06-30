@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://prefabs/gameobjects/TacticMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/scenes/TacticBattle.cs" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://scripts/gd_helpers/DraggingCamera.cs" type="Script" id=5]
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=6]
 [ext_resource path="res://scripts/tactic_map/SolidMapGenerator.cs" type="Script" id=7]
+[ext_resource path="res://scripts/controllers/HumanController.cs" type="Script" id=8]
 [ext_resource path="res://assets/graphics/tileset.png" type="Texture" id=9]
 [ext_resource path="res://scripts/tactic_map/VisualLayer.cs" type="Script" id=10]
 [ext_resource path="res://scripts/tactic_map/PathfindLayer.cs" type="Script" id=11]
@@ -542,7 +543,7 @@ tile_data = PoolIntArray( -131062, 0, 262145, -131061, 0, 131077, -131060, 0, 13
 [node name="Players" type="Node" parent="."]
 
 [node name="Test Team 1" type="Node" parent="Players"]
-script = ExtResource( 15 )
+script = ExtResource( 8 )
 spawnLeft = true
 
 [node name="PlayerUnit" parent="Players/Test Team 1" instance=ExtResource( 3 )]
