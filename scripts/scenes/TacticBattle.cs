@@ -21,6 +21,9 @@ public class TacticBattle : Node
         solidMapGen.Generate(tacticMap);
         tacticMap.Sync();
 
+        var camera = GetNode<DraggingCamera>("Camera2D");
+        camera.Connect(nameof(DraggingCamera.OnCameraMove), hud, nameof(TacticHUD.OnCameraDrag));
+
         controllers = this.GetChilds<AbstractController>("Players");
         foreach (var controller in controllers)
         {
