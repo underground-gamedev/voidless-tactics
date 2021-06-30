@@ -18,6 +18,10 @@ public class DraggingCamera : Camera2D
 
 	[Signal]
 	public delegate void OnCameraMove(Vector2 delta);
+
+	[Signal]
+	public delegate void OnCameraZoom(Vector2 prevZoom, Vector2 delta);
+
 	public override void _Ready()
 	{
 		zoomAdjust = new Vector2(zoomAdjustFloat, zoomAdjustFloat);
@@ -30,7 +34,6 @@ public class DraggingCamera : Camera2D
 		var mouseEvent = @event as InputEventMouse;
 		if (mouseEvent is null) return;
 
-		GD.Print("mouse pos " + mouseEvent.Position);
 
 		if (@event.IsAction("drag"))
 		{
@@ -53,24 +56,33 @@ public class DraggingCamera : Camera2D
 			EmitSignal(nameof(OnCameraMove), delta);
 
 			mousePrevPos = mouseEvent.Position;
-			GD.Print("drag " + delta);
+			
 		}
 
-		if (@event.IsAction("zoom"))
+		if (@event.IsActionPressed("zoom"))
 		{
 			var evt = (InputEventMouseButton)@event;
 			if (evt != null)
+			{
+				Vector2 previusZoom = Zoom;
+
 				if (evt.ButtonIndex == (int)ButtonList.WheelUp)
 				{
 					Zoom -= zoomAdjust;
 
 					if (Zoom < minZoom)
 						Zoom = minZoom;
+
+
 				}
 				else
 				{
 					Zoom += zoomAdjust;
 				}
+
+				EmitSignal(nameof(OnCameraZoom),previusZoom, Zoom - previusZoom);
+			}
+			
 		}
 	}
 }
