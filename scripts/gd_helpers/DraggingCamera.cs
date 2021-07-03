@@ -30,8 +30,6 @@ public class DraggingCamera : Camera2D
 		var mouseEvent = @event as InputEventMouse;
 		if (mouseEvent is null) return;
 
-		GD.Print("mouse pos " + mouseEvent.Position);
-
 		if (@event.IsAction("drag"))
 		{
 			if (@event.IsPressed())
@@ -53,7 +51,6 @@ public class DraggingCamera : Camera2D
 			EmitSignal(nameof(OnCameraMove), delta);
 
 			mousePrevPos = mouseEvent.Position;
-			GD.Print("drag " + delta);
 		}
 
 		if (@event.IsAction("zoom"))
