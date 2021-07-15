@@ -2,6 +2,7 @@ using Godot;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using System;
 
 public class MagicShotSpell: Node, ISpell
 {
@@ -92,5 +93,13 @@ public class MagicShotSpell: Node, ISpell
         if (mana.Density < cost)  return false;
 
         return character.BasicStats.FullActions.ActualValue > 0;
+    }
+
+    public string GetDescription()
+    {
+        return $"Spell: {Name}\n" +
+               $"Damage: {damage}\n" +
+               $"Range: {range}\n" +
+               $"Cost: {Mathf.Round(cost*100)}%";
     }
 }

@@ -8,4 +8,5 @@ public interface ISpell
     bool CastAvailable(MapCell target);
     bool CastAvailable();
     Task ApplyEffect(MapCell target);
+    string GetDescription();
 }

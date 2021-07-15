@@ -9,6 +9,7 @@ public class TacticHUD: Node
     private Control characterInfo;
     private Control cellInfo;
     private ActionContainer actions;
+    private MarginContainer spellDescriptor;
  
     [Signal]
     public delegate void ActionSelected(string actionName);
@@ -30,6 +31,9 @@ public class TacticHUD: Node
 
         cellInfo = GetNode<Control>("CellInfo");
         cellInfo.Visible = false;
+
+        spellDescriptor = GetNode<MarginContainer>("SpellDescriptor");
+        spellDescriptor.Visible = false;
 
         GetNode<Button>("EndTurnButton/Button").Connect("pressed", this, nameof(OnEndTurnPressed));
     }
@@ -105,6 +109,18 @@ public class TacticHUD: Node
     public void HideMenuWithActions()
     {
         actions.Visible = false;
+    }
+
+    public void DisplaySpellDescriptor(string description)
+    {
+        spellDescriptor.Visible = true;
+        spellDescriptor.GetNode<Label>("DescriptionLabel").Text = description;
+        spellDescriptor.RectSize = new Vector2(spellDescriptor.RectSize.x, 0);
+    }
+
+    public void HideSpellDescriptor()
+    {
+        spellDescriptor.Visible = false;
     }
     
     public async Task ShowTurnLabel(string text)

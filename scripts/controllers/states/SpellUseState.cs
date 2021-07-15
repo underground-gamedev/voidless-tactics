@@ -70,6 +70,8 @@ public class SpellUseState: BaseControllerState
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.DisplayCharacter(active);
         hud?.HideMenuWithActions();
+        hud?.DisplayCellInfo(active.Cell);
+        hud?.DisplaySpellDescriptor(activeSpell.GetDescription());
 
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
@@ -80,6 +82,8 @@ public class SpellUseState: BaseControllerState
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.HideCharacterDisplay();
+        hud?.HideCellInfo();
+        hud?.HideSpellDescriptor();
 
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();

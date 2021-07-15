@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=1]
 [ext_resource path="res://prefabs/gameobjects/ActionMenuButton.tscn" type="PackedScene" id=2]
@@ -15,6 +15,10 @@ size = 42
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
+size = 32
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=4]
 size = 32
 font_data = ExtResource( 1 )
 
@@ -283,6 +287,44 @@ margin_right = 202.0
 margin_bottom = 70.0
 custom_fonts/font = SubResource( 3 )
 text = "Density: 45.3%"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpellDescriptor" type="MarginContainer" parent="."]
+margin_left = 1.0
+margin_top = 87.0
+margin_right = 308.0
+margin_bottom = 164.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="SpellDescriptor"]
+modulate = Color( 1, 1, 1, 0.611765 )
+margin_right = 307.0
+margin_bottom = 77.0
+color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopLine" type="ColorRect" parent="SpellDescriptor/Background"]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_right = 1.0
+margin_bottom = 4.0
+color = Color( 0.992157, 1, 0.988235, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DescriptionLabel" type="Label" parent="SpellDescriptor"]
+margin_right = 307.0
+margin_bottom = 77.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 4 )
+text = "Some Spell Description"
+autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
