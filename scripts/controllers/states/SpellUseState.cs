@@ -14,14 +14,8 @@ public class SpellUseState: BaseControllerState
         activeSpell = spell;
     }
 
-    protected override Task<BaseControllerState> EmptyCellClick(int x, int y)
+    private Task<BaseControllerState> HandleSpell(MapCell targetCell)
     {
-        return NextState(new SpellSelectState(active));
-    }
-
-    protected override Task<BaseControllerState> CharacterClick(Character character)
-    {
-        var targetCell = character.Cell;
         if (activeSpell.CastAvailable(targetCell))
         {
             activeSpell.ApplyEffect(targetCell);
@@ -31,31 +25,62 @@ public class SpellUseState: BaseControllerState
         return NextState(new SpellSelectState(active));
     }
 
-    private void DisplayOnHUD(Character character)
+    protected override Task<BaseControllerState> EmptyCellClick(int x, int y)
     {
-        var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayCharacter(character);
+        return HandleSpell(active.Map.CellBy(x, y));
     }
 
-    public override void OnEnter()
+    protected override Task<BaseControllerState> CharacterClick(Character character)
     {
-        DisplayOnHUD(active);
+        return HandleSpell(character.Cell);
+    }
 
-        map.MoveHighlightLayer.Clear();
-        map.MoveHighlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
-
-        UserInterfaceService.GetHUD<TacticHUD>()?.HideMenuWithActions();
+    protected override void GenericCellHover(MapCell cell)
+    {
+        base.GenericCellHover(cell);
 
         var highlightLayer = map.MoveHighlightLayer;
+        highlightLayer.Clear();
+        BaseHighlight();
+        if (!activeSpell.CastAvailable(cell)) return;
+        EffectAreaHighlight(cell);
+    }
+
+    private void BaseHighlight()
+    {
+        var highlightLayer = map.MoveHighlightLayer;
+        highlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
         foreach (var cell in activeSpell.GetTargetArea())
+        {
+            highlightLayer.Highlight(cell.X, cell.Y, MoveHighlightType.LongMove);
+        }
+    }
+
+    private void EffectAreaHighlight(MapCell hoverCell)
+    {
+        var highlightLayer = map.MoveHighlightLayer;
+        foreach (var cell in activeSpell.GetEffectArea(hoverCell))
         {
             highlightLayer.Highlight(cell.X, cell.Y, MoveHighlightType.Attack);
         }
     }
 
+    public override void OnEnter()
+    {
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.DisplayCharacter(active);
+        hud?.HideMenuWithActions();
+
+        var highlightLayer = map.MoveHighlightLayer;
+        highlightLayer.Clear();
+        BaseHighlight();
+    }
+
     public override void OnLeave()
     {
-        DisplayOnHUD(null);
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.HideCharacterDisplay();
+
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
     }

@@ -1,6 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 public class MagicShotSpell: Node, ISpell
 {
@@ -41,15 +42,22 @@ public class MagicShotSpell: Node, ISpell
 
     public List<MapCell> GetEffectArea(MapCell target)
     {
-        return new List<MapCell>() { target };
+        return new List<MapCell>() { target }.Concat(character.Map.DirectNeighboursFor(target.X, target.Y)).ToList();
     }
 
     public bool CastAvailable(MapCell target)
     {
-        var targetCharacter = target.MapObject as Character;
-        if (targetCharacter is null) return false;
-        if (targetCharacter.Controller == character.Controller) return false;
-        return GetTargetArea().Contains(target);
+        if (!GetTargetArea().Contains(target)) return false;
+
+        foreach (var effectTarget in GetEffectArea(target))
+        {
+            var targetCharacter = effectTarget.MapObject as Character;
+            if (targetCharacter is null) continue;
+            if (targetCharacter.Controller == character.Controller) continue;
+            return true;
+        }
+
+        return false;
     }
 
     public List<MapCell> GetTargetArea()
