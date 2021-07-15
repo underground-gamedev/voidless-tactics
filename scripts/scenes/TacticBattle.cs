@@ -13,7 +13,7 @@ public class TacticBattle : Node
 
     public override void _Ready()
     { 
-        var hud = GetNode<TacticHUD>("HUD");
+        var hud = GetNode<TacticHUD>("TacticHUD");
         UserInterfaceService.SetHUD(hud);
 
         tacticMap = GetNode<TacticMap>("Map");
