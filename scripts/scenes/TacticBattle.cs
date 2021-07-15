@@ -17,8 +17,13 @@ public class TacticBattle : Node
         UserInterfaceService.SetHUD(hud);
 
         tacticMap = GetNode<TacticMap>("Map");
-        var solidMapGen = GetNode<SolidMapGenerator>("SolidMapGenerator");
-        solidMapGen.Generate(tacticMap);
+
+        var solidMapGen = GetNode<SolidMapGenerator>("Map/Generators/SolidMapGenerator");
+        solidMapGen?.Generate(tacticMap);
+
+        var manaMapGen = GetNode<ManaMapGenerator>("Map/Generators/ManaMapGenerator");
+        manaMapGen?.Generate(tacticMap);
+
         tacticMap.Sync();
 
         var camera = GetNode<DraggingCamera>("Camera2D");

@@ -17,7 +17,7 @@ public class SolidMapGenerator : Node
 
     public override void _Ready()
     {
-        rand = new Random(seed);
+        rand = seed == -1 ? new Random() : new Random(seed);
     }
 
     public void Generate(TacticMap map)
@@ -25,14 +25,7 @@ public class SolidMapGenerator : Node
         var solidMap = RawGenerate(map.Width, map.Height);
         foreach (var cell in map)
         {
-            var solid = solidMap[cell.X, cell.Y];
-            map.SetSolid(cell.X, cell.Y, solid);
-
-            if (!solid)
-            {
-                cell.Mana.ManaType = rand.NextDouble() <= 0.5f ? ManaType.Nature : ManaType.Fire;
-                cell.Mana.Density = rand.NextDouble() / 2;
-            }
+            cell.Solid = solidMap[cell.X, cell.Y];
         }
 
     }
@@ -78,14 +71,12 @@ public class SolidMapGenerator : Node
 
         MakeBorder(map);
 
-/*
         var independAreas = FindAllIndependedAreas(map);
         if (independAreas.Count > 1)
         {
-            GD.PrintErr("Independed areas detected. Regenerate start");
+            GD.PrintErr($"Independed areas detected. Regenerate");
             return RawGenerate(width, height);
         }
-        */
         
         return map;
     }
@@ -184,7 +175,7 @@ public class SolidMapGenerator : Node
         {
             for (int y = 0; y < height; y++)
             {
-                if (map[x, y]) {
+                if (!map[x, y]) {
                     floorPositions.Add((x, y));
                 }
             }
