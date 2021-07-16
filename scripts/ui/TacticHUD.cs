@@ -80,6 +80,8 @@ public class TacticHUD: Node
         var densityValue = Math.Round(mana.Density * 100, 0, MidpointRounding.ToEven);
         var densityString = mana.ManaType == ManaType.None ? "-" : densityValue.ToString() + "%";
         cellInfo.GetNode<Label>("Labels/DensityLabel").Text = $"Density: {densityString}";
+        var cords = $"x:{cell.X} y:{cell.Y}";
+        cellInfo.GetNode<Label>("Labels/CordsLabel").Text = $"{cords}";
     }
 
     public void HideCellInfo()

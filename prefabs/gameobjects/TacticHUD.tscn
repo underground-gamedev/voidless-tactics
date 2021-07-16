@@ -245,6 +245,7 @@ __meta__ = {
 modulate = Color( 1, 1, 1, 0.611765 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_bottom = 38.0
 color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -291,11 +292,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CordsLabel" type="Label" parent="CellInfo/Labels"]
+margin_top = 74.0
+margin_right = 202.0
+margin_bottom = 107.0
+custom_fonts/font = SubResource( 3 )
+text = "x:1 y:1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="SpellDescriptor" type="MarginContainer" parent="."]
 margin_left = 1.0
-margin_top = 87.0
+margin_top = 128.954
 margin_right = 308.0
-margin_bottom = 164.0
+margin_bottom = 205.954
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -303,7 +314,7 @@ __meta__ = {
 [node name="Background" type="ColorRect" parent="SpellDescriptor"]
 modulate = Color( 1, 1, 1, 0.611765 )
 margin_right = 307.0
-margin_bottom = 77.0
+margin_bottom = 76.0
 color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -320,7 +331,7 @@ __meta__ = {
 
 [node name="DescriptionLabel" type="Label" parent="SpellDescriptor"]
 margin_right = 307.0
-margin_bottom = 77.0
+margin_bottom = 76.0
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 4 )
 text = "Some Spell Description"
