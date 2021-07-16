@@ -76,6 +76,8 @@ public class TacticBattle : Node
 		{
             manaMover.ApplyChangesMap(manaMover.GetChangesMap());
 		}
+		manaMover.ApplyChangesMap(manaMover.GetChangesMap());
+		tacticMap.ManaLayer.OnSync(tacticMap);
 
         var turnText = $"{activeController.Name} Turn";
         await UserInterfaceService.GetHUD<TacticHUD>().ShowTurnLabel(turnText);
