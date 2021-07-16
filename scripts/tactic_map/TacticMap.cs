@@ -124,4 +124,8 @@ public class TacticMap: Node, IEnumerable<MapCell>
     {
         return this.GetEnumerator();
     }
+	public MapCell CellBy(Cords2D cords)
+	{
+		return cells[cords.x, cords.y];
+	}
 }

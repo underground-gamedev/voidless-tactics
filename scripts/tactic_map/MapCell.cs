@@ -18,4 +18,9 @@ public class MapCell
         Y = y;
     }
 
+    public static bool IsSolid(MapCell mapCell)
+	{
+        return mapCell.solid;
+	}
+
 }

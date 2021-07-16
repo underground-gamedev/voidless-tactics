@@ -27,6 +27,15 @@ public class ManaCell
         this.ManaType = type;
         this.Density = density;
     }
+	public static int ComparisonByDensityToLowest(ManaCell x, ManaCell y)
+	{
+		//if (x == null && y == null)
+		//	return 0;
+		
+		if (x.density > y.density)
+			return 1;
+		return -1;
+	}
 
     public ManaCell()
     {

@@ -11,6 +11,7 @@ public class TacticBattle : Node
 
     AbstractController activeController;
 
+    ManaMover manaMover;
     public override void _Ready()
     { 
         var hud = GetNode<TacticHUD>("TacticHUD");
@@ -28,6 +29,8 @@ public class TacticBattle : Node
 
         var camera = GetNode<DraggingCamera>("Camera2D");
         camera.Connect(nameof(DraggingCamera.OnCameraMove), hud, nameof(TacticHUD.OnCameraDrag));
+
+        manaMover = new ManaMover(tacticMap);
 
         controllers = this.GetChilds<AbstractController>("Players");
         foreach (var controller in controllers)
@@ -67,6 +70,12 @@ public class TacticBattle : Node
         var nextController = controllers[nextId];
         activeController.OnTurnEnd();
         activeController = nextController;
+
+        /// mana move place
+        
+		{
+            manaMover.ApplyChangesMap(manaMover.GetChangesMap());
+		}
 
         var turnText = $"{activeController.Name} Turn";
         await UserInterfaceService.GetHUD<TacticHUD>().ShowTurnLabel(turnText);
