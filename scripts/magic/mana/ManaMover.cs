@@ -20,24 +20,24 @@ public class ManaMover
 		{
 			for (int y = 0; y < originMap.Height; y++)
 			{
-				MapCell mapCell = originMap.CellBy(x, y);
-				ManaCell manaCell = mapCell.Mana;
+				MapCell sourceMapCell = originMap.CellBy(x, y);
+				ManaCell sourceManaCell = sourceMapCell.Mana;
 
-				if (!mapCell.Solid && manaCell.ManaType != ManaType.None)
+				if (!sourceMapCell.Solid && sourceManaCell.ManaType != ManaType.None)
 				{
 					List<MapCell> solidMapCells = originMap.DirectNeighboursFor(x, y);
 					solidMapCells.RemoveAll(MapCell.IsSolid);
 
-					double manaSpreadOut = manaCell.Density / (solidMapCells.Count + 1);
+					double manaSpreadOut = sourceManaCell.Density / (solidMapCells.Count + 1);
 					if (manaSpreadOut > 0f)
 					{
 
 					}
 					// spreading mana changes to the map of changes
-					foreach (var cell in solidMapCells)
+					foreach (var targetCell in solidMapCells)
 					{
-						mapWithChanges.AddChange(new Cords2D(mapCell.X, mapCell.Y), new Cords2D(cell.X, cell.Y), new ManaCell(manaCell.ManaType, manaSpreadOut));
-						//GD.Print($"spread {x} {y} to {cell.X} {cell.Y} {manaCell.Density} {manaSpreadOut} {solidMapCells.Count}");
+						mapWithChanges.AddChange(new Cords2D(targetCell.X, targetCell.Y), new Cords2D(sourceMapCell.X, sourceMapCell.Y), new ManaCell(sourceManaCell.ManaType, manaSpreadOut));
+						GD.Print($"spread {sourceMapCell.X} {sourceMapCell.Y} to {targetCell.X} {targetCell.Y} {sourceManaCell.Density} {manaSpreadOut} {solidMapCells.Count}");
 					}
 
 				}
@@ -59,26 +59,30 @@ public class ManaMover
 				double startDensity = manaCell.Density;
 				ManaType startManaType = manaCell.ManaType;
 
+				GD.Print($"{x} {y} cycle");
 				if (!mapCell.Solid) // if this mapCell can receive changes
 				{
 					CellChanges cellChanges = mapWithChanges.GetCellWithChanges(x, y);
 					if (cellChanges == null)
+					{
+						GD.Print($"{x} {y} no changes");
 						break;
+					}
 
 					cellChanges.SortByHiest();
 					foreach (ManaCell changeManaCell in cellChanges.manaCells)
 					{
 						Cords2D sourceCords2D = cellChanges.cordsByManaCellChange[changeManaCell];
 						ManaCell sourceManaCell = originMap.CellBy(sourceCords2D).Mana;
-						
-						//GD.Print($"compare {x} {y} {manaCell.ManaType} {sourceCords2D.x} {sourceCords2D.y} {sourceManaCell.ManaType}");
+
+						GD.Print($"compare {x} {y} {manaCell.ManaType} {sourceCords2D.x} {sourceCords2D.y} {sourceManaCell.ManaType}");
 						if (manaCell.ManaType == ManaType.None || manaCell.ManaType == sourceManaCell.ManaType)
 						{
 
 							double diff = sourceManaCell.Density - manaCell.Density;
 							if (diff > 0f)
 							{
-								//GD.Print($"{x} {y} change {changeManaCell.Density} {changeManaCell.ManaType} source {sourceCords2D.x} {sourceCords2D.y}");
+								GD.Print($"{x} {y} change {changeManaCell.Density} {changeManaCell.ManaType} source {sourceCords2D.x} {sourceCords2D.y}");
 								manaCell.Density += changeManaCell.Density;
 								manaCell.ManaType = sourceManaCell.ManaType;
 
@@ -86,7 +90,7 @@ public class ManaMover
 							}
 							else
 							{
-								//GD.Print("source have less density");
+								GD.Print("source have less density");
 							}
 						}
 					}
