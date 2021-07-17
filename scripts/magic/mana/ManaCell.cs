@@ -9,7 +9,13 @@ public class ManaCell
     public ManaType ManaType
     {
         get => manaType;
-        set => manaType = value;
+        set {
+            manaType = value;
+            if (manaType == ManaType.None)
+                density = 0;
+            else if (density < 0.01)
+                density = 0.01;
+        }
     }
     public double Density
     {
@@ -18,7 +24,8 @@ public class ManaCell
             if (value > 1) value = 1;
             if (value < 0) value = 0;
             density = value;
-            if (value <= 0.01) manaType = ManaType.None;
+            if (density <= 0.01) 
+                manaType = ManaType.None;
             if (manaType == ManaType.None)
                 density = 0;
         } 
