@@ -12,6 +12,15 @@ public class VisualLayer: Node, IMapLayer
     [Signal]
     public delegate void OnCellHover(int x, int y);
 
+    public Vector2 MapPositionToGlobal(int x, int y)
+    {
+        var basePos = new Vector2(x, y);
+        basePos *= TileMap.CellSize;
+        basePos += TileMap.CellSize * 0.5f;
+        basePos += TileMap.GlobalPosition;
+        return basePos;
+    }
+
     public override void _UnhandledInput(InputEvent inputEvent)
     {
         if (!inputEvent.IsActionPressed("map_move") && !(inputEvent is InputEventMouseMotion)) return;
