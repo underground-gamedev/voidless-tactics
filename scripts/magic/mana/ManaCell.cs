@@ -19,6 +19,8 @@ public class ManaCell
             if (value < 0) value = 0;
             density = value;
             if (value <= 0.01) manaType = ManaType.None;
+            if (manaType == ManaType.None)
+                density = 0;
         } 
     }
 

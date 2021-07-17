@@ -25,6 +25,8 @@ public class ManaMapGenerator: Node
                 cell.Mana.Density = rand.NextDouble() / 2;
             }
         }
+				if (manaType == (int)ManaType.None)
+					cell.Mana.Density = 0;
 
     }
 }
