@@ -89,8 +89,9 @@ public class ManaMover
 								//if target cell have too much mana
 								changeMana.Density = Mathf.Clamp((float)changeMana.Density, 0f, 1f - (float)manaCell.Density);
 
-								manaCell.Density += changeMana.Density;
+								var newDensity = manaCell.Density + changeMana.Density;
 								manaCell.ManaType = sourceManaCell.ManaType;
+								manaCell.Density = newDensity;
 
 								sourceManaCell.Density -= changeMana.Density;
 							}
