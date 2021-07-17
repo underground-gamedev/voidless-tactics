@@ -70,9 +70,9 @@ public class ManaMover
 					}
 
 					cellChanges.SortByHiest();
-					foreach (ManaCell changeManaCell in cellChanges.manaCells)
+					foreach (ManaCell changeMana in cellChanges.manaCells)
 					{
-						Cords2D sourceCords2D = cellChanges.cordsByManaCellChange[changeManaCell];
+						Cords2D sourceCords2D = cellChanges.cordsByManaCellChange[changeMana];
 						ManaCell sourceManaCell = originMap.CellBy(sourceCords2D).Mana;
 
 						//GD.Print($"compare {x} {y} {manaCell.ManaType} {sourceCords2D.x} {sourceCords2D.y} {sourceManaCell.ManaType}");
@@ -83,10 +83,16 @@ public class ManaMover
 							if (diff > 0f)
 							{
 								//GD.Print($"{x} {y} change {changeManaCell.Density} {changeManaCell.ManaType} source {sourceCords2D.x} {sourceCords2D.y}");
-								manaCell.Density += changeManaCell.Density;
+								
+								// if source sell have few mana
+								changeMana.Density = Mathf.Clamp((float)changeMana.Density, 0f, (float)sourceManaCell.Density);
+								//if target cell have too much mana
+								changeMana.Density = Mathf.Clamp((float)changeMana.Density, 0f, 1f - (float)manaCell.Density);
+
+								manaCell.Density += changeMana.Density;
 								manaCell.ManaType = sourceManaCell.ManaType;
 
-								sourceManaCell.Density -= changeManaCell.Density;
+								sourceManaCell.Density -= changeMana.Density;
 							}
 							else
 							{
