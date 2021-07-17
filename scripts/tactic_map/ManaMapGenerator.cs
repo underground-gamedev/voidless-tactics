@@ -20,9 +20,10 @@ public class ManaMapGenerator: Node
         {
             if (!cell.Solid)
             {
+                if (rand.NextDouble() < 0.8) continue;
                 var manaType = rand.Next(1, 4);
                 cell.Mana.ManaType = (ManaType)manaType;
-                cell.Mana.Density = rand.NextDouble() / 2;
+                cell.Mana.Density = rand.NextDouble() * 2;
             }
         }
 

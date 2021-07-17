@@ -9,7 +9,7 @@ public class TargetComponent : Node, ITargetComponent
     private Character character;
     private BasicStats basicStats;
 
-    public Task TakeDamage(int damage)
+    public async Task TakeDamage(int damage)
     {
         var health = basicStats.Health;
         health.ActualValue -= damage;
@@ -18,8 +18,7 @@ public class TargetComponent : Node, ITargetComponent
         {
             character.Kill();
         }
-
-        return Task.CompletedTask;
+        await character.Map.PopupText(character.Cell, damage.ToString(), new Color(1f, 0.6f, 0.6f));
     }
 
     public override void _Ready()
