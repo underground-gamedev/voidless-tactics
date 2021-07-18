@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://assets/graphics/player.png" type="Texture" id=1]
 [ext_resource path="res://scripts/map_objects/Character.cs" type="Script" id=2]
@@ -9,6 +9,12 @@
 [ext_resource path="res://scripts/map_objects/AttackComponent.cs" type="Script" id=7]
 [ext_resource path="res://scripts/magic/spells/MagicShotSpell.cs" type="Script" id=8]
 [ext_resource path="res://scripts/map_objects/SpellComponent.cs" type="Script" id=9]
+[ext_resource path="res://scripts/magic/spells/ModularSpell.cs" type="Script" id=10]
+[ext_resource path="res://scripts/magic/spells/DirectLineAreaSelector.cs" type="Script" id=11]
+[ext_resource path="res://scripts/magic/spells/FullActionResourceConsumer.cs" type="Script" id=12]
+[ext_resource path="res://scripts/magic/spells/ResourceConsumerChain.cs" type="Script" id=13]
+[ext_resource path="res://scripts/magic/spells/ManaResourceConsumer.cs" type="Script" id=14]
+[ext_resource path="res://scripts/magic/spells/TakeDamageSpellEffect.cs" type="Script" id=15]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -93,3 +99,33 @@ script = ExtResource( 8 )
 range = 1
 damage = 6
 cost = 0.2
+
+[node name="Modular Magic Shot" type="Node" parent="Components/SpellComponent"]
+script = ExtResource( 10 )
+targetAreaPath = NodePath("TargetArea")
+effectAreaPath = NodePath("EffectArea")
+spellEffectPath = NodePath("TakeDamageEffect")
+resourceConsumerPath = NodePath("ConsumerChain")
+
+[node name="TargetArea" type="Node" parent="Components/SpellComponent/Modular Magic Shot"]
+script = ExtResource( 11 )
+range = 5
+
+[node name="EffectArea" type="Node" parent="Components/SpellComponent/Modular Magic Shot"]
+script = ExtResource( 11 )
+range = 1
+
+[node name="TakeDamageEffect" type="Node" parent="Components/SpellComponent/Modular Magic Shot"]
+script = ExtResource( 15 )
+damage = 2
+
+[node name="ConsumerChain" type="Node" parent="Components/SpellComponent/Modular Magic Shot"]
+script = ExtResource( 13 )
+
+[node name="FullActionConsumer" type="Node" parent="Components/SpellComponent/Modular Magic Shot/ConsumerChain"]
+script = ExtResource( 12 )
+actionCount = 1
+
+[node name="ManaConsumer" type="Node" parent="Components/SpellComponent/Modular Magic Shot/ConsumerChain"]
+script = ExtResource( 14 )
+manaRequired = 0.1
