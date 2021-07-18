@@ -56,9 +56,10 @@ public class TacticHUD: Node
         }
 
         characterInfo.Visible = true;
-        characterInfo.GetNode<Label>("Labels/HealthLabel").Text = $"Health: {character.BasicStats.Health.ActualValue}";
-        characterInfo.GetNode<Label>("Labels/DamageLabel").Text = $"Damage: {character.BasicStats.Damage.ActualValue}";
-        characterInfo.GetNode<Label>("Labels/MoveLabel").Text = $"Speed: {character.BasicStats.Speed.ActualValue}";
+        var stats = character.BasicStats;
+        characterInfo.GetNode<Label>("Labels/HealthLabel").Text = $"Health: {stats.Health.ActualValue}/{stats.Health.MaxValue}";
+        characterInfo.GetNode<Label>("Labels/DamageLabel").Text = $"Damage: {stats.Damage.ActualValue}";
+        characterInfo.GetNode<Label>("Labels/MoveLabel").Text = $"Speed: {stats.Speed.ActualValue}";
     }
     public void HideCharacterDisplay()
     {
