@@ -7,6 +7,8 @@ public class ManaMapGenerator: Node
 {
     [Export]
     private int seed;
+    [Export]
+    private int prepareMoveCount = 4;
     private Random rand;
 
     public override void _Ready()
@@ -30,5 +32,10 @@ public class ManaMapGenerator: Node
             }
         }
 
+        var manaMover = new ManaMover(map);
+        for (var i = 0; i < prepareMoveCount; i++)
+        {
+            manaMover.ApplyChangesMap(manaMover.GetChangesMap());
+        }
     }
 }
