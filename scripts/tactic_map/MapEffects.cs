@@ -10,7 +10,6 @@ public static class MapEffects
         var popup = (MapTextPopup)mapTextPopup.Instance();
         var visualLayer = map.VisualLayer;
         var globalPosition = visualLayer.MapPositionToGlobal(cell.X, cell.Y);
-        GD.Print(globalPosition);
         popup.GlobalPosition = globalPosition;
 
         map.AddChild(popup);

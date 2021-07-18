@@ -23,7 +23,6 @@ public class MapTextPopup : Node2D
 
     public async Task Animate(string message, Color color)
     {
-        GD.Print("Animate Start");
         this.label.Text = message;
         this.label.Modulate = new Color(color.r, color.g, color.b, 0);
         this.label.RectPosition = startPosition;
@@ -43,6 +42,5 @@ public class MapTextPopup : Node2D
         
         tween.Start();
         await this.Wait(duration);
-        GD.Print("Animate Complete");
     }
 }
