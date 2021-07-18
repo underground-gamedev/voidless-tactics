@@ -8,6 +8,7 @@ public class ManaResourceConsumer : Node, IResourceConsumer
     public void Consume(SpellComponentContext ctx)
     {
         ctx.BaseCell.Mana.Density -= manaRequired;
+        ctx.Map.ManaLayer.OnSync(ctx.Map);
     }
 
     public bool ConsumeAvailable(SpellComponentContext ctx)
