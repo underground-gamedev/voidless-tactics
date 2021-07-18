@@ -77,7 +77,7 @@ public class TacticHUD: Node
         cellInfo.Visible = true;
         cellInfo.GetNode<Label>("Labels/ManaTypeLabel").Text = $"Mana: {mana.ManaType.ToString()}";
         
-        var densityValue = Math.Round(mana.Density * 100, 0, MidpointRounding.ToEven);
+        var densityValue = Math.Floor(mana.Density * 100);
         var densityString = mana.ManaType == ManaType.None ? "-" : densityValue.ToString() + "%";
         cellInfo.GetNode<Label>("Labels/DensityLabel").Text = $"Density: {densityString}";
         var cords = $"x:{cell.X} y:{cell.Y}";
