@@ -95,6 +95,16 @@ public class TacticHUD: Node
         actions.RectGlobalPosition -= deltaScreenPosition;
     }
 
+    public void OnCameraZoom(Vector2 prevZoom, Vector2 deltaZoom)
+    {
+        Vector2 boxGlobalCenteredOffset = actions.RectGlobalPosition - GetViewport().GetVisibleRect().Size / 2;
+
+        Vector2 zoomMultiprier = (prevZoom) / (prevZoom + deltaZoom);
+
+        Vector2 totalOffset = boxGlobalCenteredOffset * (zoomMultiprier - Vector2.One);
+        actions.RectGlobalPosition += totalOffset;
+
+    }
     public void DisplayMenuWithActions(Vector2 screenPosition, List<string> actionList)
     {
         if (actionList is null || actionList.Count == 0)
