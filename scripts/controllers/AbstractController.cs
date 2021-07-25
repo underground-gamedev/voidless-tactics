@@ -1,11 +1,10 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public abstract class AbstractController : Node
 {
-    [Export]
-    private bool spawnLeft;
     protected bool isMyTurn;
     protected TacticMap tacticMap;
 
@@ -13,54 +12,19 @@ public abstract class AbstractController : Node
 
     public IReadOnlyList<Character> Characters => characters.AsReadOnly();
 
-    public void BindMap(TacticMap map)
+    public async Task Init(TacticMap map, List<MapCell> startArea)
     {
         tacticMap = map;
+        this.GetChilds<Character>(".").ForEach(child => AddCharacter(child));
+        await SpawnUnits(map, startArea);
     }
 
-    public virtual void Init()
-    {
-        foreach(var child in this.GetChilds<Character>(".")) 
-        {
-            AddCharacter(child);
-        }
-    }
-
-    protected virtual MapCell FindStartPosition(TacticMap map) {
-        if (spawnLeft)
-        {
-            for (int x = 0; x < map.Width; x++)
-            {
-                for (int y = 0; y < map.Height; y++)
-                {
-                    if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
-                        return map.CellBy(x, y);
-                    }
-                }
-            }
-        }
-        else
-        {
-            for (int x = map.Width-1; x > 0; x--)
-            {
-                for (int y = 0; y < map.Height; y++)
-                {
-                    if (!map.GetSolid(x, y) && map.GetCharacter(x, y) == null) {
-                        return map.CellBy(x, y);
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
+    public abstract Task SpawnUnits(TacticMap map, List<MapCell> startArea);
 
     public virtual void AddCharacter(Character character)
     {
         characters.Add(character);
         character.Controller = this;
-        var pos = FindStartPosition(tacticMap);
-        character.BindMap(tacticMap, pos);
     }
 
     public virtual void RemoveCharacter(Character character)

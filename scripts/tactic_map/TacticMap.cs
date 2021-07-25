@@ -31,11 +31,6 @@ public class TacticMap: Node, IEnumerable<MapCell>
 
     public override void _Ready()
     {
-        var mapLayers = this.GetChilds<IMapLayer>(".");
-        foreach (var layer in mapLayers)
-        {
-            Connect(nameof(OnSync), (Godot.Object) layer, nameof(IMapLayer.OnSync));
-        }
     }
 
     public TacticMap(int width, int height)
@@ -47,7 +42,11 @@ public class TacticMap: Node, IEnumerable<MapCell>
 
     public void Sync()
     {
-        EmitSignal(nameof(OnSync), this);
+        var mapLayers = this.GetChilds<IMapLayer>(".");
+        foreach (var layer in mapLayers)
+        {
+            layer.OnSync(this);
+        }
     }
 
     private void InitCells()
@@ -128,4 +127,21 @@ public class TacticMap: Node, IEnumerable<MapCell>
 	{
 		return cells[cords.x, cords.y];
 	}
+
+    public HashSet<MapCell> FindAllFloor()
+    {
+        var floorPositions = new HashSet<MapCell>();
+
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (!CellBy(x, y).Solid) {
+                    floorPositions.Add(CellBy(x, y));
+                }
+            }
+        }
+        return floorPositions;
+    }
+
 }

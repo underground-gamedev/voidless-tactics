@@ -274,7 +274,6 @@ prepareMoveCount = 6
 
 [node name="Test Team 1" type="Node" parent="Players"]
 script = ExtResource( 8 )
-spawnLeft = true
 
 [node name="PlayerUnit" parent="Players/Test Team 1" instance=ExtResource( 3 )]
 

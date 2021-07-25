@@ -12,6 +12,8 @@ public class TacticBattle : Node
     AbstractController activeController;
 
     ManaMover manaMover;
+    private Random rand = new Random();
+
     public override void _Ready()
     { 
         var hud = GetNode<TacticHUD>("TacticHUD");
@@ -33,12 +35,16 @@ public class TacticBattle : Node
 
         manaMover = new ManaMover(tacticMap);
 
-        controllers = this.GetChilds<AbstractController>("Players");
-        foreach (var controller in controllers)
-        {
-            controller.BindMap(tacticMap);
-            controller.Init();
+        hud.Connect(nameof(TacticHUD.EndTurnPressed), this, nameof(HumanEndTurn));
 
+        Task.Run(BattleInit);
+    }
+
+    public async Task BattleInit()
+    {
+        controllers = this.GetChilds<AbstractController>("Players");
+        foreach (var controller in controllers.AsEnumerable().Reverse())
+        {
             if (controller is HumanController)
             {
                 tacticMap.VisualLayer.Connect(nameof(VisualLayer.OnCellClick), controller, nameof(HumanController.OnCellClick));
@@ -49,11 +55,30 @@ public class TacticBattle : Node
             {
                 controller.Connect(nameof(AIController.OnEndTurn), this, nameof(EndTurn));
             }
-        }
-        hud.Connect(nameof(TacticHUD.EndTurnPressed), this, nameof(HumanEndTurn));
+            else
+            {
+                GD.PrintErr("[SceneRoot] Incorrect Controller Type");
+            }
 
+            await controller.Init(tacticMap, GetSpawnArea());
+        }
+
+        await UserInterfaceService.GetHUD<TacticHUD>().ShowTurnLabel("Battle Start");
         activeController = controllers.First();
         activeController.OnTurnStart();
+    }
+
+
+    private List<MapCell> GetSpawnArea()
+    {
+        var allFreeArea = tacticMap.FindAllFloor().Where(cell => cell.MapObject == null).ToList();
+        var basePosition = allFreeArea[rand.Next(0, allFreeArea.Count)];
+        const int spawnRange = 4;
+        return tacticMap.PathfindLayer
+                    .GetAllAvailablePathDest(basePosition, spawnRange)
+                    .Select(pos => tacticMap.CellBy(pos.Item1, pos.Item2))
+                    .Where(cell => cell.MapObject == null)
+                    .ToList();
     }
 
     private async void HumanEndTurn()

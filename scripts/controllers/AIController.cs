@@ -1,6 +1,8 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class AIController : AbstractController
 {
@@ -28,4 +30,17 @@ public class AIController : AbstractController
 		await this.Wait(0.1f);
 		EmitSignal(nameof(OnEndTurn));
 	}
+
+    public override Task SpawnUnits(TacticMap map, List<MapCell> startArea)
+    {
+		var rand = new Random();
+		foreach(var character in characters)
+		{
+			var spawnPosIndex = rand.Next(0, startArea.Count);
+			character.BindMap(map, startArea[spawnPosIndex]);
+			startArea.RemoveAt(spawnPosIndex);
+		}
+
+		return Task.CompletedTask;
+    }
 }

@@ -30,14 +30,19 @@ public class BaseControllerState
         return Async(next);
     }
 
-    public async Task<BaseControllerState> CellClick(int x, int y)
+    public Task<BaseControllerState> CellClick(int x, int y)
     { 
-        if (!controller.IsMyTurn()) return this;
-        if (map.IsOutOfBounds(x, y)) return this;
+        if (map.IsOutOfBounds(x, y)) return Async(this);
+        return GenericCellClick(map.CellBy(x, y));
+    }
 
-        var targetCharacter = map.GetCharacter(x, y);
-        if (targetCharacter == null) return await EmptyCellClick(x, y);
-        return await CharacterClick(targetCharacter);
+    protected virtual Task<BaseControllerState> GenericCellClick(MapCell cell)
+    {
+        if (!controller.IsMyTurn()) return Async(this);
+
+        var targetCharacter = map.GetCharacter(cell.X, cell.Y);
+        if (targetCharacter == null) return EmptyCellClick(cell.X, cell.Y);
+        return CharacterClick(targetCharacter);
     }
 
     protected virtual Task<BaseControllerState> CharacterClick(Character character)
@@ -52,13 +57,13 @@ public class BaseControllerState
 
     public void CellHover(int x, int y)
     {
-        if (!controller.IsMyTurn()) return;
         if (map.IsOutOfBounds(x, y)) return;
         GenericCellHover(map.CellBy(x, y));
     }
 
     protected virtual void GenericCellHover(MapCell cell)
     {
+        if (!controller.IsMyTurn()) return;
         var targetCharacter = cell.MapObject as Character;
         if (targetCharacter != null)
         {

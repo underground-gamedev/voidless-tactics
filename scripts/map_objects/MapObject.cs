@@ -7,6 +7,11 @@ public class MapObject: Node2D
     protected TacticMap map;
     public TacticMap Map => map;
 
+    public override void _Ready()
+    {
+        Visible = false;
+    }
+
     public void SyncWithMap(TileMap tilemap)
     {
         var (x, y) = cell.Position;
@@ -34,6 +39,7 @@ public class MapObject: Node2D
         this.map = map;
         SetCell(cell);
         SyncWithMap(map.VisualLayer.TileMap);
+        Visible = true;
     }
 
 }
