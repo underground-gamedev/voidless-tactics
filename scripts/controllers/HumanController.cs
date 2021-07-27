@@ -6,7 +6,18 @@ using Godot;
 
 public class HumanController: AbstractController
 {
-    private BaseControllerState state;
+    private StateStack<BaseHoverState> hoverStates;
+    public StateStack<BaseHoverState> HoverStates => hoverStates;
+    private StateStack<BaseControllerState> mainStates;
+    public StateStack<BaseControllerState> MainStates => mainStates;
+
+    public TacticMap Map => tacticMap;
+
+    public HumanController()
+    {
+        hoverStates = new StateStack<BaseHoverState>(this, new EventConsumerHoverState());
+        mainStates = new StateStack<BaseControllerState>(this, new EventConsumerMainState());
+    }
 
     public override async Task SpawnUnits(TacticMap map, List<MapCell> startArea)
     {
@@ -19,90 +30,39 @@ public class HumanController: AbstractController
 			spawnPositions.RemoveAt(spawnPosIndex);
 		}
 
-        state = new SpawnUnselectedState(this, tacticMap, startArea);
-        state.OnEnter();
-
+        mainStates.PushState(new SpawnUnselectedState(startArea));
+        // hoverStates.PushState(new SimpleHoverState());
         await ToSignal(UserInterfaceService.GetHUD<TacticHUD>(), nameof(TacticHUD.EndTurnPressed));
-
-        SetStartState();
+        mainStates.Clear();
+        // hoverStates.Clear();
     }
 
-    private void SetStartState()
+    public override void OnTurnStart()
     {
-        if (state != null)
-        {
-            state.OnLeave();
-        }
-        state = new UnselectedControllerState(this, tacticMap);
-    }
-
-    private void ChangeState(BaseControllerState nextState)
-    {
-        if (!nextState.Initialized) {
-            throw new InvalidProgramException($"Invalid controller state initialization, recheck code. OnCellClick: {state.GetType().Name} -> {nextState.GetType().Name}");
-        }
-        state = nextState;
-    }
-
-    public async void OnCellClick(int x, int y)
-    {
-        if (state == null) return;
-        ChangeState(await state.CellClick(x, y));
-    }
-
-    public void OnCellHover(int x, int y)
-    {
-        if (state == null) return;
-        state.CellHover(x, y);
-    }
-
-    public async void OnActionSelected(string actionName)
-    {
-        ChangeState(await state.MenuActionSelected(actionName));
+        base.OnTurnStart();
+        mainStates.PushState(new UnselectedControllerState());
+        hoverStates.PushState(new SimpleHoverState());
     }
 
     public override void OnTurnEnd()
     {
+        mainStates.Clear();
+        hoverStates.Clear();
         base.OnTurnEnd();
-        SetStartState();
     }
 
-    /*
-        public void SetActiveCharacter(Character character)
-        {
-            activeCharacter = character;
-            activeState = ActiveCharacterStates.None;
-            if (!SwitchToMove()) SwitchToNone();
-            EmitSignal(nameof(OnActiveCharacterChanged), activeCharacter);
-        }
+    public void OnCellClick(int x, int y)
+    {
+        mainStates.HandleEvent(state => state.CellClick(x, y));
+    }
 
-        public bool SwitchToNone()
-        {
-            var moveHighlight = tacticMap.MoveHighlightLayer;
-            activeState = ActiveCharacterStates.None;
-            moveHighlight.Clear();
+    public void OnCellHover(int x, int y)
+    {
+        hoverStates.HandleEvent(state => state.OnCellHover(x, y));
+    }
 
-            return true;
-        }
-
-        public bool SwitchToMove()
-        {
-            if (activeCharacter == null) { return false; }
-            if (!isMyTurn) { return false; }
-            if (activeCharacter.MoveActions == 0) { return false; }
-
-            var moveHighlight = tacticMap.MoveHighlightLayer;
-            moveHighlight.Clear();
-            activeState = ActiveCharacterStates.Move;
-
-            var availablePositions = tacticMap.PathfindLayer.GetAllAvailablePathDest(activeCharacter.Cell, activeCharacter.MovePoints);
-            var availableCells = availablePositions.Select(pos => tacticMap.CellBy(pos.Item1, pos.Item2)).Where(cell => cell.Character == null).ToList();
-            foreach (var (availX, availY) in availableCells.Select(cell => cell.Position))
-            {
-                moveHighlight.Highlight(availX, availY, MoveHighlightType.NormalMove);
-            }
-
-            return true;
-        }
-        */
+    public void OnActionSelected(string actionName)
+    {
+        mainStates.HandleEvent(state => state.MenuActionSelected(actionName));
+    }
 }

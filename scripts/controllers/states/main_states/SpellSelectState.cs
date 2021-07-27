@@ -14,32 +14,28 @@ public class SpellSelectState: BaseControllerState
         spellComponent = character.Components.FindChild<ISpellComponent>();
     }
 
-    protected override Task<BaseControllerState> CharacterClick(Character character)
+    public override bool CellClick(int x, int y)
     {
-        if (character == active) return Async(this);
-
-        var fromMyTeam = controller.Characters.Contains(character);
-        if (fromMyTeam)
-        {
-            return NextState(new ActiveCharacterState(character));
-        }
-        return NextState(new EnemySelectedState(character));
+        controller.MainStates.PopState();
+        return false;
     }
 
-    public override Task<BaseControllerState> MenuActionSelected(string action)
+    public override bool MenuActionSelected(string action)
     {
         var spell = spellComponent.GetSpellByName(action);
-        if (spell == null) return Async(this);
-        return NextState(new SpellUseState(active, spell));
-    }
+        if (spell == null)
+        {
+            controller.MainStates.PopState();
+            return false;
+        }
 
-    protected override Task<BaseControllerState> EmptyCellClick(int x, int y)
-    {
-        return NextState(new UnselectedControllerState());
+        controller.MainStates.ReplaceState(new SpellUseState(active, spell));
+        return true;
     }
 
     public override void OnEnter()
     {
+        var map = controller.Map;
         map.MoveHighlightLayer.Clear();
         map.MoveHighlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
 
@@ -51,6 +47,7 @@ public class SpellSelectState: BaseControllerState
 
     public override void OnLeave()
     {
+        var map = controller.Map;
         map.MoveHighlightLayer.Clear();
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();

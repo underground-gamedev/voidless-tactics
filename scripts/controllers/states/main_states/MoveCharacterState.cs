@@ -13,21 +13,28 @@ public class MoveCharacterState: BaseControllerState
         this.active = character;
     }
 
-    protected override Task<BaseControllerState> CharacterClick(Character character)
+    public override bool CellClick(int x, int y)
     {
-        if (active == character) { return NextState(new ActiveCharacterState(active)); }
+        var charClick = this.CharacterByPos(x, y, (character) => {
+            controller.MainStates.PopState();
+            return true;
+        });
 
-        var fromMyTeam = controller.Characters.Contains(character);
-        if (fromMyTeam) { return NextState(new ActiveCharacterState(character)); }
-        return NextState(new EnemySelectedState(character));
-    }
+        if (charClick) return false;
 
-    protected override async Task<BaseControllerState> EmptyCellClick(int x, int y)
-    {
-        if (availableCells.Any(cell => cell.MapCell.Position == (x, y))) {
-            await active.Components.FindChild<IMoveComponent>().MoveTo(active.Map.CellBy(x, y));
-        }
-        return await NextState(new ActiveCharacterState(active));
+        controller.MainStates.PopState();
+        return this.CellByPos(x, y, (cell) => {
+            if (availableCells.All(c => c.MapCell != cell)) return false;
+
+            controller.MainStates.PushState(new EventConsumerMainState());
+            active.Components
+                .FindChild<IMoveComponent>()
+                .MoveTo(cell)
+                .GetAwaiter()
+                .OnCompleted(() => controller.MainStates.PopState());
+
+            return true;
+        });
     }
 
     public override void OnEnter()
@@ -35,6 +42,7 @@ public class MoveCharacterState: BaseControllerState
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.DisplayCharacter(active);
 
+        var map = controller.Map;
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
         highlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
@@ -53,27 +61,11 @@ public class MoveCharacterState: BaseControllerState
             highlightLayer.Highlight(x, y, highlightType);
         }
     }
-    protected override void CharacterHover(Character character)
-    {
-        var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayCharacter(character);
-        hud?.DisplayCellInfo(character.Cell);
-    }
-
-    protected override void EmptyCellHover(MapCell cell)
-    {
-        var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayCharacter(active);
-        hud?.DisplayCellInfo(cell);
-    }
 
     public override void OnLeave()
     {
+        var map = controller.Map;
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
-
-        var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.HideCharacterDisplay();
-        hud?.HideCellInfo();
     }
 }
