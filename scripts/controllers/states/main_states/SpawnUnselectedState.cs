@@ -21,6 +21,16 @@ public class SpawnUnselectedState: BaseControllerState
         });
     }
 
+    public override bool DragStart(int x, int y)
+    {
+        this.CharacterByPos(x, y, (character) => {
+            controller.MainStates.ReplaceState(new SpawnSelectedState(character, spawnArea));
+            return false;
+        });
+
+        return false;
+    }
+
     public override void OnEnter()
     {
         var map = controller.Map;

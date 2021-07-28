@@ -43,6 +43,33 @@ public class SpawnSelectedState: BaseControllerState
         });
     }
 
+    public override bool DragStart(int x, int y)
+    {
+        return this.CharacterByPos(x, y, (character) => {
+            if (character.Controller != controller)
+            {
+                controller.MainStates.ReplaceState(new SpawnUnselectedState(spawnArea));
+            }
+            else if (character == active)
+            {
+                controller.HoverStates.PushState(new CharacterDragHoverState(active));
+            }
+            else
+            {
+                controller.MainStates.ReplaceState(new SpawnSelectedState(character, spawnArea));
+                return false;
+            }
+
+            return true;
+        });
+    }
+
+    public override bool DragEnd(int x, int y)
+    {
+        controller.HoverStates.PopState();
+        return CellClick(x, y);
+    }
+
     public override void OnEnter()
     {
         var map = controller.Map;
@@ -55,7 +82,6 @@ public class SpawnSelectedState: BaseControllerState
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.DisplayCharacter(active);
     }
-
     public override void OnLeave()
     {
         var map = controller.Map;

@@ -47,6 +47,8 @@ public class TacticBattle : Node
         {
             if (controller is HumanController)
             {
+                tacticMap.VisualLayer.Connect(nameof(VisualLayer.OnDragStart), controller, nameof(HumanController.OnDragStart));
+                tacticMap.VisualLayer.Connect(nameof(VisualLayer.OnDragEnd), controller, nameof(HumanController.OnDragEnd));
                 tacticMap.VisualLayer.Connect(nameof(VisualLayer.OnCellClick), controller, nameof(HumanController.OnCellClick));
                 tacticMap.VisualLayer.Connect(nameof(VisualLayer.OnCellHover), controller, nameof(HumanController.OnCellHover));
                 UserInterfaceService.GetHUD<TacticHUD>().Connect(nameof(TacticHUD.ActionSelected), controller, nameof(HumanController.OnActionSelected));

@@ -8,9 +8,19 @@ public class VisualLayer: Node, IMapLayer
     private int height;
     public TileMap TileMap => GetNode<TileMap>("TileMap");
     [Signal]
+    public delegate void OnDragStart(int x, int y);
+    [Signal]
+    public delegate void OnDragEnd(int x, int y);
+    [Signal]
     public delegate void OnCellClick(int x, int y);
     [Signal]
     public delegate void OnCellHover(int x, int y);
+
+    private (int, int) previousFramePos = (0, 0);
+    private (int, int) dragStartFramePos = (0, 0);
+    private bool previousFramePressed = false;
+    private bool pressedNow = false;
+    private bool exitFromStartDrag = false;
 
     public Vector2 MapPositionToGlobal(int x, int y)
     {
@@ -21,27 +31,70 @@ public class VisualLayer: Node, IMapLayer
         return basePos;
     }
 
-    public override void _UnhandledInput(InputEvent inputEvent)
+    public (int, int) GlobalToMapPosition(Vector2 globalPos)
     {
-        if (!inputEvent.IsActionPressed("map_move") && !(inputEvent is InputEventMouseMotion)) return;
-
         var tilemap = TileMap;
-        var camera2D = GetNode<Camera2D>("/root/TacticBattle/Camera2D");
-        var mousePos = camera2D.GetGlobalMousePosition();
-        mousePos -= tilemap.GlobalPosition;
-        var tilePos = mousePos / tilemap.CellSize;
+        globalPos -= tilemap.GlobalPosition;
+        var tilePos = globalPos / tilemap.CellSize;
         var x = (int)tilePos.x;
         var y = (int)tilePos.y;
+        return (x, y);
+    }
 
-        if (inputEvent is InputEventMouseMotion)
+    private (int, int) GetMousePosition()
+    {
+        var camera2D = GetNode<Camera2D>("/root/TacticBattle/Camera2D");
+        var mousePos = camera2D.GetGlobalMousePosition();
+        return GlobalToMapPosition(mousePos);
+    }
+
+    public override void _UnhandledInput(InputEvent inputEvent)
+    {
+        if (inputEvent is InputEventMouseMotion motion) HandleMouseMove(motion);
+        if (inputEvent is InputEventMouseButton button) HandleMouseButton(button);
+    }
+
+    private void HandleMouseMove(InputEventMouseMotion inputEvent)
+    {
+        var (currentX, currentY) = GetMousePosition();
+        var (lastX, lastY) = previousFramePos;
+
+        EmitSignal(nameof(OnCellHover), currentX, currentY);
+
+        if (pressedNow)
         {
-            EmitSignal(nameof(OnCellHover), x, y);
+            if (previousFramePressed && !exitFromStartDrag && (currentX != lastX || currentY != lastY))
+            {
+                EmitSignal(nameof(OnDragStart), lastX, lastY);
+                exitFromStartDrag = true;
+            }
+            previousFramePressed = true; 
         }
 
-        if (inputEvent.IsActionPressed("map_move"))
+        previousFramePos = (currentX, currentY);
+    }
+
+    private void HandleMouseButton(InputEventMouseButton inputEvent)
+    {
+        var mainAction = inputEvent.IsAction("main_action");
+        if (!mainAction) return;
+
+        var (currentX, currentY) = GetMousePosition();
+
+        if (inputEvent.Pressed)
         {
-            EmitSignal(nameof(OnCellClick), x, y);
+            pressedNow = true;
+            previousFramePressed = false; 
         }
+        else
+        {
+            var eventName = exitFromStartDrag ? nameof(OnDragEnd) : nameof(OnCellClick);
+            EmitSignal(eventName, currentX, currentY);
+            pressedNow = false;
+            exitFromStartDrag = false;
+            previousFramePressed = false;
+        }
+
     }
 
     private void Visualize(TacticMap map)

@@ -51,6 +51,16 @@ public class HumanController: AbstractController
         base.OnTurnEnd();
     }
 
+    public void OnDragStart(int x, int y)
+    {
+        mainStates.HandleEvent(state => state.DragStart(x, y));
+    }
+
+    public void OnDragEnd(int x, int y)
+    {
+        mainStates.HandleEvent(state => state.DragEnd(x, y));
+    }
+
     public void OnCellClick(int x, int y)
     {
         mainStates.HandleEvent(state => state.CellClick(x, y));
