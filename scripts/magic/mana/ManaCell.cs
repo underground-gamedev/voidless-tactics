@@ -4,7 +4,7 @@ using Godot;
 public class ManaCell
 {
     private ManaType manaType;
-    private double density;
+    private float density;
 
     public ManaType ManaType
     {
@@ -13,11 +13,11 @@ public class ManaCell
             manaType = value;
             if (manaType == ManaType.None)
                 density = 0;
-            else if (density < 0.01)
-                density = 0.01;
+            else if (density < 0.01f)
+                density = 0.01f;
         }
     }
-    public double Density
+    public float Density
     {
         get => density;
         set {
@@ -31,7 +31,7 @@ public class ManaCell
         } 
     }
 
-    public ManaCell(ManaType type, double density)
+    public ManaCell(ManaType type, float density)
     {
         this.ManaType = type;
         this.Density = density;

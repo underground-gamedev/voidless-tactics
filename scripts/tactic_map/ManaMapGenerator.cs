@@ -13,7 +13,7 @@ public class ManaMapGenerator: Node
 
     public override void _Ready()
     {
-        rand = seed == -1 ? new Random() : new Random(seed);
+        rand = (seed == -1) ? new Random() : new Random(seed);
     }
 
     public void Generate(TacticMap map)
@@ -22,10 +22,10 @@ public class ManaMapGenerator: Node
         {
             if (!cell.Solid)
             {
-                if (rand.NextDouble() < 0.8) continue;
+                if ((float)rand.NextDouble() < 0.8f) continue;
                 var manaType = rand.Next(1, 4);
                 cell.Mana.ManaType = (ManaType)manaType;
-                cell.Mana.Density = rand.NextDouble() * 2;
+                cell.Mana.Density = (float)rand.NextDouble() * 2;
 
                 if (cell.Mana.ManaType == ManaType.None)
                     cell.Mana.Density = 0;
@@ -33,9 +33,15 @@ public class ManaMapGenerator: Node
         }
 
         var manaMover = new ManaMover(map);
+        
+        var state = GDPrint.active;
+		
+
+        
         for (var i = 0; i < prepareMoveCount; i++)
         {
             manaMover.ApplyChangesMap(manaMover.GetChangesMap());
         }
+        
     }
 }
