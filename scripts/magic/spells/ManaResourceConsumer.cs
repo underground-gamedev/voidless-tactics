@@ -7,18 +7,18 @@ public class ManaResourceConsumer : Node, IResourceConsumer
     private float manaRequired; 
     public void Consume(SpellComponentContext ctx)
     {
-        ctx.BaseCell.Mana.Density -= manaRequired;
+        ctx.TargetCell.Mana.Density -= manaRequired;
         ctx.Map.ManaLayer.OnSync(ctx.Map);
     }
 
     public bool ConsumeAvailable(SpellComponentContext ctx)
     {
-        return ctx.BaseCell.Mana.Density >= manaRequired;
+        return ctx.TargetCell.Mana.Density >= manaRequired;
     }
 
     public ConsumeTag GetConsumeTags(SpellComponentContext ctx)
     {
-        switch(ctx.BaseCell.Mana.ManaType)
+        switch(ctx.TargetCell.Mana.ManaType)
         {
             case ManaType.Fire: return ConsumeTag.FireMana;
             case ManaType.Nature: return ConsumeTag.NatureMana;

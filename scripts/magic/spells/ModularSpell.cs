@@ -35,7 +35,7 @@ public class ModularSpell : Node, ISpell
     {
         var ctx = MakeContext();
 
-        var realEffectArea = spellEffectArea.GetRealArea(ctx.SetBaseCell(target));
+        var realEffectArea = spellEffectArea.GetRealArea(ctx.SetTargetCell(target));
         var consumeTags = resourceConsumer.GetConsumeTags(ctx);
         resourceConsumer.Consume(ctx);
         spellEffect.ApplyEffect(ctx, realEffectArea, consumeTags);
@@ -53,7 +53,7 @@ public class ModularSpell : Node, ISpell
         var ctx = MakeContext();
         var realTargetArea = targetArea.GetRealArea(ctx);
         if (!realTargetArea.Contains(target)) return false;
-        var realEffectArea = spellEffectArea.GetRealArea(ctx.SetBaseCell(target));
+        var realEffectArea = spellEffectArea.GetRealArea(ctx.SetTargetCell(target));
         if (realEffectArea.Count == 0) return false;
         if (!resourceConsumer.ConsumeAvailable(ctx)) return false;
         var consumeTags = resourceConsumer.GetConsumeTags(ctx);
@@ -75,7 +75,7 @@ public class ModularSpell : Node, ISpell
     public List<MapCell> GetEffectArea(MapCell target)
     {
         var ctx = MakeContext();
-        return spellEffectArea.GetRealArea(ctx.SetBaseCell(target));
+        return spellEffectArea.GetRealArea(ctx.SetTargetCell(target));
     }
 
     public List<MapCell> GetTargetArea()

@@ -4,13 +4,19 @@ public struct SpellComponentContext
 {
     public Character Caster;
     public TacticMap Map;
-    public MapCell BaseCell;
+    public MapCell TargetCell;
+    public MapCell SourceCell;
 
-    public SpellComponentContext(Character caster, TacticMap map, MapCell baseCell)
+    public SpellComponentContext(Character caster, TacticMap map, MapCell sourceCell, MapCell targetCell)
     {
         Caster = caster;
         Map = map;
-        BaseCell = baseCell; 
+        SourceCell = sourceCell;
+        TargetCell = targetCell; 
+    }
+
+    public SpellComponentContext(Character caster, TacticMap map, MapCell targetCell): this(caster, map, targetCell, targetCell)
+    {
     }
 
     public SpellComponentContext(Character caster, MapCell baseCell): this(caster, caster.Map, baseCell)
@@ -23,16 +29,21 @@ public struct SpellComponentContext
 
     public SpellComponentContext SetCaster(Character caster)
     {
-        return new SpellComponentContext(caster, Map, BaseCell);
+        return new SpellComponentContext(caster, Map, SourceCell, TargetCell);
     }
 
     public SpellComponentContext SetMap(TacticMap map)
     {
-        return new SpellComponentContext(Caster, map, BaseCell);
+        return new SpellComponentContext(Caster, map, SourceCell, TargetCell);
     }
 
-    public SpellComponentContext SetBaseCell(MapCell baseCell)
+    public SpellComponentContext SetTargetCell(MapCell targetCell)
     {
-        return new SpellComponentContext(Caster, Map, baseCell);
+        return new SpellComponentContext(Caster, Map, SourceCell, targetCell);
+    }
+
+    public SpellComponentContext SetSourceCell(MapCell sourceCell)
+    {
+        return new SpellComponentContext(Caster, Map, sourceCell, TargetCell);
     }
 }
