@@ -101,9 +101,7 @@ public class TacticBattle : Node
 
         /// mana move place
         
-		{
-            manaMover.ApplyChangesMap(manaMover.GetChangesMap());
-		}
+		
 		manaMover.ApplyChangesMap(manaMover.GetChangesMap());
 		tacticMap.ManaLayer.OnSync(tacticMap);
 
