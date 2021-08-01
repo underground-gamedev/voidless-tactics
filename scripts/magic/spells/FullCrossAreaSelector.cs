@@ -12,6 +12,6 @@ public class FullCrossAreaSelector : ForwardAreaSelector, IAreaSelector
     }
     public override string GetDescription(Character caster)
     {
-        return $"full cross: {range}";
+        return $"{TextHelpers.GetIconBBCode("3_79")} full cross: {range}";
     }
 }
