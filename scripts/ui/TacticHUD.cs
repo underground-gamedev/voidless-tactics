@@ -127,7 +127,7 @@ public class TacticHUD: Node
     public void DisplaySpellDescriptor(string description)
     {
         spellDescriptor.Visible = true;
-        spellDescriptor.GetNode<Label>("DescriptionLabel").Text = description;
+        spellDescriptor.GetNode<RichTextLabel>("DescriptionLabel").BbcodeText = description;
         spellDescriptor.RectSize = new Vector2(spellDescriptor.RectSize.x, 0);
     }
 

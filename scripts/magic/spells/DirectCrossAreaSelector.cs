@@ -11,6 +11,6 @@ public class DirectCrossAreaSelector : ForwardAreaSelector, IAreaSelector
     }
     public override string GetDescription(Character caster)
     {
-        return $"direct cross: {range}";
+        return $"{TextHelpers.GetIconBBCode("7_89")} direct cross: {range}";
     }
 }

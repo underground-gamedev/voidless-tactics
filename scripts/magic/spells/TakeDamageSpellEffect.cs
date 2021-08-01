@@ -35,6 +35,6 @@ public class TakeDamageSpellEffect : Node, ISpellEffect
 
     public string GetDescription(Character caster)
     {
-        return $"take damage: {damage}";
+        return $"{TextHelpers.GetIconBBCode("1_68")} take damage: {damage}";
     }
 }

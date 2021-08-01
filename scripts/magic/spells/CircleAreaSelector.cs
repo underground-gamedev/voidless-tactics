@@ -24,6 +24,6 @@ public class CircleAreaSelector : Node, IAreaSelector
 
     public string GetDescription(Character caster)
     {
-        return $"circle: {range}";
+        return $"{TextHelpers.GetIconBBCode("4_04")} circle: {range}";
     }
 }

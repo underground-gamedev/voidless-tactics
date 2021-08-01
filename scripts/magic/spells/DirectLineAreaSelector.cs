@@ -23,6 +23,6 @@ public class DirectLineAreaSelector : ForwardAreaSelector, IAreaSelector
 
     public override string GetDescription(Character caster)
     {
-        return $"relative line: {range}";
+        return $"{TextHelpers.GetIconBBCode("7_89")} relative line: {range}";
     }
 }

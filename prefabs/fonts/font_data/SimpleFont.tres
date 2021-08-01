@@ -1,5 +1,4 @@
 [gd_resource type="DynamicFontData" format=2]
 
 [resource]
-antialiased = false
-font_path = "res://assets/fonts/chary.ttf"
+font_path = "res://assets/fonts/alegreya/Alegreya-Regular.otf"

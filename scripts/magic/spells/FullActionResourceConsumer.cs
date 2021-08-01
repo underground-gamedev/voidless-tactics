@@ -21,6 +21,6 @@ public class FullActionResourceConsumer : Node, IResourceConsumer
 
     public string GetDescription(Character caster)
     {
-        return $"full action: {actionCount}";
+        return $"{TextHelpers.GetIconBBCode("4_57")} full action: {actionCount}";
     }
 }

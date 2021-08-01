@@ -11,6 +11,6 @@ public class DiagonalCrossAreaSelector : ForwardAreaSelector, IAreaSelector
     }
     public override string GetDescription(Character caster)
     {
-        return $"diagonal cross: {range}";
+        return $"{TextHelpers.GetIconBBCode("7_89")} diagonal cross: {range}";
     }
 }

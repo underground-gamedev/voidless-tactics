@@ -29,6 +29,6 @@ public class ManaResourceConsumer : Node, IResourceConsumer
 
     public string GetDescription(Character caster)
     {
-        return $"mana: {Math.Ceiling(manaRequired*100)}";
+        return $"{TextHelpers.GetIconBBCode("1_06")} mana: {Math.Ceiling(manaRequired*100)}";
     }
 }

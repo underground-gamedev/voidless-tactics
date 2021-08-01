@@ -35,6 +35,6 @@ public class HealSpellEffect : Node, ISpellEffect
 
     public string GetDescription(Character caster)
     {
-        return $"heal: {heal}";
+        return $"{TextHelpers.GetIconBBCode("4_16")} heal: {heal}";
     }
 }

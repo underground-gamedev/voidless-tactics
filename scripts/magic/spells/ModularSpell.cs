@@ -87,19 +87,15 @@ public class ModularSpell : Node, ISpell
     public string GetDescription()
     {
         return String.Join("\n", $@"
-            Name
+            [b]Name[/b]
             {this.Name}
-
-            Resource Require
+            [b]Resource Require[/b]
             {resourceConsumer.GetDescription(caster)} 
-
-            Target Area
+            [b]Target Area[/b]
             {targetArea.GetDescription(caster)}
-
-            Effect Area
+            [b]Effect Area[/b]
             {spellEffectArea.GetDescription(caster)}
-
-            Effect
+            [b]Effect[/b]
             {spellEffect.GetDescription(caster)}
         ".Trim().Split("\n").Select(line => line.Trim()));
     }

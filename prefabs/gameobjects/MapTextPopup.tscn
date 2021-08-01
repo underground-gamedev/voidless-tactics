@@ -1,25 +1,26 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/fonts/chary.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/map_objects/MapTextPopup.cs" type="Script" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 13
+size = 20
 outline_size = 1
 outline_color = Color( 0.360784, 0.360784, 0.360784, 1 )
 font_data = ExtResource( 1 )
 
 [node name="MapTextPopup" type="Node2D"]
+scale = Vector2( 0.65, 0.65 )
 z_index = 1
 script = ExtResource( 2 )
 moveDirection = Vector2( 0, -25 )
 duration = 1.2
 
 [node name="Label" type="Label" parent="."]
-margin_left = -20.0
-margin_top = -10.0
-margin_right = 20.0
-margin_bottom = 7.0
+margin_left = -14.004
+margin_top = -11.2758
+margin_right = 12.996
+margin_bottom = 8.72419
 grow_horizontal = 2
 grow_vertical = 2
 rect_pivot_offset = Vector2( 20, 10 )
