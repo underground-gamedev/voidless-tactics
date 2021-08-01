@@ -41,6 +41,14 @@ public class VisualLayer: Node, IMapLayer
         return (x, y);
     }
 
+    public int GetZ(TacticMap map, MapCell cell, int layer)
+    {
+        var totalCellCount = map.Width * map.Height;
+        var layerOffset = totalCellCount * layer;
+        var yOffset = cell.Y * map.Width;
+        return layerOffset + yOffset + cell.X;
+    }
+
     private (int, int) GetMousePosition()
     {
         var camera2D = GetNode<Camera2D>("/root/TacticBattle/Camera2D");

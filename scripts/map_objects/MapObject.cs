@@ -12,16 +12,21 @@ public class MapObject: Node2D
         Visible = false;
     }
 
-    public void SyncWithMap(TileMap tilemap)
+    public void SyncWithMap(TacticMap map)
     {
         var (x, y) = cell.Position;
-        SyncWithMap(tilemap, x, y);
+        SyncWithMap(map, x, y);
     }
 
-    public void SyncWithMap(TileMap tilemap, int x, int y)
+    public void SyncWithMap(TacticMap map, int x, int y)
     {
+        var tilemap = map.VisualLayer.TileMap;
         var offset = tilemap.CellSize * (new Vector2(x, y) + new Vector2(0.5f, 0.5f));
         GlobalPosition = tilemap.GlobalPosition + offset;
+        if (!map.IsOutOfBounds(x, y))
+        {
+            ZIndex = map.VisualLayer.GetZ(map, map.CellBy(x, y), 0);
+        }
     }
 
     public void SetCell(MapCell cell)
@@ -38,7 +43,7 @@ public class MapObject: Node2D
     {
         this.map = map;
         SetCell(cell);
-        SyncWithMap(map.VisualLayer.TileMap);
+        SyncWithMap(map);
         Visible = true;
     }
 

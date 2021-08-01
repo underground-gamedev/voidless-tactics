@@ -36,7 +36,7 @@ public class SpawnSelectedState: BaseControllerState
             if (spawnArea.Contains(cell))
             {
                 active.SetCell(cell);
-                active.SyncWithMap(controller.Map.VisualLayer.TileMap);
+                active.SyncWithMap(controller.Map);
             }
 
             return true;

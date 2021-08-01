@@ -114,7 +114,7 @@ public class MoveComponent : Node, IMoveComponent
         mapObject.SetCell(target);
         foreach(var (posX, posY) in path)
         {
-            mapObject.SyncWithMap(map.VisualLayer.TileMap, posX, posY);
+            mapObject.SyncWithMap(map, posX, posY);
             await this.Wait(0.1f);
         }
         moved = false;

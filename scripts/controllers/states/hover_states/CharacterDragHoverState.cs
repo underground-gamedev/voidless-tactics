@@ -12,7 +12,7 @@ public class CharacterDragHoverState : SimpleHoverState
     {
         base.OnCellHover(x, y);
         return this.CellByPos(x, y, (cell) => {
-            activeCharacter.SyncWithMap(activeCharacter.Map.VisualLayer.TileMap, x, y);
+            activeCharacter.SyncWithMap(activeCharacter.Map, x, y);
             return true;
         });
     }
@@ -35,6 +35,6 @@ public class CharacterDragHoverState : SimpleHoverState
         activeCharacter.Modulate = modulate;
         activeCharacter.ZIndex--;
 
-        activeCharacter.SyncWithMap(activeCharacter.Map.VisualLayer.TileMap);
+        activeCharacter.SyncWithMap(activeCharacter.Map);
     }
 }

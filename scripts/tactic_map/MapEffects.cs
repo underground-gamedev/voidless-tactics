@@ -11,6 +11,7 @@ public static class MapEffects
         var visualLayer = map.VisualLayer;
         var globalPosition = visualLayer.MapPositionToGlobal(cell.X, cell.Y);
         popup.GlobalPosition = globalPosition;
+        popup.ZIndex = visualLayer.GetZ(map, cell, 1);
 
         map.AddChild(popup);
         await popup.Animate(message, color);
