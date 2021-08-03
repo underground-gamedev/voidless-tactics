@@ -57,6 +57,7 @@ public class InteractableSelectState: BaseControllerState
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.DisplayMenuWithActions(active.GetGlobalTransformWithCanvas().origin + new Godot.Vector2(20f, 0.5f), availableActions);
+        hud?.DisplayActiveCharacter(active);
     }
 
     public override void OnLeave()
@@ -67,5 +68,6 @@ public class InteractableSelectState: BaseControllerState
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.HideMenuWithActions();
+        hud?.HideActiveCharacter();
     }
 }

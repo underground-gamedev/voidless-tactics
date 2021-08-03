@@ -48,6 +48,9 @@ public class AttackCharacterState: BaseControllerState
         {
             highlightLayer.Highlight(cell.X, cell.Y, MoveHighlightType.Attack);
         }
+
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.DisplayActiveCharacter(active);
     }
 
     public override void OnLeave()
@@ -55,5 +58,8 @@ public class AttackCharacterState: BaseControllerState
         var map = controller.Map;
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
+
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.HideActiveCharacter();
     }
 }

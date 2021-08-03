@@ -80,7 +80,7 @@ public class SpawnSelectedState: BaseControllerState
         map.MoveHighlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayCharacter(active);
+        hud?.DisplayActiveCharacter(active);
     }
     public override void OnLeave()
     {
@@ -88,7 +88,6 @@ public class SpawnSelectedState: BaseControllerState
         map.MoveHighlightLayer.Clear();
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.HideCharacterDisplay();
-        hud?.HideMenuWithActions();
+        hud?.HideActiveCharacter();
     }
 }

@@ -11,14 +11,14 @@ public class SimpleHoverState: BaseHoverState
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var result = this.CellByPos(x, y, (cell) => {
-            hud?.DisplayCharacter(cell.MapObject as Character);
+            hud?.DisplayHoverCharacter(cell.MapObject as Character);
             hud?.DisplayCellInfo(cell);
             return true;
         });
 
         if (result) return true;
 
-        hud?.DisplayCharacter(defaultCharacter);
+        hud?.DisplayHoverCharacter(defaultCharacter);
         hud?.HideCellInfo();
         return false;
     }
@@ -26,14 +26,14 @@ public class SimpleHoverState: BaseHoverState
     public override void OnEnter()
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayCharacter(defaultCharacter);
+        hud?.DisplayHoverCharacter(defaultCharacter);
         hud?.DisplayCellInfo(defaultCharacter?.Cell);
     }
 
     public override void OnLeave()
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.HideCharacterDisplay();
+        hud?.HideHoverCharacter();
         hud?.HideCellInfo();
     }
 }

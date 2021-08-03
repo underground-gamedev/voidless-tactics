@@ -10,6 +10,10 @@ public class TacticHUD: Node
     private Control cellInfo;
     private ActionContainer actions;
     private MarginContainer spellDescriptor;
+
+    private UnitInfoPanel hoverUnitInfo;
+    private UnitInfoPanel activeUnitInfo;
+
  
     [Signal]
     public delegate void ActionSelected(string actionName);
@@ -22,8 +26,8 @@ public class TacticHUD: Node
         turnHighlight = GetNode<Control>("TurnHighlight");
         turnHighlight.Visible = false;
 
-        characterInfo = GetNode<Control>("Labels");
-        characterInfo.Visible = false;
+        hoverUnitInfo = GetNode<UnitInfoPanel>("HoverUnitInfo");
+        activeUnitInfo = GetNode<UnitInfoPanel>("ActiveUnitInfo");
 
         actions = GetNode<ActionContainer>("ActionContainer");
         actions.Visible = false;
@@ -48,22 +52,23 @@ public class TacticHUD: Node
         EmitSignal(nameof(EndTurnPressed));
     }
 
-    public void DisplayCharacter(Character character)
+    public void DisplayHoverCharacter(Character character)
     {
-        if (character == null) { 
-            HideCharacterDisplay(); 
-            return;
-        }
-
-        characterInfo.Visible = true;
-        var stats = character.BasicStats;
-        characterInfo.GetNode<Label>("Labels/HealthLabel").Text = $"Health: {stats.Health.ActualValue}/{stats.Health.MaxValue}";
-        characterInfo.GetNode<Label>("Labels/DamageLabel").Text = $"Damage: {stats.Damage.ActualValue}";
-        characterInfo.GetNode<Label>("Labels/MoveLabel").Text = $"Speed: {stats.Speed.ActualValue}";
+        hoverUnitInfo.DisplayInfo(character);
     }
-    public void HideCharacterDisplay()
+    public void HideHoverCharacter()
     {
-        characterInfo.Visible = false;
+        hoverUnitInfo.HideInfo();
+    }
+
+    public void DisplayActiveCharacter(Character character)
+    {
+        activeUnitInfo.DisplayInfo(character);
+    }
+
+    public void HideActiveCharacter()
+    {
+        activeUnitInfo.HideInfo();
     }
 
     public void DisplayCellInfo(MapCell cell)

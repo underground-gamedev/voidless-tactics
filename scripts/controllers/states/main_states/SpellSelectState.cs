@@ -42,7 +42,7 @@ public class SpellSelectState: BaseControllerState
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var availableSpells = spellComponent.GetAvailableSpellNames();
         hud?.DisplayMenuWithActions(active.GetGlobalTransformWithCanvas().origin + new Godot.Vector2(20f, 0.5f), availableSpells);
-        hud?.DisplayCharacter(active);
+        hud?.DisplayActiveCharacter(active);
     }
 
     public override void OnLeave()
@@ -52,6 +52,6 @@ public class SpellSelectState: BaseControllerState
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.HideMenuWithActions();
-        hud?.HideCharacterDisplay();
+        hud?.HideActiveCharacter();
     }
 }

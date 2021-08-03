@@ -35,10 +35,15 @@ public class NonInteractableSelectState: BaseControllerState
             highlightLayer.Highlight(x, y, MoveHighlightType.NormalMove);
         }
 
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.DisplayActiveCharacter(active);
     }
 
     public override void OnLeave()
     {
         controller.Map.MoveHighlightLayer.Clear();
+
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.HideActiveCharacter();
     }
 }

@@ -40,7 +40,7 @@ public class MoveCharacterState: BaseControllerState
     public override void OnEnter()
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayCharacter(active);
+        hud?.DisplayActiveCharacter(active);
 
         var map = controller.Map;
         var highlightLayer = map.MoveHighlightLayer;
@@ -64,6 +64,9 @@ public class MoveCharacterState: BaseControllerState
 
     public override void OnLeave()
     {
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.HideActiveCharacter();
+
         var map = controller.Map;
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();

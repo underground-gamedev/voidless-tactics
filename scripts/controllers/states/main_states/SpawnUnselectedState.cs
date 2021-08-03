@@ -42,7 +42,7 @@ public class SpawnUnselectedState: BaseControllerState
     public override void OnLeave()
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.HideCharacterDisplay();
+        hud?.HideHoverCharacter();
         hud?.HideCellInfo();
 
         var map = controller.Map;

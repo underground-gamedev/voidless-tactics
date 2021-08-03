@@ -38,7 +38,7 @@ public class SpellUseState: BaseControllerState
     public override void OnEnter()
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayCharacter(active);
+        hud?.DisplayActiveCharacter(active);
         hud?.DisplayCellInfo(active.Cell);
         hud?.DisplaySpellDescriptor(activeSpell.GetDescription());
         
@@ -48,7 +48,7 @@ public class SpellUseState: BaseControllerState
     public override void OnLeave()
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.HideCharacterDisplay();
+        hud?.HideActiveCharacter();
         hud?.HideCellInfo();
         hud?.HideSpellDescriptor();
 
