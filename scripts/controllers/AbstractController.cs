@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 
 public abstract class AbstractController : Node
 {
-    protected bool isMyTurn;
     protected TacticMap tacticMap;
 
     protected List<Character> characters = new List<Character>();
@@ -18,8 +17,6 @@ public abstract class AbstractController : Node
         this.GetChilds<Character>(".").ForEach(child => AddCharacter(child));
         await SpawnUnits(map, startArea);
     }
-
-    public abstract Task SpawnUnits(TacticMap map, List<MapCell> startArea);
 
     public virtual void AddCharacter(Character character)
     {
@@ -40,26 +37,6 @@ public abstract class AbstractController : Node
         }
     }
 
-    public virtual void OnTurnStart()
-    {
-        isMyTurn = true;
-        foreach (var character in characters)
-        {
-            character.OnTurnStart();
-        }
-    }
-
-    public virtual void OnTurnEnd()
-    {
-        isMyTurn = false; 
-        foreach (var character in characters)
-        {
-            character.OnTurnEnd();
-        }
-    }
-
-    public bool IsMyTurn() 
-    {
-        return isMyTurn;
-    }
+    public abstract Task SpawnUnits(TacticMap map, List<MapCell> startArea);
+    public abstract Task MakeTurn(Character active);
 }

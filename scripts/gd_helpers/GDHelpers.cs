@@ -44,4 +44,9 @@ public static class GDHelpers
 	{
 		await node.ToSignal(node.GetTree().CreateTimer(time), "timeout");
 	}
+
+	public static void GroupTrigger(this SceneTree scene, string trigger, params object[] args)
+	{
+		scene.CallGroup(trigger, trigger, args);
+	}
 }

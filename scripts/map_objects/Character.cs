@@ -15,21 +15,33 @@ public class Character : MapObject, IBasicStatsPresenter
         set => controller = value;
     }
 
-    public void OnTurnStart()
-    {
-    }
-
     public void Kill()
     {
+        GetTree().GroupTrigger(GDTriggers.CharacterDeathTrigger, this);
+
+        Cell.MapObject = null;
         controller?.RemoveCharacter(this);
         GetParent().RemoveChild(this);
-        Cell.MapObject = null;
         QueueFree();
+    }
+
+    public void OnTurnStart()
+    {
     }
 
     public void OnTurnEnd()
     {
         BasicStats.MoveActions.ActualValue = BasicStats.MoveActions.MaxValue;
         BasicStats.FullActions.ActualValue = BasicStats.FullActions.MaxValue;
+    }
+
+    public void OnRoundStart()
+    {
+
+    }
+
+    public void OnRoundEnd()
+    {
+
     }
 }

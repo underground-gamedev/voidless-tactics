@@ -1,11 +1,10 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=1]
 [ext_resource path="res://prefabs/gameobjects/ActionMenuButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-BoldItalic.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://scripts/ui/ActionContainer.cs" type="Script" id=4]
 [ext_resource path="res://scripts/ui/TacticHUD.cs" type="Script" id=5]
-[ext_resource path="res://assets/graphics/end_turn_icon.png" type="Texture" id=6]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Italic.otf" type="DynamicFontData" id=7]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Regular.otf" type="DynamicFontData" id=8]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Bold.otf" type="DynamicFontData" id=9]
@@ -44,9 +43,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -96.0
+margin_left = -140.5
 margin_top = -61.0
-margin_right = 85.0
+margin_right = 140.5
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -67,23 +66,8 @@ margin_top = 1.0
 margin_right = -3.0
 margin_bottom = 8.0
 custom_fonts/font = SubResource( 1 )
-text = "End Turn"
+text = "Complete Placement"
 align = 2
-
-[node name="EndTurn" type="TextureButton" parent="EndTurnButton/Button"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -167.293
-margin_top = -51.1154
-margin_right = -151.293
-margin_bottom = -35.1154
-rect_scale = Vector2( 2, 2 )
-texture_normal = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TurnHighlight" type="Control" parent="."]
 pause_mode = 1
