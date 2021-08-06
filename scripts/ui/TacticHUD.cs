@@ -14,6 +14,7 @@ public class TacticHUD: Node
     private UnitInfoPanel hoverUnitInfo;
     private UnitInfoPanel activeUnitInfo;
     private Control completeButtonRoot;
+    private TurnQueueUI turnQueueUI;
  
     [Signal]
     public delegate void ActionSelected(string actionName);
@@ -41,6 +42,8 @@ public class TacticHUD: Node
 
         completeButtonRoot = GetNode<Control>("EndTurnButton");
         completeButtonRoot.Visible = false;
+        
+        turnQueueUI = GetNode<TurnQueueUI>("TurnQueue");
     }
 
     private void OnActionSelected(string actionName)
@@ -60,6 +63,11 @@ public class TacticHUD: Node
     public void HideHoverCharacter()
     {
         hoverUnitInfo.HideInfo();
+    }
+
+    public void SetPlannedQueue(List<Character> plannedQueue)
+    {
+        turnQueueUI.SetPlannedQueue(plannedQueue);
     }
 
     public void DisplayActiveCharacter(Character character)

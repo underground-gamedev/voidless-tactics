@@ -37,10 +37,11 @@ public class TurnManager: Node
             await hud.ShowTurnLabel(turnText);
 
             allCharacters.ForEach(ch => ch.OnRoundStart());
-
             plannedQueue = PlanQueue(allCharacters);
+            allCharacters.ForEach(ch => ch.OnPlanCalculated(plannedQueue));
             while(plannedQueue.Count > 0)
             {
+                hud?.SetPlannedQueue(plannedQueue);
                 var activeCharacter = plannedQueue.First();
                 plannedQueue.Remove(activeCharacter);
 
@@ -49,6 +50,8 @@ public class TurnManager: Node
                 await activeController.MakeTurn(activeCharacter);
                 activeCharacter.OnTurnEnd();
             }
+
+            hud?.SetPlannedQueue(plannedQueue);
 
             allCharacters.ForEach(ch => ch.OnRoundEnd());
         }
@@ -81,10 +84,6 @@ public class TurnManager: Node
             plannedQueue.AddRange(group);
         }
 
-        GD.Print("Planned:");
-        plannedQueue.ForEach(ch => {
-            GD.Print($"Controller: {ch.Controller.Name} | Character: {ch.Name}");
-        });
         return plannedQueue;
     }
 

@@ -1,15 +1,17 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=1]
 [ext_resource path="res://prefabs/gameobjects/ActionMenuButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-BoldItalic.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://scripts/ui/ActionContainer.cs" type="Script" id=4]
 [ext_resource path="res://scripts/ui/TacticHUD.cs" type="Script" id=5]
+[ext_resource path="res://prefabs/gameobjects/TurnQueueElement.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Italic.otf" type="DynamicFontData" id=7]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Regular.otf" type="DynamicFontData" id=8]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Bold.otf" type="DynamicFontData" id=9]
 [ext_resource path="res://prefabs/fonts/dynamic_fonts/RegularUIFont.tres" type="DynamicFont" id=10]
 [ext_resource path="res://prefabs/gameobjects/UnitInfoPanel.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scripts/ui/TurnQueueUI.cs" type="Script" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -175,6 +177,18 @@ anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -125.0
 margin_bottom = 0.0
+
+[node name="TurnQueue" type="HBoxContainer" parent="."]
+margin_right = 501.0
+margin_bottom = 72.0
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+queueElement = ExtResource( 6 )
+
+[node name="TurnQueueElement2" parent="TurnQueue" instance=ExtResource( 6 )]
+margin_bottom = 72.0
 
 [node name="CellInfo" type="Control" parent="."]
 anchor_left = 1.0

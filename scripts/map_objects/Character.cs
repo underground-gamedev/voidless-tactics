@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 
 public class Character : MapObject, IBasicStatsPresenter
@@ -14,6 +15,17 @@ public class Character : MapObject, IBasicStatsPresenter
         get => controller;
         set => controller = value;
     }
+
+    private Label turnOrderLabel;
+
+    public override void _Ready()
+    {
+        turnOrderLabel = GetNode<Label>("TurnOrder");
+        turnOrderLabel.Visible = false;
+    }
+
+    private int turnOrder = 0;
+    public int TurnOrder => turnOrder;
 
     public void Kill()
     {
@@ -38,6 +50,14 @@ public class Character : MapObject, IBasicStatsPresenter
     public void OnRoundStart()
     {
 
+    }
+
+    public void OnPlanCalculated(List<Character> plan)
+    {
+        var planIndex = plan.IndexOf(this);
+        turnOrder = planIndex + 1;
+        turnOrderLabel.Text = turnOrder.ToString();
+        turnOrderLabel.Visible = true;
     }
 
     public void OnRoundEnd()
