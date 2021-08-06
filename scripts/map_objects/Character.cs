@@ -10,22 +10,30 @@ public class Character : MapObject, IBasicStatsPresenter
     private Node components;
     public Node Components => components = components ?? GetNode<Node>("Components");
 
+    private Control characterHUD;
+    public Control CharacterHUD => characterHUD = characterHUD ?? GetNode<Control>("CharacterHUD");
+
+    private List<Node> propagateChilds = new List<Node>();
+
     private AbstractController controller;
     public AbstractController Controller {
         get => controller;
         set => controller = value;
     }
 
-    private Label turnOrderLabel;
-
     public override void _Ready()
     {
-        turnOrderLabel = GetNode<Label>("TurnOrder");
-        turnOrderLabel.Visible = false;
-    }
+        var baseComponents = new List<Node>() {
+            new TargetComponent(),
+            new TurnOrderComponent(),
+            new MoveComponent(),
+            new AttackComponent(),
+        };
+        baseComponents.ForEach(com => Components.AddChild(com));
 
-    private int turnOrder = 0;
-    public int TurnOrder => turnOrder;
+        propagateChilds.Add(Components);
+        propagateChilds.Add(CharacterHUD);
+    }
 
     public void Kill()
     {
@@ -39,29 +47,28 @@ public class Character : MapObject, IBasicStatsPresenter
 
     public void OnTurnStart()
     {
+        propagateChilds.ForEach(child => child.PropagateCall(nameof(OnTurnStart), this));
     }
 
     public void OnTurnEnd()
     {
         BasicStats.MoveActions.ActualValue = BasicStats.MoveActions.MaxValue;
         BasicStats.FullActions.ActualValue = BasicStats.FullActions.MaxValue;
+        propagateChilds.ForEach(child => child.PropagateCall(nameof(OnTurnEnd), this));
     }
 
     public void OnRoundStart()
     {
-
+        propagateChilds.ForEach(child => child.PropagateCall(nameof(OnRoundStart), this));
     }
 
-    public void OnPlanCalculated(List<Character> plan)
+    public void OnTurnPlanned(List<Character> plan)
     {
-        var planIndex = plan.IndexOf(this);
-        turnOrder = planIndex + 1;
-        turnOrderLabel.Text = turnOrder.ToString();
-        turnOrderLabel.Visible = true;
+        propagateChilds.ForEach(child => child.PropagateCall(nameof(OnTurnPlanned), this, plan));
     }
 
     public void OnRoundEnd()
     {
-
+        propagateChilds.ForEach(child => child.PropagateCall(nameof(OnRoundEnd), this));
     }
 }

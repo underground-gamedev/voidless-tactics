@@ -49,4 +49,9 @@ public static class GDHelpers
 	{
 		scene.CallGroup(trigger, trigger, args);
 	}
+
+	public static void PropagateCall(this Node node, string method, params object[] args)
+	{
+		node.PropagateCall(method, args: new Godot.Collections.Array(args));
+	}
 }

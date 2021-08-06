@@ -38,7 +38,7 @@ public class TurnManager: Node
 
             allCharacters.ForEach(ch => ch.OnRoundStart());
             plannedQueue = PlanQueue(allCharacters);
-            allCharacters.ForEach(ch => ch.OnPlanCalculated(plannedQueue));
+            allCharacters.ForEach(ch => ch.OnTurnPlanned(plannedQueue));
             while(plannedQueue.Count > 0)
             {
                 hud?.SetPlannedQueue(plannedQueue);

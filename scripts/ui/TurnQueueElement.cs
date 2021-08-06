@@ -2,6 +2,9 @@ using Godot;
 
 public class TurnQueueElement: Control
 {
+    [Export]
+    private Texture defaultTexture;
+
     private Character character;
     private Vector2 baseSize;
     private Vector2 baseScale;
@@ -15,11 +18,10 @@ public class TurnQueueElement: Control
     public void SetCharacter(Character character)
     {
         this.character = character;
-        var spriteNode = this.character.GetNode<AnimatedSprite>("Sprite");
-        if (spriteNode == null) return;
-        var frameTexture = spriteNode?.Frames?.GetFrame("default", 0);
-        Avatar.Texture = frameTexture;
-        GetNode<Label>("TurnOrder").Text = character.TurnOrder.ToString();
+        var avatarComponent = character.Components.FindChild<AvatarComponent>();
+        var characterTexture = avatarComponent?.Avatar ?? defaultTexture;
+        Avatar.Texture = characterTexture;
+        GetNode<Label>("TurnOrder").Text = character.Components.FindChild<TurnOrderComponent>().OrderNumber.ToString();
     }
 
     public void SetActive(bool enabled)
