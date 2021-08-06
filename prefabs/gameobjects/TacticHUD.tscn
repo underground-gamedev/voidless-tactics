@@ -40,6 +40,22 @@ font_data = ExtResource( 8 )
 [node name="TacticHUD" type="CanvasLayer"]
 script = ExtResource( 5 )
 
+[node name="TurnQueue" type="HBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 224.34
+margin_top = -72.0
+margin_right = 725.34
+grow_vertical = 0
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+queueElement = ExtResource( 6 )
+
+[node name="TurnQueueElement2" parent="TurnQueue" instance=ExtResource( 6 )]
+margin_bottom = 72.0
+
 [node name="EndTurnButton" type="Control" parent="."]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -167,28 +183,16 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -222.531
-margin_top = -257.795
-margin_right = -0.749268
-margin_bottom = -132.795
+margin_left = -223.0
+margin_top = -302.0
+margin_right = -1.0
+margin_bottom = -133.0
 
 [node name="ActiveUnitInfo" parent="." instance=ExtResource( 11 )]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -125.0
+margin_top = -169.0
 margin_bottom = 0.0
-
-[node name="TurnQueue" type="HBoxContainer" parent="."]
-margin_right = 501.0
-margin_bottom = 72.0
-script = ExtResource( 12 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-queueElement = ExtResource( 6 )
-
-[node name="TurnQueueElement2" parent="TurnQueue" instance=ExtResource( 6 )]
-margin_bottom = 72.0
 
 [node name="CellInfo" type="Control" parent="."]
 anchor_left = 1.0
