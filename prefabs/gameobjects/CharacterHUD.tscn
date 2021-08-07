@@ -13,9 +13,10 @@ font_data = ExtResource( 1 )
 
 [node name="CharacterHUD" type="Control"]
 margin_left = -8.0
-margin_top = -2.0
+margin_top = -14.0
 margin_right = 7.0
 margin_bottom = 3.0
+mouse_filter = 2
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -23,13 +24,11 @@ __meta__ = {
 
 [node name="OrderLabel" type="Label" parent="."]
 anchor_left = 1.0
-anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -1.62504
-margin_top = -33.25
-margin_right = 16.375
-margin_bottom = 3.75
+margin_left = -2.37504
+margin_top = -4.5
+margin_right = 15.625
+margin_bottom = 32.5
 rect_scale = Vector2( 0.25, 0.25 )
 custom_fonts/font = SubResource( 1 )
 text = "8"

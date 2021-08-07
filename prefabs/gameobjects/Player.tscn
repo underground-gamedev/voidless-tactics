@@ -188,3 +188,4 @@ __meta__ = {
 }
 
 [node name="CharacterHUD" parent="." instance=ExtResource( 5 )]
+margin_top = -24.0

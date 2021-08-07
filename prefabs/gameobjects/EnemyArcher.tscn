@@ -84,7 +84,6 @@ maxValue = 1
 modulate = Color( 0.890196, 0.584314, 0.627451, 1 )
 position = Vector2( 0.522, -12.018 )
 frames = SubResource( 3 )
-frame = 1
 playing = true
 flip_h = true
 __meta__ = {
@@ -92,3 +91,4 @@ __meta__ = {
 }
 
 [node name="CharacterHUD" parent="." instance=ExtResource( 10 )]
+margin_top = -23.0
