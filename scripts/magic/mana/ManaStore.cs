@@ -2,15 +2,15 @@ using System;
 
 public class ManaStore
 {
-    private int capacity;
+    private int storedValue;
     private int limit;
 
-    public int Capacity => capacity;
+    public int StoredValue => storedValue;
     public int Limit => limit;
 
-    public ManaStore(int capacity, int limit)
+    public ManaStore(int storedValue, int limit)
     {
-        this.capacity = capacity;
+        this.storedValue = storedValue;
         this.limit = limit; 
     }
 
@@ -21,9 +21,9 @@ public class ManaStore
         }
 
         var needCount = limit - current;
-        var wouldTake = Math.Min(needCount, capacity);
+        var wouldTake = Math.Min(needCount, storedValue);
         var newValue = current + wouldTake;
-        capacity -= wouldTake;
+        storedValue -= wouldTake;
         return newValue;
     }
 }
