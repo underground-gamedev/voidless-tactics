@@ -67,10 +67,9 @@ __meta__ = {
 [node name="TurnOrder" type="Label" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -28.9898
-margin_top = 0.127114
-margin_right = 50.0102
-margin_bottom = 77.1271
+margin_left = -65.0
+margin_right = 116.0
+margin_bottom = 77.0
 grow_horizontal = 0
 rect_scale = Vector2( 0.35, 0.35 )
 custom_fonts/font = SubResource( 1 )

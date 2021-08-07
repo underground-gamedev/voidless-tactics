@@ -21,7 +21,8 @@ public class TurnQueueElement: Control
         var avatarComponent = character.Components.FindChild<AvatarComponent>();
         var characterTexture = avatarComponent?.Avatar ?? defaultTexture;
         Avatar.Texture = characterTexture;
-        GetNode<Label>("TurnOrder").Text = character.Components.FindChild<TurnOrderComponent>().OrderNumber.ToString();
+        var orderNumber = character.Components.FindChild<TurnOrderComponent>().OrderNumber;
+        GetNode<Label>("TurnOrder").Text = orderNumber.ToString();
     }
 
     public void SetActive(bool enabled)
