@@ -79,7 +79,7 @@ actionCount = 1
 
 [node name="ManaConsumer" type="Node" parent="Components/SpellComponent/Magic Shot/ConsumerChain"]
 script = ExtResource( 14 )
-manaRequired = 0.1
+manaRequired = 10
 
 [node name="Magic Touch" type="Node" parent="Components/SpellComponent"]
 script = ExtResource( 10 )
@@ -108,7 +108,7 @@ actionCount = 1
 
 [node name="ManaConsumer" type="Node" parent="Components/SpellComponent/Magic Touch/ConsumerChain"]
 script = ExtResource( 14 )
-manaRequired = 0.15
+manaRequired = 15
 
 [node name="Heal" type="Node" parent="Components/SpellComponent"]
 script = ExtResource( 10 )
@@ -138,7 +138,7 @@ actionCount = 1
 
 [node name="ManaConsumer" type="Node" parent="Components/SpellComponent/Heal/ConsumerChain"]
 script = ExtResource( 14 )
-manaRequired = 0.1
+manaRequired = 10
 
 [node name="Stats" type="Node" parent="."]
 script = ExtResource( 3 )

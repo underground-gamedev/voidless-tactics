@@ -4,51 +4,61 @@ using Godot;
 public class ManaCell
 {
     private ManaType manaType;
-    private float density;
+    private int actualValue;
+    private ManaStore manaStore;
 
     public ManaType ManaType
     {
         get => manaType;
-        set {
-            manaType = value;
-            if (manaType == ManaType.None)
-                density = 0;
-            else if (density < 0.01f)
-                density = 0.01f;
-        }
     }
-    public float Density
+    
+    public int ActualValue
     {
-        get => density;
-        set {
-            if (value > 1) value = 1;
-            if (value < 0) value = 0;
-            density = value;
-            if (density <= 0.01) 
-                manaType = ManaType.None;
-            if (manaType == ManaType.None)
-                density = 0;
-        } 
+        get => actualValue;
     }
-
-    public ManaCell(ManaType type, float density)
-    {
-        this.ManaType = type;
-        this.Density = density;
-    }
-	public static int ComparisonByDensityToLowest(ManaCell x, ManaCell y)
-	{
-		//if (x == null && y == null)
-		//	return 0;
-		
-		if (x.density > y.density)
-			return 1;
-		return -1;
-	}
 
     public ManaCell()
     {
-        this.ManaType = ManaType.None;
-        this.Density = 0;
+        this.manaType = ManaType.None;
+        this.actualValue = 0;
+    }
+
+    public ManaCell(ManaType manaType, int actualValue)
+    {
+        Set(manaType, actualValue);
+    }
+
+    public int Consume(int needCount)
+    {
+        var wouldTake = Math.Min(actualValue, needCount);
+        actualValue -= wouldTake;
+        actualValue = manaStore?.Refill(actualValue) ?? actualValue;
+
+        if (actualValue == 0)
+        {
+            SetInfinity(ManaType.Wind, 15);
+        }
+
+        return wouldTake;
+    }
+
+    public void Add(int value)
+    {
+        var newValue = actualValue + (long)value;
+        actualValue = (int)Math.Min(newValue, int.MaxValue);
+    }
+
+    public void Set(ManaType type, int actualValue, ManaStore store = null)
+    {
+        this.manaType = type;
+        this.actualValue = actualValue;
+        this.manaStore = store;
+    }
+
+    public void SetInfinity(ManaType type, int limit)
+    {
+        this.manaType = type;
+        this.actualValue = limit;
+        this.manaStore = new ManaStore(int.MaxValue, limit);
     }
 }
