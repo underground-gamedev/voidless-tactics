@@ -25,7 +25,7 @@ public class CellChanges
 
 	public void SortByHiest()
 	{
-		manaCells.Sort(ManaCell.ComparisonByDensityToLowest);
+		manaCells.Sort((x, y) => x.ActualValue.CompareTo(y.ActualValue));
 	}
 }
 

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
-
-
 public class ManaMover
 {
 	public TacticMap originMap;
@@ -12,7 +10,6 @@ public class ManaMover
 	public ManaMover(TacticMap tacticMap)
 	{
 		originMap = tacticMap;
-		
 	}
 
 	public MapWithChanges GetChangesMap()
@@ -26,12 +23,12 @@ public class ManaMover
 				MapCell sourceMapCell = originMap.CellBy(x, y);
 				ManaCell sourceManaCell = sourceMapCell.Mana;
 
-				if (!sourceMapCell.Solid && sourceManaCell.ManaType != ManaType.None)
+				if (!sourceMapCell.Solid && !(new List<ManaType>(){ManaType.Wind, ManaType.None}).Contains(sourceManaCell.ManaType))
 				{
 					List<MapCell> solidMapCells = originMap.DirectNeighboursFor(x, y);
 					solidMapCells.RemoveAll(MapCell.IsSolid);
 
-					int manaSpreadOut = sourceManaCell.Density / (solidMapCells.Count + 1);
+					int manaSpreadOut = sourceManaCell.ActualValue / (solidMapCells.Count + 1);
 					if (manaSpreadOut > 0f)
 					{
 
@@ -40,7 +37,7 @@ public class ManaMover
 					foreach (var targetCell in solidMapCells)
 					{
 						mapWithChanges.AddChange(new Cords2D(targetCell.X, targetCell.Y), new Cords2D(sourceMapCell.X, sourceMapCell.Y), new ManaCell(sourceManaCell.ManaType, manaSpreadOut));
-						GDPrint.Print($"spread {sourceMapCell.X} {sourceMapCell.Y} to {targetCell.X} {targetCell.Y} {sourceManaCell.Density} {manaSpreadOut} {solidMapCells.Count}");
+						GDPrint.Print($"spread {sourceMapCell.X} {sourceMapCell.Y} to {targetCell.X} {targetCell.Y} {sourceManaCell.ActualValue} {manaSpreadOut} {solidMapCells.Count}");
 					}
 
 				}
@@ -60,7 +57,7 @@ public class ManaMover
 			{
 				MapCell mapCell = originMap.CellBy(x, y);
 				ManaCell manaCell = mapCell.Mana;
-				double startDensity = manaCell.Density;
+				double startDensity = manaCell.ActualValue;
 				ManaType startManaType = manaCell.ManaType;
 
 				GDPrint.Print($"{x} {y} cycle");
@@ -82,24 +79,25 @@ public class ManaMover
 						ManaCell sourceManaCell = originMap.CellBy(sourceCords2D).Mana;
 
 						GDPrint.Print($"compare {x} {y} {manaCell.ManaType} {sourceCords2D.x} {sourceCords2D.y} {sourceManaCell.ManaType}");
-						if (manaCell.ManaType == ManaType.None || manaCell.ManaType == sourceManaCell.ManaType)
+						if (manaCell.ManaType == ManaType.Wind || manaCell.ManaType == sourceManaCell.ManaType)
 						{
 
-							float diff = sourceManaCell.Density - manaCell.Density;
+							float diff = sourceManaCell.ActualValue - manaCell.ActualValue;
 							if (diff > 0f)
 							{
-								GDPrint.Print($"{x} {y} change {changeMana.Density} {changeMana.ManaType} source {sourceCords2D.x} {sourceCords2D.y}");
+								GDPrint.Print($"{x} {y} change {changeMana.ActualValue} {changeMana.ManaType} source {sourceCords2D.x} {sourceCords2D.y}");
 								
 								// if source sell have few mana
-								changeMana.Density = Mathf.Clamp(changeMana.Density, 0, sourceManaCell.Density);
+								if (changeMana.ActualValue > sourceManaCell.ActualValue) {
+									changeMana.Consume(changeMana.ActualValue - sourceManaCell.ActualValue);
+								}
 								//if target cell have too much mana
 								// changeMana.Density = Mathf.Clamp(changeMana.Density, 0, 1 - manaCell.Density);
 
-								var newDensity = manaCell.Density + changeMana.Density;
-								manaCell.ManaType = sourceManaCell.ManaType;
-								manaCell.Density = newDensity;
+								var newDensity = manaCell.ActualValue + changeMana.ActualValue;
+								manaCell.Set(sourceManaCell.ManaType, newDensity);
 
-								sourceManaCell.Density -= changeMana.Density;
+								sourceManaCell.Consume(changeMana.ActualValue);
 							}
 							else
 							{
@@ -109,7 +107,7 @@ public class ManaMover
 					}
 
 				}
-				GDPrint.Print($"{x} {y} from {startDensity} {startManaType} to {manaCell.Density} {manaCell.ManaType}");
+				GDPrint.Print($"{x} {y} from {startDensity} {startManaType} to {manaCell.ActualValue} {manaCell.ManaType}");
 			}
 		}
 
