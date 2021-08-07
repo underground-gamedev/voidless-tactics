@@ -22,13 +22,12 @@ public class ManaMapGenerator: Node
         {
             if (!cell.Solid)
             {
-                if ((float)rand.NextDouble() < 0.8f) continue;
-                var manaType = rand.Next(1, 4);
-                cell.Mana.ManaType = (ManaType)manaType;
-                cell.Mana.Density = (float)rand.NextDouble() * 2;
-
-                if (cell.Mana.ManaType == ManaType.None)
-                    cell.Mana.Density = 0;
+                if ((float)rand.NextDouble() < 0.8f) {
+                    cell.Mana.SetInfinity(ManaType.Wind, 15);
+                    continue;
+                }
+                var manaType = (ManaType)rand.Next(1, 4);
+                cell.Mana.Set(manaType, rand.Next(50, 100));
             }
         }
 

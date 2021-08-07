@@ -2,6 +2,10 @@ public enum ManaType
 {
     None,
     Nature,
-    Fire,
+    Magma,
     Water,
+    Wind,
+    Arcane,
+    Fire,
+    Earth,
 }

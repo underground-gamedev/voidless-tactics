@@ -1,9 +1,8 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://prefabs/gameobjects/TacticMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/scenes/TacticBattle.cs" type="Script" id=2]
 [ext_resource path="res://prefabs/gameobjects/Player.tscn" type="PackedScene" id=3]
-[ext_resource path="res://prefabs/gameobjects/EnemyArcher.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/gd_helpers/DraggingCamera.cs" type="Script" id=5]
 [ext_resource path="res://prefabs/gameobjects/TacticHUD.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/tactic_map/SolidMapGenerator.cs" type="Script" id=7]
@@ -292,4 +291,4 @@ script = ExtResource( 15 )
 
 [node name="EnemyUnit3" parent="Players/Test Team 2" instance=ExtResource( 12 )]
 
-[node name="EnemyArcher" parent="Players/Test Team 2" instance=ExtResource( 4 )]
+[node name="EnemyUnit4" parent="Players/Test Team 2" instance=ExtResource( 12 )]

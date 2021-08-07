@@ -255,7 +255,7 @@ margin_top = 47.0
 margin_right = 203.0
 margin_bottom = 83.0
 custom_fonts/font = ExtResource( 10 )
-text = "Density: 45.3%"
+text = "Density: 45"
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false

@@ -19,8 +19,9 @@ public class ManaLayer: Node, IMapLayer
 
         var manaTiles = new Dictionary<ManaType, int>() {
             [ManaType.Nature] = natureMana,
-            [ManaType.Fire] = fireMana,
+            [ManaType.Magma] = fireMana,
             [ManaType.Water] = waterMana,
+            [ManaType.Wind] = -1,
             [ManaType.None] = -1,
         };
 
