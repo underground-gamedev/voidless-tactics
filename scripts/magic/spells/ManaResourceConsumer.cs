@@ -4,7 +4,7 @@ using Godot;
 public class ManaResourceConsumer : Node, IResourceConsumer
 {
     [Export]
-    private float manaRequired; 
+    private int manaRequired; 
     public void Consume(SpellComponentContext ctx)
     {
         ctx.TargetCell.Mana.Density -= manaRequired;
@@ -29,6 +29,6 @@ public class ManaResourceConsumer : Node, IResourceConsumer
 
     public string GetDescription(Character caster)
     {
-        return $"{TextHelpers.GetIconBBCode("1_06")} mana: {Math.Ceiling(manaRequired*100)}";
+        return $"{TextHelpers.GetIconBBCode("1_06")} mana: {manaRequired}";
     }
 }

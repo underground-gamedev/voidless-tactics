@@ -31,7 +31,7 @@ public class ManaMover
 					List<MapCell> solidMapCells = originMap.DirectNeighboursFor(x, y);
 					solidMapCells.RemoveAll(MapCell.IsSolid);
 
-					float manaSpreadOut = sourceManaCell.Density / (solidMapCells.Count + 1);
+					int manaSpreadOut = sourceManaCell.Density / (solidMapCells.Count + 1);
 					if (manaSpreadOut > 0f)
 					{
 
@@ -91,9 +91,9 @@ public class ManaMover
 								GDPrint.Print($"{x} {y} change {changeMana.Density} {changeMana.ManaType} source {sourceCords2D.x} {sourceCords2D.y}");
 								
 								// if source sell have few mana
-								changeMana.Density = Mathf.Clamp(changeMana.Density, 0f, sourceManaCell.Density);
+								changeMana.Density = Mathf.Clamp(changeMana.Density, 0, sourceManaCell.Density);
 								//if target cell have too much mana
-								changeMana.Density = Mathf.Clamp(changeMana.Density, 0f, 1f - manaCell.Density);
+								// changeMana.Density = Mathf.Clamp(changeMana.Density, 0, 1 - manaCell.Density);
 
 								var newDensity = manaCell.Density + changeMana.Density;
 								manaCell.ManaType = sourceManaCell.ManaType;

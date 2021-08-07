@@ -11,7 +11,7 @@ public class MagicShotSpell: Node, ISpell
     [Export]
     private int damage;
     [Export]
-    private float cost;
+    private int cost;
 
     Character character;
 
@@ -100,6 +100,6 @@ public class MagicShotSpell: Node, ISpell
         return $"Spell: {Name}\n" +
                $"Damage: {damage}\n" +
                $"Range: {range}\n" +
-               $"Cost: {Mathf.Round(cost*100)}%";
+               $"Cost: {cost}";
     }
 }
