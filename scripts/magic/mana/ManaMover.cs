@@ -23,7 +23,7 @@ public class ManaMover
 				MapCell sourceMapCell = originMap.CellBy(x, y);
 				ManaCell sourceManaCell = sourceMapCell.Mana;
 
-				if (!sourceMapCell.Solid && !(new List<ManaType>(){ManaType.Wind, ManaType.None}).Contains(sourceManaCell.ManaType))
+				if (!sourceMapCell.Solid && sourceManaCell.ManaType != ManaType.None)
 				{
 					List<MapCell> solidMapCells = originMap.DirectNeighboursFor(x, y);
 					solidMapCells.RemoveAll(MapCell.IsSolid);
@@ -79,7 +79,7 @@ public class ManaMover
 						ManaCell sourceManaCell = originMap.CellBy(sourceCords2D).Mana;
 
 						GDPrint.Print($"compare {x} {y} {manaCell.ManaType} {sourceCords2D.x} {sourceCords2D.y} {sourceManaCell.ManaType}");
-						if (manaCell.ManaType == ManaType.Wind || manaCell.ManaType == sourceManaCell.ManaType)
+						if (manaCell.ManaType == ManaType.None || manaCell.ManaType == sourceManaCell.ManaType)
 						{
 
 							float diff = sourceManaCell.ActualValue - manaCell.ActualValue;
