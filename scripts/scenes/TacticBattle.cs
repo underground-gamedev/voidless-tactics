@@ -8,10 +8,6 @@ public class TacticBattle : Node
 {
     private TacticMap tacticMap;
     private List<AbstractController> controllers;
-
-    AbstractController activeController;
-
-    ManaMover manaMover;
     private Random rand = new Random();
 
     public override void _Ready()
@@ -33,11 +29,11 @@ public class TacticBattle : Node
         camera.Connect(nameof(DraggingCamera.OnCameraMove), hud, nameof(TacticHUD.OnCameraDrag));
         camera.Connect(nameof(DraggingCamera.OnCameraZoom), hud, nameof(TacticHUD.OnCameraZoom));
 
-        manaMover = new ManaMover(tacticMap);
+        var turnManager = GetNode<TurnManager>("TurnManager");
 
-        hud.Connect(nameof(TacticHUD.EndTurnPressed), this, nameof(HumanEndTurn));
-
-        Task.Run(BattleInit);
+        Task.Run(BattleInit)
+            .GetAwaiter()
+            .OnCompleted(() => turnManager.TurnLoop(controllers));
     }
 
     public async Task BattleInit()
@@ -55,7 +51,7 @@ public class TacticBattle : Node
             }
             else if (controller is AIController)
             {
-                controller.Connect(nameof(AIController.OnEndTurn), this, nameof(EndTurn));
+                // controller.Connect(nameof(AIController.OnEndTurn), this, nameof(EndTurn));
             }
             else
             {
@@ -64,10 +60,6 @@ public class TacticBattle : Node
 
             await controller.Init(tacticMap, GetSpawnArea());
         }
-
-        await UserInterfaceService.GetHUD<TacticHUD>().ShowTurnLabel("Battle Start");
-        activeController = controllers.First();
-        activeController.OnTurnStart();
     }
 
 
@@ -81,33 +73,5 @@ public class TacticBattle : Node
                     .Select(pos => tacticMap.CellBy(pos.Item1, pos.Item2))
                     .Where(cell => cell.MapObject == null)
                     .ToList();
-    }
-
-    private async void HumanEndTurn()
-    {
-        if (activeController is HumanController)
-        {
-            await EndTurn();
-        }
-    }
-
-    private async Task EndTurn()
-    {
-        var activeId = controllers.IndexOf(activeController);
-        var nextId = (activeId + 1) % controllers.Count;
-        var nextController = controllers[nextId];
-        activeController.OnTurnEnd();
-        activeController = nextController;
-
-        /// mana move place
-        
-		
-		manaMover.ApplyChangesMap(manaMover.GetChangesMap());
-		tacticMap.ManaLayer.OnSync(tacticMap);
-
-        var turnText = $"{activeController.Name} Turn";
-        await UserInterfaceService.GetHUD<TacticHUD>().ShowTurnLabel(turnText);
-
-        nextController.OnTurnStart();
     }
 }

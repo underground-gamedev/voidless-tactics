@@ -13,13 +13,14 @@ public class TacticHUD: Node
 
     private UnitInfoPanel hoverUnitInfo;
     private UnitInfoPanel activeUnitInfo;
-
+    private Control completeButtonRoot;
+    private TurnQueueUI turnQueueUI;
  
     [Signal]
     public delegate void ActionSelected(string actionName);
 
     [Signal]
-    public delegate void EndTurnPressed();
+    public delegate void CompletePlacementPressed();
 
     public override void _Ready()
     {
@@ -39,7 +40,10 @@ public class TacticHUD: Node
         spellDescriptor = GetNode<MarginContainer>("SpellDescriptor");
         spellDescriptor.Visible = false;
 
-        GetNode<Button>("EndTurnButton/Button").Connect("pressed", this, nameof(OnEndTurnPressed));
+        completeButtonRoot = GetNode<Control>("EndTurnButton");
+        completeButtonRoot.Visible = false;
+        
+        turnQueueUI = GetNode<TurnQueueUI>("TurnQueue");
     }
 
     private void OnActionSelected(string actionName)
@@ -49,7 +53,7 @@ public class TacticHUD: Node
 
     private void OnEndTurnPressed()
     {
-        EmitSignal(nameof(EndTurnPressed));
+        EmitSignal(nameof(CompletePlacementPressed));
     }
 
     public void DisplayHoverCharacter(Character character)
@@ -61,6 +65,11 @@ public class TacticHUD: Node
         hoverUnitInfo.HideInfo();
     }
 
+    public void SetPlannedQueue(List<Character> plannedQueue)
+    {
+        turnQueueUI.SetPlannedQueue(plannedQueue);
+    }
+
     public void DisplayActiveCharacter(Character character)
     {
         activeUnitInfo.DisplayInfo(character);
@@ -69,6 +78,13 @@ public class TacticHUD: Node
     public void HideActiveCharacter()
     {
         activeUnitInfo.HideInfo();
+    }
+
+    public async Task WaitCompleteButtonPressed()
+    {
+        completeButtonRoot.Visible = true;
+        await ToSignal(completeButtonRoot.GetNode<Button>("Button"), "pressed");
+        completeButtonRoot.Visible = false;
     }
 
     public void DisplayCellInfo(MapCell cell)

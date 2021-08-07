@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://prefabs/gameobjects/TacticMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/scenes/TacticBattle.cs" type="Script" id=2]
@@ -16,6 +16,7 @@
 [ext_resource path="res://scripts/tactic_map/MoveHighlightLayer.cs" type="Script" id=14]
 [ext_resource path="res://scripts/controllers/AIController.cs" type="Script" id=15]
 [ext_resource path="res://scripts/tactic_map/ManaMapGenerator.cs" type="Script" id=16]
+[ext_resource path="res://scripts/services/TurnManager.cs" type="Script" id=17]
 [ext_resource path="res://assets/graphics/mana_tiles.png" type="Texture" id=20]
 [ext_resource path="res://scripts/tactic_map/ManaLayer.cs" type="Script" id=21]
 
@@ -200,6 +201,9 @@ resource_local_to_scene = true
 
 [node name="TacticBattle" type="Node"]
 script = ExtResource( 2 )
+
+[node name="TurnManager" type="Node" parent="."]
+script = ExtResource( 17 )
 
 [node name="TacticHUD" parent="." instance=ExtResource( 6 )]
 

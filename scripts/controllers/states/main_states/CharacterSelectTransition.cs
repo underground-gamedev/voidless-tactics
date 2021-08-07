@@ -10,7 +10,7 @@ public class CharacterSelectTransition: BaseControllerState
     public override void OnEnter()
     {
         BaseControllerState selectState = new InteractableSelectState(character);
-        if (character.Controller != controller || !controller.IsMyTurn())
+        if (character.Controller != controller)
         {
             selectState = new NonInteractableSelectState(character); 
         }
