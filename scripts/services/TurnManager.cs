@@ -49,12 +49,19 @@ public class TurnManager: Node
                 activeCharacter.OnTurnStart();
                 await activeController.MakeTurn(activeCharacter);
                 activeCharacter.OnTurnEnd();
+
+                plannedQueue = SortByInitiative(plannedQueue);
             }
 
             hud?.SetPlannedQueue(plannedQueue);
 
             allCharacters.ForEach(ch => ch.OnRoundEnd());
         }
+    }
+
+    private List<Character> SortByInitiative(List<Character> plannedQueue)
+    {
+        return plannedQueue.OrderByDescending(ch => ch.BasicStats.Initiative.ModifiedActualValue).ToList();
     }
 
     private List<Character> PlanQueue(List<Character> allCharacters)
