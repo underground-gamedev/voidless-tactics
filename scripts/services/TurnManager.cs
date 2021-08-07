@@ -9,7 +9,7 @@ public class TurnManager: Node
     private List<Character> plannedQueue;
     private int roundNumber;
     private Random rand = new Random();
-
+    public Action OnTurnEnd;
     public override void _Ready()
     {
         AddToGroup(GDTriggers.CharacterDeathTrigger);
@@ -52,7 +52,7 @@ public class TurnManager: Node
 
                 plannedQueue = SortByInitiative(plannedQueue);
             }
-
+            OnTurnEnd?.Invoke();
             hud?.SetPlannedQueue(plannedQueue);
 
             allCharacters.ForEach(ch => ch.OnRoundEnd());

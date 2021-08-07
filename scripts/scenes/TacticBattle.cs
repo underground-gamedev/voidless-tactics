@@ -31,10 +31,19 @@ public class TacticBattle : Node
 
         var turnManager = GetNode<TurnManager>("TurnManager");
 
+        var manamover = new ManaMover(tacticMap);
+        turnManager.OnTurnEnd += manamover.MoveMana;
+        turnManager.OnTurnEnd += UpdateManaVisual;
+
         Task.Run(BattleInit)
             .GetAwaiter()
             .OnCompleted(() => turnManager.TurnLoop(controllers));
     }
+
+    public void UpdateManaVisual()
+	{
+        tacticMap.ManaLayer.OnSync(tacticMap);
+	}
 
     public async Task BattleInit()
     {
