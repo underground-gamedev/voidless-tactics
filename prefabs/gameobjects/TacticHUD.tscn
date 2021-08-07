@@ -1,16 +1,17 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=1]
 [ext_resource path="res://prefabs/gameobjects/ActionMenuButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-BoldItalic.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://scripts/ui/ActionContainer.cs" type="Script" id=4]
 [ext_resource path="res://scripts/ui/TacticHUD.cs" type="Script" id=5]
-[ext_resource path="res://assets/graphics/end_turn_icon.png" type="Texture" id=6]
+[ext_resource path="res://prefabs/gameobjects/TurnQueueElement.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Italic.otf" type="DynamicFontData" id=7]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Regular.otf" type="DynamicFontData" id=8]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Bold.otf" type="DynamicFontData" id=9]
 [ext_resource path="res://prefabs/fonts/dynamic_fonts/RegularUIFont.tres" type="DynamicFont" id=10]
 [ext_resource path="res://prefabs/gameobjects/UnitInfoPanel.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scripts/ui/TurnQueueUI.cs" type="Script" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -39,14 +40,30 @@ font_data = ExtResource( 8 )
 [node name="TacticHUD" type="CanvasLayer"]
 script = ExtResource( 5 )
 
+[node name="TurnQueue" type="HBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 224.34
+margin_top = -72.0
+margin_right = 725.34
+grow_vertical = 0
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+queueElement = ExtResource( 6 )
+
+[node name="TurnQueueElement2" parent="TurnQueue" instance=ExtResource( 6 )]
+margin_bottom = 72.0
+
 [node name="EndTurnButton" type="Control" parent="."]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -96.0
+margin_left = -140.5
 margin_top = -61.0
-margin_right = 85.0
+margin_right = 140.5
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -67,23 +84,8 @@ margin_top = 1.0
 margin_right = -3.0
 margin_bottom = 8.0
 custom_fonts/font = SubResource( 1 )
-text = "End Turn"
+text = "Complete Placement"
 align = 2
-
-[node name="EndTurn" type="TextureButton" parent="EndTurnButton/Button"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -167.293
-margin_top = -51.1154
-margin_right = -151.293
-margin_bottom = -35.1154
-rect_scale = Vector2( 2, 2 )
-texture_normal = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TurnHighlight" type="Control" parent="."]
 pause_mode = 1
@@ -181,15 +183,15 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -222.531
-margin_top = -257.795
-margin_right = -0.749268
-margin_bottom = -132.795
+margin_left = -223.0
+margin_top = -302.0
+margin_right = -1.0
+margin_bottom = -133.0
 
 [node name="ActiveUnitInfo" parent="." instance=ExtResource( 11 )]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -125.0
+margin_top = -169.0
 margin_bottom = 0.0
 
 [node name="CellInfo" type="Control" parent="."]
@@ -271,10 +273,12 @@ __meta__ = {
 }
 
 [node name="SpellDescriptor" type="MarginContainer" parent="."]
-margin_left = 1.0
-margin_top = 168.0
-margin_right = 308.0
-margin_bottom = 205.954
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -254.0
+margin_right = 307.0
+margin_bottom = -175.0
+grow_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -282,7 +286,7 @@ __meta__ = {
 [node name="Background" type="ColorRect" parent="SpellDescriptor"]
 modulate = Color( 1, 1, 1, 0.611765 )
 margin_right = 307.0
-margin_bottom = 74.0
+margin_bottom = 79.0
 color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -299,7 +303,7 @@ __meta__ = {
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="SpellDescriptor"]
 margin_right = 307.0
-margin_bottom = 74.0
+margin_bottom = 79.0
 custom_fonts/bold_italics_font = SubResource( 3 )
 custom_fonts/italics_font = SubResource( 4 )
 custom_fonts/bold_font = SubResource( 5 )

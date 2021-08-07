@@ -13,6 +13,14 @@ public class HumanController: AbstractController
 
     public TacticMap Map => tacticMap;
 
+    [Signal]
+    public delegate void EndTurn();
+
+    public void TriggerEndTurn()
+    {
+        EmitSignal(nameof(EndTurn));
+    }
+
     public HumanController()
     {
         hoverStates = new StateStack<BaseHoverState>(this, new EventConsumerHoverState());
@@ -31,24 +39,22 @@ public class HumanController: AbstractController
 		}
 
         mainStates.PushState(new SpawnUnselectedState(startArea));
-        // hoverStates.PushState(new SimpleHoverState());
-        await ToSignal(UserInterfaceService.GetHUD<TacticHUD>(), nameof(TacticHUD.EndTurnPressed));
-        mainStates.Clear();
-        // hoverStates.Clear();
-    }
-
-    public override void OnTurnStart()
-    {
-        base.OnTurnStart();
-        mainStates.PushState(new UnselectedControllerState());
         hoverStates.PushState(new SimpleHoverState());
-    }
 
-    public override void OnTurnEnd()
-    {
+        await UserInterfaceService.GetHUD<TacticHUD>().WaitCompleteButtonPressed();
         mainStates.Clear();
         hoverStates.Clear();
-        base.OnTurnEnd();
+    }
+
+    public override async Task MakeTurn(Character active)
+    {
+        mainStates.PushState(new InteractableSelectState(active));
+        hoverStates.PushState(new SimpleHoverState());
+
+        await ToSignal(this, nameof(EndTurn));
+
+        mainStates.Clear();
+        hoverStates.Clear();
     }
 
     public void OnDragStart(int x, int y)

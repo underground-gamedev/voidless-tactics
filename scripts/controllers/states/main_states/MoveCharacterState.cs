@@ -31,7 +31,7 @@ public class MoveCharacterState: BaseControllerState
                 .FindChild<IMoveComponent>()
                 .MoveTo(cell)
                 .GetAwaiter()
-                .OnCompleted(() => controller.MainStates.PopState());
+                .OnCompleted(() => controller.TriggerEndTurn());
 
             return true;
         });

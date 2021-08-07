@@ -33,7 +33,7 @@ public class AttackCharacterState: BaseControllerState
             attackComponent
                 .Attack(targetComponent)
                 .GetAwaiter()
-                .OnCompleted(() => controller.MainStates.PopState());
+                .OnCompleted(() => controller.TriggerEndTurn());
             return true;
         });
     }

@@ -5,6 +5,7 @@ public class UnitInfoPanel: Control
     private Label healthLabel;
     private Label damageLabel;
     private Label moveLabel;
+    private Label initiativeLabel;
 
     public override void _Ready()
     {
@@ -12,6 +13,7 @@ public class UnitInfoPanel: Control
         healthLabel = labels.GetNode<Label>("HealthLabel");
         damageLabel = labels.GetNode<Label>("DamageLabel");
         moveLabel = labels.GetNode<Label>("MoveLabel");
+        initiativeLabel = labels.GetNode<Label>("InitiativeLabel");
 
         Hide();
     }
@@ -28,6 +30,7 @@ public class UnitInfoPanel: Control
         healthLabel.Text = $"Health: {stats.Health.ActualValue}/{stats.Health.MaxValue}";
         damageLabel.Text = $"Damage: {stats.Damage.ActualValue}";
         moveLabel.Text = $"Speed: {stats.Speed.ActualValue}";
+        initiativeLabel.Text = $"Initiative: {stats.Initiative.MinValue}-{stats.Initiative.MaxValue}";
     }
 
     public void HideInfo()
