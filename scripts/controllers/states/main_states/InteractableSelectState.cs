@@ -16,14 +16,14 @@ public class InteractableSelectState: BaseControllerState
         this.active = character;
     }
 
-    public override bool CellClick(int x, int y)
-    {
-        controller.MainStates.PopState();
-        return this.CharacterByPos(x, y, (character) => {
-            controller.MainStates.PushState(new CharacterSelectTransition(character));
-            return true;
-        });
-    }
+    // public override bool CellClick(int x, int y)
+    // {
+    //     controller.MainStates.PopState();
+    //     return this.CharacterByPos(x, y, (character) => {
+    //         controller.MainStates.PushState(new CharacterSelectTransition(character));
+    //         return true;
+    //     });
+    // }
 
     public override bool MenuActionSelected(string action)
     {

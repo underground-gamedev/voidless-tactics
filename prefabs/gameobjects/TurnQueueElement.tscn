@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/graphics/player_avatar.png" type="Texture" id=1]
+[ext_resource path="res://scripts/ui/TurnQueueElement.cs" type="Script" id=2]
+[ext_resource path="res://assets/fonts/chary.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://assets/graphics/no_avatar.png" type="Texture" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 80
+extra_spacing_top = -2
+extra_spacing_bottom = -1
+font_data = ExtResource( 3 )
+
+[node name="TurnQueueElement" type="Control"]
+pause_mode = 1
+margin_right = 65.0
+margin_bottom = 65.0
+rect_min_size = Vector2( 65, 65 )
+mouse_filter = 2
+input_pass_on_modal_close_click = false
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+defaultTexture = ExtResource( 4 )
+
+[node name="Background" type="ColorRect" parent="."]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1.23744
+margin_top = -0.353554
+margin_right = -1.23744
+margin_bottom = -0.353554
+color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TopLine" type="ColorRect" parent="Background"]
+modulate = Color( 1, 1, 1, 0.611765 )
+anchor_right = 1.0
+margin_bottom = 4.0
+color = Color( 0.992157, 1, 0.988235, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Avatar" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -5.82016
+margin_top = -3.69643
+margin_right = 8.17984
+margin_bottom = 10.3036
+rect_scale = Vector2( 4, 4 )
+rect_pivot_offset = Vector2( 8, 8 )
+rect_clip_content = true
+texture = ExtResource( 1 )
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TurnOrder" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -65.0
+margin_right = 116.0
+margin_bottom = 77.0
+grow_horizontal = 0
+rect_scale = Vector2( 0.35, 0.35 )
+custom_fonts/font = SubResource( 1 )
+text = "9"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}

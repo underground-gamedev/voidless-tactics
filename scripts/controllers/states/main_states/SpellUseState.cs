@@ -24,7 +24,7 @@ public class SpellUseState: BaseControllerState
                 controller.MainStates.PushState(new EventConsumerMainState());
                 activeSpell.ApplyEffect(cell)
                     .GetAwaiter()
-                    .OnCompleted(() => controller.MainStates.PopState());
+                    .OnCompleted(() => controller.TriggerEndTurn());
             }
             else
             {
