@@ -23,7 +23,7 @@ public class ManaMapGenerator: Node
             if (!cell.Solid)
             {
                 if ((float)rand.NextDouble() < 0.8f) {
-                    cell.Mana.Set(ManaType.Wind, int.MaxValue);
+                    cell.Mana.SetInfinity(ManaType.Wind, 15);
                     continue;
                 }
                 var manaType = (ManaType)rand.Next(1, 4);

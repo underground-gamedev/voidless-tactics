@@ -36,7 +36,7 @@ public class ManaCell
 
         if (actualValue == 0)
         {
-            Set(ManaType.Wind, int.MaxValue);
+            SetInfinity(ManaType.Wind, 15);
         }
 
         return wouldTake;
@@ -53,5 +53,12 @@ public class ManaCell
         this.manaType = type;
         this.actualValue = actualValue;
         this.manaStore = store;
+    }
+
+    public void SetInfinity(ManaType type, int limit)
+    {
+        this.manaType = type;
+        this.actualValue = limit;
+        this.manaStore = new ManaStore(int.MaxValue, limit);
     }
 }
