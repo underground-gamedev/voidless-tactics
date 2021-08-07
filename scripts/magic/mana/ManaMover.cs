@@ -51,6 +51,11 @@ public class ManaMover
 		return mapWithChanges;
 	}
 
+	public void MoveMana()
+	{
+		ApplyChangesMap(GetChangesMap());
+	}
+
 	public void ApplyChangesMap(MapWithChanges mapWithChanges)
 	{
 		GDPrint.Print($"applying changes {originMap.Width} {originMap.Height}");
@@ -70,7 +75,7 @@ public class ManaMover
 					if (cellChanges == null)
 					{
 						GDPrint.Print($"{x} {y} no changes");
-						break;
+						continue;
 					}
 
 					cellChanges.SortByHiest();
@@ -90,10 +95,10 @@ public class ManaMover
 							{
 								GDPrint.Print($"{x} {y} change {changeMana.Density} {changeMana.ManaType} source {sourceCords2D.x} {sourceCords2D.y}");
 								
-								// if source sell have few mana
+								// if source sell have few mana. Kinda irrelevant)
 								changeMana.Density = Mathf.Clamp(changeMana.Density, 0f, sourceManaCell.Density);
 								//if target cell have too much mana
-								changeMana.Density = Mathf.Clamp(changeMana.Density, 0f, 1f - manaCell.Density);
+								changeMana.Density = Mathf.Clamp(changeMana.Density, 0f, 1.0f - manaCell.Density/*max mana "mana cell" can handle*/);
 
 								var newDensity = manaCell.Density + changeMana.Density;
 								manaCell.ManaType = sourceManaCell.ManaType;

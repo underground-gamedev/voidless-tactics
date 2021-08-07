@@ -40,7 +40,7 @@ public class ManaMapGenerator: Node
         
         for (var i = 0; i < prepareMoveCount; i++)
         {
-            manaMover.ApplyChangesMap(manaMover.GetChangesMap());
+            manaMover.MoveMana();
         }
         
     }
