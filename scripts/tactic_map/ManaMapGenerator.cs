@@ -41,6 +41,6 @@ public class ManaMapGenerator: Node
         {
             manaMover.MoveMana();
         }
-        
+        map.ManaLayer.OnSync(map);
     }
 }

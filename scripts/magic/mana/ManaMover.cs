@@ -48,6 +48,11 @@ public class ManaMover
 		return mapWithChanges;
 	}
 
+	public void MoveMana()
+	{
+		ApplyChangesMap(GetChangesMap());
+	}
+
 	public void ApplyChangesMap(MapWithChanges mapWithChanges)
 	{
 		GDPrint.Print($"applying changes {originMap.Width} {originMap.Height}");
