@@ -20,9 +20,9 @@ public class AttackComponent : Node, IAttackComponent
         return basicStats.FullActions.ActualValue > 0;
     }
 
-    public List<MapCell> GetAttackArea()
+    public List<MapCell> GetAttackArea(MapCell from)
     {
-        var (x, y) = mapObject.Cell.Position;
+        var (x, y) = from.Position;
         var attackArea = mapObject.Map.DirectNeighboursFor(x, y);
         return attackArea;
     }

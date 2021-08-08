@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 public class InteractableSelectState: BaseControllerState
 {
     protected Character active;
+    private List<MoveCell> availableMoveCells;
+    private List<Character> availableAttackTargets;
+    private LastHoverMemoryState hoverMemoryState;
 
     protected const string AttackAction = "Attack";
     protected const string MoveAction = "Move";
@@ -16,58 +19,103 @@ public class InteractableSelectState: BaseControllerState
         this.active = character;
     }
 
-    // public override bool CellClick(int x, int y)
-    // {
-    //     controller.MainStates.PopState();
-    //     return this.CharacterByPos(x, y, (character) => {
-    //         controller.MainStates.PushState(new CharacterSelectTransition(character));
-    //         return true;
-    //     });
-    // }
-
-    public override bool MenuActionSelected(string action)
+    public override bool CellClick(int x, int y)
     {
-        var states = new Dictionary<string, BaseControllerState>()
-        {
-            [AttackAction] = new AttackCharacterState(active),
-            [MoveAction] = new MoveCharacterState(active),
-            [SpellAction] = new SpellSelectState(active),
-        };
+        var charClick = this.CharacterByPos(x, y, (character) => {
+            if (!availableAttackTargets.Contains(character)) return false;
 
-        if (states.ContainsKey(action))
-        {
-            controller.MainStates.PushState(states[action]);
+            var neighbours = Map.DirectNeighboursFor(x, y);
+            var srcPos = neighbours.FirstOrDefault(neigh => neigh.Position == hoverMemoryState.LastPosition);
+            if (srcPos == null || availableMoveCells.All(c => c.MapCell != srcPos)) {
+                srcPos = neighbours.First(neigh => availableMoveCells.Any(c => c.MapCell == neigh));
+            }
+
+            controller.MainStates.PopState();
+            controller.MainStates.PushState(new EventConsumerMainState());
+            active.Components
+                .FindChild<IMoveComponent>()
+                .MoveTo(srcPos)
+                .GetAwaiter()
+                .OnCompleted(() => {
+                    var targetComponent = character.Components.FindChild<ITargetComponent>();
+                    var attackComponent = active.Components.FindChild<IAttackComponent>();
+                    attackComponent
+                        .Attack(targetComponent)
+                        .GetAwaiter()
+                        .OnCompleted(() => controller.TriggerEndTurn());
+                });
+
             return true;
-        }
+        });
 
-        return false;
+        if (charClick) return false;
+
+        return this.CellByPos(x, y, (cell) => {
+            if (availableMoveCells.All(c => c.MapCell != cell)) return false;
+
+            controller.MainStates.PopState();
+            controller.MainStates.PushState(new EventConsumerMainState());
+            active.Components
+                .FindChild<IMoveComponent>()
+                .MoveTo(cell)
+                .GetAwaiter()
+                .OnCompleted(() => controller.TriggerEndTurn());
+
+            return true;
+        });
     }
 
     public override void OnEnter()
     {
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.DisplayActiveCharacter(active);
+
         var map = controller.Map;
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
         highlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
 
-        var availableActions = new List<string>();
-        if (active.Components.FindChild<IAttackComponent>()?.AttackAvailable() == true) availableActions.Add(AttackAction);
-        if (active.Components.FindChild<IMoveComponent>()?.MoveAvailable() == true) availableActions.Add(MoveAction);
-        if (active.Components.FindChild<ISpellComponent>()?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
+        availableMoveCells = new List<MoveCell>();
+        var moveComponent = active.Components.FindChild<IMoveComponent>();
+        if (moveComponent?.MoveAvailable() == true) {
+            availableMoveCells = moveComponent.GetMoveArea();
+            foreach (var moveCell in availableMoveCells)
+            {
+                var (x, y) = moveCell.MapCell.Position;
+                var highlightType = moveCell.ActionNeed == 1 ? MoveHighlightType.NormalMove : MoveHighlightType.LongMove;
+                highlightLayer.Highlight(x, y, highlightType);
+            }
+        }
 
-        var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayMenuWithActions(active.GetGlobalTransformWithCanvas().origin + new Godot.Vector2(20f, 0.5f), availableActions);
-        hud?.DisplayActiveCharacter(active);
+        availableAttackTargets = new List<Character>();
+        var attackComponent = active.Components.FindChild<IAttackComponent>();
+        if (attackComponent?.AttackAvailable() == true) {
+            var allMoveArea = availableMoveCells.Select(cell => cell.MapCell).ToList();
+            allMoveArea.Add(active.Cell);
+            var attackTargets = allMoveArea
+                .SelectMany(cell => attackComponent.GetAttackArea(cell))
+                .Distinct()
+                .Select(cell => cell.MapObject as Character)
+                .Where(ch => ch != null && ch.Controller != active.Controller)
+                .ToList();
+
+            attackTargets.ForEach(ch => highlightLayer.Highlight(ch.Cell.X, ch.Cell.Y, MoveHighlightType.Attack));
+            availableAttackTargets = attackTargets;
+        }
+
+        hoverMemoryState = new LastHoverMemoryState(active.Cell.X, active.Cell.Y);
+        controller.HoverStates.PushState(hoverMemoryState);
     }
 
     public override void OnLeave()
     {
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.HideActiveCharacter();
+
         var map = controller.Map;
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
 
-        var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.HideMenuWithActions();
-        hud?.HideActiveCharacter();
+        controller.HoverStates.PopState();
     }
 }

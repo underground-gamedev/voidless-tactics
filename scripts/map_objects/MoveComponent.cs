@@ -10,47 +10,6 @@ public class MoveComponent : Node, IMoveComponent
     private BasicStats basicStats;
     private bool moved;
 
-    private int NormalMoveBaseRange()
-    {
-        return basicStats.Speed.ActualValue;
-    }
-
-    private int SprintBaseRange()
-    {
-        return basicStats.Speed.ActualValue / 2;
-    }
-
-    private int TotalActionCount()
-    {
-        return basicStats.MoveActions.ActualValue + basicStats.FullActions.ActualValue;
-    }
-
-    private int SprintMoveRange()
-    {
-        return NormalMoveRange() + basicStats.FullActions.ActualValue * SprintBaseRange();
-    }
-
-    private int NormalMoveRange()
-    {
-        return basicStats.MoveActions.ActualValue * NormalMoveBaseRange();
-    }
-
-    private int MoveActionsUse(int range)
-    {
-        var normalRange = NormalMoveRange();
-        if (range >= normalRange) return basicStats.MoveActions.ActualValue;
-        var actionUse = Mathf.CeilToInt(normalRange / (float)NormalMoveBaseRange());
-        return actionUse;
-    }
-
-    private int FullActionUse(int range)
-    {
-        var normalRange = NormalMoveRange();
-        if (range <= normalRange) return 0;
-        var diff = range - normalRange;
-        var actionUse = Mathf.CeilToInt(diff / (float)SprintBaseRange());
-        return actionUse;
-    }
 
     public override void _Ready()
     {
@@ -64,23 +23,23 @@ public class MoveComponent : Node, IMoveComponent
         var pathfinder = mapObject.Map.PathfindLayer;
 
         var normalMoveCells = pathfinder
-            .GetAllAvailablePathDest(mapObject.Cell, NormalMoveRange())
+            .GetAllAvailablePathDest(mapObject.Cell, basicStats.Speed.ModifiedActualValue/2)
             .Select(pos => map.CellBy(pos.Item1, pos.Item2))
             .Where(cell => cell.MapObject == null)
-            .Select(cell => new MoveCell(cell, 1)); // TODO set real action cost
+            .Select(cell => new MoveCell(cell, 1));
 
         var sprintMoveCells = pathfinder
-            .GetAllAvailablePathDest(mapObject.Cell, SprintMoveRange())
+            .GetAllAvailablePathDest(mapObject.Cell, basicStats.Speed.ModifiedActualValue)
             .Select(pos => map.CellBy(pos.Item1, pos.Item2))
             .Where(cell => cell.MapObject == null && normalMoveCells.All(n => n.MapCell != cell))
-            .Select(cell => new MoveCell(cell, 2)); // TODO set real action cost
+            .Select(cell => new MoveCell(cell, 2));
 
         return normalMoveCells.Concat(sprintMoveCells).ToList();
     }
 
     public bool MoveAvailable()
     {
-        return TotalActionCount() > 0;
+        return true;
     }
 
     public async Task MoveTo(MapCell target)
@@ -100,15 +59,7 @@ public class MoveComponent : Node, IMoveComponent
 
         var cost = path.Length - 1;
 
-        var sprintCost = SprintMoveRange();
-        var normalCost = NormalMoveRange();
-
-        if (cost <= 0 || cost > sprintCost) return;
-
-        var moveActionUse = MoveActionsUse(cost);
-        var fullActionUse = FullActionUse(cost);
-        basicStats.MoveActions.ActualValue -= moveActionUse;
-        basicStats.FullActions.ActualValue -= fullActionUse;
+        if (cost <= 0 || cost > basicStats.Speed.ModifiedActualValue) return;
 
         moved = true;
         mapObject.SetCell(target);

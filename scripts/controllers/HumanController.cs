@@ -48,8 +48,8 @@ public class HumanController: AbstractController
 
     public override async Task MakeTurn(Character active)
     {
-        mainStates.PushState(new InteractableSelectState(active));
         hoverStates.PushState(new SimpleHoverState());
+        mainStates.PushState(new InteractableSelectState(active));
 
         await ToSignal(this, nameof(EndTurn));
 
