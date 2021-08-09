@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Godot;
 
 public class MoveCharacterState: BaseControllerState
 {
@@ -13,7 +14,7 @@ public class MoveCharacterState: BaseControllerState
         this.active = character;
     }
 
-    public override bool CellClick(int x, int y)
+    public override bool CellClick(int x, int y, Vector2 offset)
     {
         var charClick = this.CharacterByPos(x, y, (character) => {
             controller.MainStates.PopState();

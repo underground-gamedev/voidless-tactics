@@ -8,13 +8,13 @@ public class VisualLayer: Node, IMapLayer
     private int height;
     public TileMap TileMap => GetNode<TileMap>("TileMap");
     [Signal]
-    public delegate void OnDragStart(int x, int y);
+    public delegate void OnDragStart(int x, int y, Vector2 offset);
     [Signal]
-    public delegate void OnDragEnd(int x, int y);
+    public delegate void OnDragEnd(int x, int y, Vector2 offset);
     [Signal]
-    public delegate void OnCellClick(int x, int y);
+    public delegate void OnCellClick(int x, int y, Vector2 offset);
     [Signal]
-    public delegate void OnCellHover(int x, int y);
+    public delegate void OnCellHover(int x, int y, Vector2 offset);
 
     private (int, int) previousFramePos = (0, 0);
     private (int, int) dragStartFramePos = (0, 0);
@@ -41,6 +41,16 @@ public class VisualLayer: Node, IMapLayer
         return (x, y);
     }
 
+    public Vector2 GlobalToOffset(Vector2 globalPos)
+    {
+        var (mapX, mapY) = GlobalToMapPosition(globalPos);
+        var mapVector = new Vector2(mapX, mapY);
+        var tilemap = TileMap;
+        var globalCellBegin = tilemap.CellSize * mapVector;
+        var relativeOffset = (globalPos - globalCellBegin) / tilemap.CellSize;
+        return relativeOffset;
+    }
+
     public int GetZ(TacticMap map, MapCell cell, int layer)
     {
         var totalCellCount = map.Width * map.Height;
@@ -48,12 +58,12 @@ public class VisualLayer: Node, IMapLayer
         var yOffset = cell.Y * map.Width;
         return layerOffset + yOffset + cell.X;
     }
-
-    private (int, int) GetMousePosition()
+    
+    private Vector2 GetMousePos()
     {
         var camera2D = GetNode<Camera2D>("/root/TacticBattle/Camera2D");
         var mousePos = camera2D.GetGlobalMousePosition();
-        return GlobalToMapPosition(mousePos);
+        return mousePos;
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
@@ -64,16 +74,18 @@ public class VisualLayer: Node, IMapLayer
 
     private void HandleMouseMove(InputEventMouseMotion inputEvent)
     {
-        var (currentX, currentY) = GetMousePosition();
+        var globalMousePos = GetMousePos();
+        var (currentX, currentY) = GlobalToMapPosition(globalMousePos);
+        var cellOffset = GlobalToOffset(globalMousePos);
         var (lastX, lastY) = previousFramePos;
 
-        EmitSignal(nameof(OnCellHover), currentX, currentY);
+        EmitSignal(nameof(OnCellHover), currentX, currentY, cellOffset);
 
         if (pressedNow)
         {
             if (previousFramePressed && !exitFromStartDrag && (currentX != lastX || currentY != lastY))
             {
-                EmitSignal(nameof(OnDragStart), lastX, lastY);
+                EmitSignal(nameof(OnDragStart), lastX, lastY, cellOffset);
                 exitFromStartDrag = true;
             }
             previousFramePressed = true; 
@@ -87,7 +99,9 @@ public class VisualLayer: Node, IMapLayer
         var mainAction = inputEvent.IsAction("main_action");
         if (!mainAction) return;
 
-        var (currentX, currentY) = GetMousePosition();
+        var globalMousePos = GetMousePos();
+        var (currentX, currentY) = GlobalToMapPosition(globalMousePos);
+        var cellOffset = GlobalToOffset(globalMousePos);
 
         if (inputEvent.Pressed)
         {
@@ -97,7 +111,7 @@ public class VisualLayer: Node, IMapLayer
         else
         {
             var eventName = exitFromStartDrag ? nameof(OnDragEnd) : nameof(OnCellClick);
-            EmitSignal(eventName, currentX, currentY);
+            EmitSignal(eventName, currentX, currentY, cellOffset);
             pressedNow = false;
             exitFromStartDrag = false;
             previousFramePressed = false;

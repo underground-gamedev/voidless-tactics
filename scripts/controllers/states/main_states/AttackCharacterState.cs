@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Godot;
 
 public class AttackCharacterState: BaseControllerState
 {
@@ -14,7 +15,7 @@ public class AttackCharacterState: BaseControllerState
         attackComponent = active.Components.FindChild<IAttackComponent>();
     }
 
-    public override bool CellClick(int x, int y)
+    public override bool CellClick(int x, int y, Vector2 offset)
     {
         controller.MainStates.PopState();
 

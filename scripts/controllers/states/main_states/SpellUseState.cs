@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Godot;
 
 public class SpellUseState: BaseControllerState
 {
@@ -14,7 +15,7 @@ public class SpellUseState: BaseControllerState
         activeSpell = spell;
     }
 
-    public override bool CellClick(int x, int y)
+    public override bool CellClick(int x, int y, Vector2 offset)
     {
         return this.CellByPos(x, y, (cell) => {
             controller.MainStates.PopState();

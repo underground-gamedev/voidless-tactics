@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Godot;
 
 public class SpellSelectState: BaseControllerState
 {
@@ -14,7 +15,7 @@ public class SpellSelectState: BaseControllerState
         spellComponent = character.Components.FindChild<ISpellComponent>();
     }
 
-    public override bool CellClick(int x, int y)
+    public override bool CellClick(int x, int y, Vector2 offset)
     {
         controller.MainStates.PopState();
         return false;

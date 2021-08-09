@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Godot;
 
 public class NonInteractableSelectState: BaseControllerState
 {
@@ -11,7 +12,7 @@ public class NonInteractableSelectState: BaseControllerState
         this.active = active;
     }
 
-    public override bool CellClick(int x, int y)
+    public override bool CellClick(int x, int y, Vector2 offset)
     {
         controller.MainStates.PopState();
         return this.CharacterByPos(x, y, (character) => {

@@ -15,7 +15,7 @@ public class LastHoverMemoryState : SimpleHoverState
         currentX = x;
         currentY = y;
     }
-    public override bool OnCellHover(int x, int y)
+    public override bool OnCellHover(int x, int y, Vector2 offset)
     {
         if (currentX != x || currentY != y)
         {
@@ -25,6 +25,6 @@ public class LastHoverMemoryState : SimpleHoverState
             currentY = y; 
         }
 
-        return base.OnCellHover(x, y);
+        return base.OnCellHover(x, y, offset);
     }
 }

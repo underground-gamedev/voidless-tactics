@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Godot;
 
 public class InteractableSelectState: BaseControllerState
 {
@@ -19,15 +20,42 @@ public class InteractableSelectState: BaseControllerState
         this.active = character;
     }
 
-    public override bool CellClick(int x, int y)
+    public override bool CellClick(int x, int y, Vector2 offset)
     {
         var charClick = this.CharacterByPos(x, y, (character) => {
             if (!availableAttackTargets.Contains(character)) return false;
 
-            var neighbours = Map.DirectNeighboursFor(x, y);
-            var srcPos = neighbours.FirstOrDefault(neigh => neigh.Position == hoverMemoryState.LastPosition);
-            if (srcPos == null || availableMoveCells.All(c => c.MapCell != srcPos)) {
-                srcPos = neighbours.First(neigh => availableMoveCells.Any(c => c.MapCell == neigh));
+            var magnetDirections = new Dictionary<Vector2, (int, int)>() {
+                [new Vector2(0, 0)] = (-1, -1),
+                [new Vector2(0.5f, 0)] = (0, -1),
+                [new Vector2(1f, 0)] = (1, -1),
+                [new Vector2(0, 0.5f)] = (-1, 0),
+                [new Vector2(1f, 0.5f)] = (1, 0),
+                [new Vector2(0, 1f)] = (-1, 1),
+                [new Vector2(0.5f, 1f)] = (0, 1),
+                [new Vector2(1f, 1f)] = (1, 1),
+            }.Where(dir => !Map.IsOutOfBounds(x + dir.Value.Item1, y + dir.Value.Item2))
+            .Select(dir => new KeyValuePair<Vector2, MapCell>(dir.Key, Map.CellBy(x + dir.Value.Item1, y + dir.Value.Item2)))
+            .Where(dir => availableMoveCells.Any(c => c.MapCell == dir.Value) || dir.Value == active.Cell)
+            .ToDictionary(elem => elem.Key, elem => elem.Value);
+
+            GD.Print(magnetDirections);
+
+            MapCell srcPos = null;
+            float minDistance = float.PositiveInfinity;
+            foreach (var magnet in magnetDirections)
+            {
+                var distance = offset.DistanceTo(magnet.Key);
+                if (distance < minDistance)
+                {
+                    srcPos = magnet.Value;
+                    minDistance = distance;
+                }
+            }
+
+            if (srcPos is null) {
+                GD.PrintErr($"Unexpected srcPos is null. x: {x}, y: {y}, offset: {offset}");
+                return false;
             }
 
             controller.MainStates.PopState();

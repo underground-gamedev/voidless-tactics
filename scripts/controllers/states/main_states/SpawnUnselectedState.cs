@@ -11,7 +11,7 @@ public class SpawnUnselectedState: BaseControllerState
         this.spawnArea = spawnArea;
     }
 
-    public override bool CellClick(int x, int y)
+    public override bool CellClick(int x, int y, Vector2 offset)
     {
         return this.CharacterByPos(x, y, (character) => {
             var fromMyTeam = controller.Characters.Contains(character);
@@ -21,7 +21,7 @@ public class SpawnUnselectedState: BaseControllerState
         });
     }
 
-    public override bool DragStart(int x, int y)
+    public override bool DragStart(int x, int y, Vector2 offset)
     {
         this.CharacterByPos(x, y, (character) => {
             controller.MainStates.ReplaceState(new SpawnSelectedState(character, spawnArea));

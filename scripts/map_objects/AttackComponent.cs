@@ -23,7 +23,7 @@ public class AttackComponent : Node, IAttackComponent
     public List<MapCell> GetAttackArea(MapCell from)
     {
         var (x, y) = from.Position;
-        var attackArea = mapObject.Map.DirectNeighboursFor(x, y);
+        var attackArea = mapObject.Map.AllNeighboursFor(x, y);
         return attackArea;
     }
 

@@ -57,24 +57,24 @@ public class HumanController: AbstractController
         hoverStates.Clear();
     }
 
-    public void OnDragStart(int x, int y)
+    public void OnDragStart(int x, int y, Vector2 offset)
     {
-        mainStates.HandleEvent(state => state.DragStart(x, y));
+        mainStates.HandleEvent(state => state.DragStart(x, y, offset));
     }
 
-    public void OnDragEnd(int x, int y)
+    public void OnDragEnd(int x, int y, Vector2 offset)
     {
-        mainStates.HandleEvent(state => state.DragEnd(x, y));
+        mainStates.HandleEvent(state => state.DragEnd(x, y, offset));
     }
 
-    public void OnCellClick(int x, int y)
+    public void OnCellClick(int x, int y, Vector2 offset)
     {
-        mainStates.HandleEvent(state => state.CellClick(x, y));
+        mainStates.HandleEvent(state => state.CellClick(x, y, offset));
     }
 
-    public void OnCellHover(int x, int y)
+    public void OnCellHover(int x, int y, Vector2 offset)
     {
-        hoverStates.HandleEvent(state => state.OnCellHover(x, y));
+        hoverStates.HandleEvent(state => state.OnCellHover(x, y, offset));
     }
 
     public void OnActionSelected(string actionName)
