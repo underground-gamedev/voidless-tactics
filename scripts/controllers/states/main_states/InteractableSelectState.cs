@@ -9,11 +9,10 @@ public class InteractableSelectState: BaseControllerState
     protected Character active;
     private List<MoveCell> availableMoveCells;
     private List<Character> availableAttackTargets;
-    private LastHoverMemoryState hoverMemoryState;
 
-    protected const string AttackAction = "Attack";
-    protected const string MoveAction = "Move";
-    protected const string SpellAction = "Cast";
+    public Character ActiveCharacter => active;
+    public List<MoveCell> AvailableMoveCells => availableMoveCells;
+    public List<Character> AvailableAttackTargets => availableAttackTargets;
 
     public InteractableSelectState(Character character)
     {
@@ -25,33 +24,7 @@ public class InteractableSelectState: BaseControllerState
         var charClick = this.CharacterByPos(x, y, (character) => {
             if (!availableAttackTargets.Contains(character)) return false;
 
-            var magnetDirections = new Dictionary<Vector2, (int, int)>() {
-                [new Vector2(0, 0)] = (-1, -1),
-                [new Vector2(0.5f, 0)] = (0, -1),
-                [new Vector2(1f, 0)] = (1, -1),
-                [new Vector2(0, 0.5f)] = (-1, 0),
-                [new Vector2(1f, 0.5f)] = (1, 0),
-                [new Vector2(0, 1f)] = (-1, 1),
-                [new Vector2(0.5f, 1f)] = (0, 1),
-                [new Vector2(1f, 1f)] = (1, 1),
-            }.Where(dir => !Map.IsOutOfBounds(x + dir.Value.Item1, y + dir.Value.Item2))
-            .Select(dir => new KeyValuePair<Vector2, MapCell>(dir.Key, Map.CellBy(x + dir.Value.Item1, y + dir.Value.Item2)))
-            .Where(dir => availableMoveCells.Any(c => c.MapCell == dir.Value) || dir.Value == active.Cell)
-            .ToDictionary(elem => elem.Key, elem => elem.Value);
-
-            GD.Print(magnetDirections);
-
-            MapCell srcPos = null;
-            float minDistance = float.PositiveInfinity;
-            foreach (var magnet in magnetDirections)
-            {
-                var distance = offset.DistanceTo(magnet.Key);
-                if (distance < minDistance)
-                {
-                    srcPos = magnet.Value;
-                    minDistance = distance;
-                }
-            }
+            var srcPos = GetAttackSourcePos(x, y, offset);
 
             if (srcPos is null) {
                 GD.PrintErr($"Unexpected srcPos is null. x: {x}, y: {y}, offset: {offset}");
@@ -93,26 +66,46 @@ public class InteractableSelectState: BaseControllerState
         });
     }
 
+    public MapCell GetAttackSourcePos(int x, int y, Vector2 offset)
+    {
+        var magnetDirections = new Dictionary<Vector2, (int, int)>() {
+            [new Vector2(0, 0)] = (-1, -1),
+            [new Vector2(0.5f, 0)] = (0, -1),
+            [new Vector2(1f, 0)] = (1, -1),
+            [new Vector2(0, 0.5f)] = (-1, 0),
+            [new Vector2(1f, 0.5f)] = (1, 0),
+            [new Vector2(0, 1f)] = (-1, 1),
+            [new Vector2(0.5f, 1f)] = (0, 1),
+            [new Vector2(1f, 1f)] = (1, 1),
+        }.Where(dir => !Map.IsOutOfBounds(x + dir.Value.Item1, y + dir.Value.Item2))
+        .Select(dir => new KeyValuePair<Vector2, MapCell>(dir.Key, Map.CellBy(x + dir.Value.Item1, y + dir.Value.Item2)))
+        .Where(dir => availableMoveCells.Any(c => c.MapCell == dir.Value) || dir.Value == active.Cell)
+        .ToDictionary(elem => elem.Key, elem => elem.Value);
+
+        MapCell srcPos = null;
+        float minDistance = float.PositiveInfinity;
+        foreach (var magnet in magnetDirections)
+        {
+            var distance = offset.DistanceTo(magnet.Key);
+            if (distance < minDistance)
+            {
+                srcPos = magnet.Value;
+                minDistance = distance;
+            }
+        }
+
+        return srcPos;
+    }
+
     public override void OnEnter()
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.DisplayActiveCharacter(active);
 
-        var map = controller.Map;
-        var highlightLayer = map.MoveHighlightLayer;
-        highlightLayer.Clear();
-        highlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
-
         availableMoveCells = new List<MoveCell>();
         var moveComponent = active.Components.FindChild<IMoveComponent>();
         if (moveComponent?.MoveAvailable() == true) {
             availableMoveCells = moveComponent.GetMoveArea();
-            foreach (var moveCell in availableMoveCells)
-            {
-                var (x, y) = moveCell.MapCell.Position;
-                var highlightType = moveCell.ActionNeed == 1 ? MoveHighlightType.NormalMove : MoveHighlightType.LongMove;
-                highlightLayer.Highlight(x, y, highlightType);
-            }
         }
 
         availableAttackTargets = new List<Character>();
@@ -127,12 +120,11 @@ public class InteractableSelectState: BaseControllerState
                 .Where(ch => ch != null && ch.Controller != active.Controller)
                 .ToList();
 
-            attackTargets.ForEach(ch => highlightLayer.Highlight(ch.Cell.X, ch.Cell.Y, MoveHighlightType.Attack));
             availableAttackTargets = attackTargets;
         }
 
-        hoverMemoryState = new LastHoverMemoryState(active.Cell.X, active.Cell.Y);
-        controller.HoverStates.PushState(hoverMemoryState);
+        var hoverState = new AttackHoverState(this);
+        controller.HoverStates.PushState(hoverState);
     }
 
     public override void OnLeave()
