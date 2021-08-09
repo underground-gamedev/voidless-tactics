@@ -4,6 +4,10 @@ public class AttackHoverState: SimpleHoverState
 {
     InteractableSelectState parent;
 
+    private int lastX;
+    private int lastY;
+    private Color savedModulateColor = new Color(1, 1, 1, 1);
+
     public AttackHoverState(InteractableSelectState parent)
     {
         this.parent = parent; 
@@ -13,15 +17,29 @@ public class AttackHoverState: SimpleHoverState
     {
         base.OnCellHover(x, y, offset);
 
-        BaseHighlight();
+        if (!Map.IsOutOfBounds(lastX, lastY))
+        {
+            var lastCharacter = Map.GetCharacter(lastX, lastY);
+            if (lastCharacter != null)
+            {
+                BaseHighlight();
+                lastCharacter.Modulate = savedModulateColor;
+            }
+        }
+
         this.CharacterByPos(x, y, (character) => {
             var availableAttackTargets = parent.AvailableAttackTargets;
             if (!availableAttackTargets.Contains(character)) return false;
             var attackSrc = parent.GetAttackSourcePos(x, y, offset);
             Map.MoveHighlightLayer.Highlight(attackSrc.X, attackSrc.Y, MoveHighlightType.Active);
+
+            savedModulateColor = character.Modulate;
+            character.Modulate = character.Modulate + new Color(0.6f, 0.1f, 0.1f);
             return true;
         });
 
+        lastX = x;
+        lastY = y;
         return true;
     }
 
