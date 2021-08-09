@@ -1,3 +1,5 @@
+using Godot;
+
 public class SimpleHoverState: BaseHoverState
 {
     private Character defaultCharacter;
@@ -7,7 +9,7 @@ public class SimpleHoverState: BaseHoverState
         this.defaultCharacter = defaultCharacter;
     }
 
-    public override bool OnCellHover(int x, int y)
+    public override bool OnCellHover(int x, int y, Vector2 offset)
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var result = this.CellByPos(x, y, (cell) => {

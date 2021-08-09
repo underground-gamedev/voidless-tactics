@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Godot;
 
 public class AttackCharacterState: BaseControllerState
 {
@@ -14,7 +15,7 @@ public class AttackCharacterState: BaseControllerState
         attackComponent = active.Components.FindChild<IAttackComponent>();
     }
 
-    public override bool CellClick(int x, int y)
+    public override bool CellClick(int x, int y, Vector2 offset)
     {
         controller.MainStates.PopState();
 
@@ -25,7 +26,7 @@ public class AttackCharacterState: BaseControllerState
             if (fromMyTeam) return false;
             if (!attackComponent.AttackAvailable()) return true;
 
-            var attackArea = attackComponent.GetAttackArea();
+            var attackArea = attackComponent.GetAttackArea(active.Cell);
             var targetComponent = character.Components.FindChild<ITargetComponent>();
             if (targetComponent == null || !attackArea.Contains(character.Cell)) return false;
 
@@ -44,7 +45,7 @@ public class AttackCharacterState: BaseControllerState
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
         highlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
-        foreach (var cell in attackComponent.GetAttackArea())
+        foreach (var cell in attackComponent.GetAttackArea(active.Cell))
         {
             highlightLayer.Highlight(cell.X, cell.Y, MoveHighlightType.Attack);
         }

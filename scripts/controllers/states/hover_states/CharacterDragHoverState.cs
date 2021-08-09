@@ -1,3 +1,5 @@
+using Godot;
+
 public class CharacterDragHoverState : SimpleHoverState
 {
     private float baseAlpha; 
@@ -8,9 +10,9 @@ public class CharacterDragHoverState : SimpleHoverState
         activeCharacter = character;
     }
 
-    public override bool OnCellHover(int x, int y)
+    public override bool OnCellHover(int x, int y, Vector2 offset)
     {
-        base.OnCellHover(x, y);
+        base.OnCellHover(x, y, offset);
         return this.CellByPos(x, y, (cell) => {
             activeCharacter.SyncWithMap(activeCharacter.Map, x, y);
             return true;

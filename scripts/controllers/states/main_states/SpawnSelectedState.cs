@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Godot;
 
 public class SpawnSelectedState: BaseControllerState
 {
@@ -14,7 +15,7 @@ public class SpawnSelectedState: BaseControllerState
         this.spawnArea = spawnArea;
     }
 
-    public override bool CellClick(int x, int y)
+    public override bool CellClick(int x, int y, Vector2 offset)
     {
         var charClick = this.CharacterByPos(x, y, (character) => {
             var fromMyTeam = controller.Characters.Contains(character);
@@ -43,7 +44,7 @@ public class SpawnSelectedState: BaseControllerState
         });
     }
 
-    public override bool DragStart(int x, int y)
+    public override bool DragStart(int x, int y, Vector2 offset)
     {
         return this.CharacterByPos(x, y, (character) => {
             if (character.Controller != controller)
@@ -64,10 +65,10 @@ public class SpawnSelectedState: BaseControllerState
         });
     }
 
-    public override bool DragEnd(int x, int y)
+    public override bool DragEnd(int x, int y, Vector2 offset)
     {
         controller.HoverStates.PopState();
-        return CellClick(x, y);
+        return CellClick(x, y, offset);
     }
 
     public override void OnEnter()

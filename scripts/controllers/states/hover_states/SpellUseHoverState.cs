@@ -1,3 +1,5 @@
+using Godot;
+
 public class SpellUseHoverState : SimpleHoverState
 {
     private Character activeCharacter;
@@ -31,9 +33,9 @@ public class SpellUseHoverState : SimpleHoverState
         }
     }
 
-    public override bool OnCellHover(int x, int y)
+    public override bool OnCellHover(int x, int y, Vector2 offset)
     {
-        base.OnCellHover(x, y);
+        base.OnCellHover(x, y, offset);
         return this.CellByPos(x, y, (cell) => {
             var highlightLayer = HighlightLayer;
             highlightLayer.Clear();
