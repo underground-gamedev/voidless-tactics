@@ -52,8 +52,6 @@ public class Character : MapObject, IBasicStatsPresenter
 
     public void OnTurnEnd()
     {
-        BasicStats.MoveActions.ActualValue = BasicStats.MoveActions.MaxValue;
-        BasicStats.FullActions.ActualValue = BasicStats.FullActions.MaxValue;
         propagateChilds.ForEach(child => child.PropagateCall(nameof(OnTurnEnd), this));
     }
 

@@ -166,22 +166,9 @@ script = ExtResource( 4 )
 statName = "Speed"
 actualValue = 4
 
-[node name="MoveActions" type="Node" parent="Stats"]
-script = ExtResource( 4 )
-statName = "Health"
-actualValue = 1
-maxValue = 1
-
-[node name="FullActions" type="Node" parent="Stats"]
-script = ExtResource( 4 )
-statName = "Health"
-actualValue = 1
-maxValue = 1
-
 [node name="Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -12.0182 )
 frames = SubResource( 3 )
-frame = 1
 playing = true
 __meta__ = {
 "_edit_lock_": true

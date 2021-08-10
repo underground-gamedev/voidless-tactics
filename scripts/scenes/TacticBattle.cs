@@ -26,8 +26,8 @@ public class TacticBattle : Node
         tacticMap.Sync();
 
         var camera = GetNode<DraggingCamera>("Camera2D");
-        camera.Connect(nameof(DraggingCamera.OnCameraMove), hud, nameof(TacticHUD.OnCameraDrag));
-        camera.Connect(nameof(DraggingCamera.OnCameraZoom), hud, nameof(TacticHUD.OnCameraZoom));
+        // camera.Connect(nameof(DraggingCamera.OnCameraMove), hud, nameof(TacticHUD.OnCameraDrag));
+        // camera.Connect(nameof(DraggingCamera.OnCameraZoom), hud, nameof(TacticHUD.OnCameraZoom));
 
         var turnManager = GetNode<TurnManager>("TurnManager");
 

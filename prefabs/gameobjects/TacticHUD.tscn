@@ -137,9 +137,12 @@ __meta__ = {
 
 [node name="ActionContainer" type="MarginContainer" parent="."]
 anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
-margin_left = -127.0
-margin_bottom = 17.0
+anchor_bottom = 1.0
+margin_left = -403.0
+margin_top = -17.0
+margin_right = -232.0
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 1
@@ -153,11 +156,12 @@ ButtonPrefab = ExtResource( 2 )
 
 [node name="Background" type="ColorRect" parent="ActionContainer"]
 self_modulate = Color( 1, 1, 1, 0.611765 )
-margin_right = 127.0
+margin_right = 171.0
 margin_bottom = 17.0
 mouse_filter = 2
 color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -171,10 +175,13 @@ __meta__ = {
 }
 
 [node name="Actions" type="VBoxContainer" parent="ActionContainer"]
-margin_right = 127.0
+margin_right = 171.0
 margin_bottom = 17.0
+grow_horizontal = 0
+grow_vertical = 0
 alignment = 2
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -184,14 +191,14 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -223.0
-margin_top = -302.0
+margin_top = -343.0
 margin_right = -1.0
 margin_bottom = -133.0
 
 [node name="ActiveUnitInfo" parent="." instance=ExtResource( 11 )]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -169.0
+margin_top = -217.0
 margin_bottom = 0.0
 
 [node name="CellInfo" type="Control" parent="."]
@@ -275,9 +282,9 @@ __meta__ = {
 [node name="SpellDescriptor" type="MarginContainer" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -254.0
+margin_top = -353.0
 margin_right = 307.0
-margin_bottom = -175.0
+margin_bottom = -234.0
 grow_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -286,7 +293,7 @@ __meta__ = {
 [node name="Background" type="ColorRect" parent="SpellDescriptor"]
 modulate = Color( 1, 1, 1, 0.611765 )
 margin_right = 307.0
-margin_bottom = 79.0
+margin_bottom = 119.0
 color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -303,7 +310,7 @@ __meta__ = {
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="SpellDescriptor"]
 margin_right = 307.0
-margin_bottom = 79.0
+margin_bottom = 119.0
 custom_fonts/bold_italics_font = SubResource( 3 )
 custom_fonts/italics_font = SubResource( 4 )
 custom_fonts/bold_font = SubResource( 5 )

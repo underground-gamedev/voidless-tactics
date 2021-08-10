@@ -11,13 +11,12 @@ public class AttackComponent : Node, IAttackComponent
 
     public async Task Attack(ITargetComponent target)
     {
-        basicStats.FullActions.ActualValue -= 1;
         await target.TakeDamage(basicStats.Damage.ActualValue);
     }
 
     public bool AttackAvailable()
     {
-        return basicStats.FullActions.ActualValue > 0;
+        return true;
     }
 
     public List<MapCell> GetAttackArea(MapCell from)

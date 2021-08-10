@@ -42,7 +42,7 @@ public class SpellSelectState: BaseControllerState
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var availableSpells = spellComponent.GetAvailableSpellNames();
-        hud?.DisplayMenuWithActions(active.GetGlobalTransformWithCanvas().origin + new Godot.Vector2(20f, 0.5f), availableSpells);
+        hud?.DisplayMenuWithActions(availableSpells);
         hud?.DisplayActiveCharacter(active);
     }
 

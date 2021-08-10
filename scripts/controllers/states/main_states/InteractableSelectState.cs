@@ -14,6 +14,8 @@ public class InteractableSelectState: BaseControllerState
     public List<MoveCell> AvailableMoveCells => availableMoveCells;
     public List<Character> AvailableAttackTargets => availableAttackTargets;
 
+    public const string ManaPickupAction = "Mana Pickup";
+
     public InteractableSelectState(Character character)
     {
         this.active = character;
@@ -97,10 +99,43 @@ public class InteractableSelectState: BaseControllerState
         return srcPos;
     }
 
+    public override bool MenuActionSelected(string action)
+    {
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        hud?.DisplayActiveCharacter(active);
+
+        switch (action) {
+            case ManaPickupAction:
+                active.Components.FindChild<SpellComponent>().PickupMana(Map, active.Cell);
+                hud?.DisplayActiveCharacter(active);
+                break;
+            default:
+                GD.PrintErr($"Invalid menu action for {nameof(InteractableSelectState)} named: {action}");
+                break;
+        }
+        ShowMenuAction();
+        return true;
+    }
+
+    private void ShowMenuAction()
+    {
+        var hud = UserInterfaceService.GetHUD<TacticHUD>();
+        var availableActions = new List<string>();
+        if (active.Components.FindChild<SpellComponent>()?.PickupAvailable(Map, active.Cell) == true) availableActions.Add(ManaPickupAction);
+
+        hud?.HideMenuWithActions();
+        if (availableActions.Count > 0)
+        {
+            hud?.DisplayMenuWithActions(availableActions);
+        }
+    }
+
     public override void OnEnter()
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.DisplayActiveCharacter(active);
+
+        ShowMenuAction();
 
         availableMoveCells = new List<MoveCell>();
         var moveComponent = active.Components.FindChild<IMoveComponent>();
@@ -131,6 +166,7 @@ public class InteractableSelectState: BaseControllerState
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         hud?.HideActiveCharacter();
+        hud?.HideMenuWithActions();
 
         var map = controller.Map;
         var highlightLayer = map.MoveHighlightLayer;

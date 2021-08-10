@@ -130,7 +130,7 @@ public class TacticHUD: Node
         actions.RectGlobalPosition += totalOffset;
 
     }
-    public void DisplayMenuWithActions(Vector2 screenPosition, List<string> actionList)
+    public void DisplayMenuWithActions(List<string> actionList)
     {
         if (actionList is null || actionList.Count == 0)
         {
@@ -138,8 +138,8 @@ public class TacticHUD: Node
             return;
         }
 
-        screenPosition.y -= actions.RectSize.y;
-        actions.RectPosition = screenPosition;
+        // screenPosition.y -= actions.RectSize.y;
+        // actions.RectPosition = screenPosition;
         actions.Visible = true;
         actions.SetActions(actionList);
     }

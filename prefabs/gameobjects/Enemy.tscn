@@ -59,21 +59,10 @@ script = ExtResource( 4 )
 statName = "Damage"
 actualValue = 3
 
-[node name="MoveActions" type="Node" parent="Stats"]
-script = ExtResource( 4 )
-statName = "Health"
-actualValue = 1
-maxValue = 1
-
-[node name="FullActions" type="Node" parent="Stats"]
-script = ExtResource( 4 )
-statName = "Health"
-actualValue = 1
-maxValue = 1
-
 [node name="Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0.522, -12.018 )
 frames = SubResource( 3 )
+frame = 1
 playing = true
 flip_h = true
 __meta__ = {

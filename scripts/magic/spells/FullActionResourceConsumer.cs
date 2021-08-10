@@ -6,12 +6,11 @@ public class FullActionResourceConsumer : Node, IResourceConsumer
     private int actionCount; 
     public void Consume(SpellComponentContext ctx)
     {
-        ctx.Caster.BasicStats.FullActions.ActualValue -= actionCount;
     }
 
     public bool ConsumeAvailable(SpellComponentContext ctx)
     {
-        return ctx.Caster.BasicStats.FullActions.ActualValue >= actionCount;
+        return true;
     }
 
     public ConsumeTag GetConsumeTags(SpellComponentContext ctx)
