@@ -51,16 +51,37 @@ public class SpellComponent : Node, ISpellComponent
         TakeMana(manaType, consumeCount);
     }
 
-    public void TakeMana(ManaType type, int count)
+    public void TakeMana(ManaType newType, int count)
     {
-        if (type == ManaType)
+        if (newType == ManaType)
         {
             ManaCount += count;
             return;
         }
 
-        ManaType = type;
-        ManaCount = count;
+        var mixResults = new Dictionary<(ManaType, ManaType), ManaType>() {
+            [(ManaType.Magma, ManaType.Wind)] = ManaType.Fire,
+            [(ManaType.Magma, ManaType.Water)] = ManaType.Earth
+        };
+
+        ManaType resultType = ManaType.None;
+        if (mixResults.ContainsKey((ManaType, newType))) {
+            resultType = mixResults[(ManaType, newType)];
+        }
+        else if (mixResults.ContainsKey((newType, ManaType))) {
+            resultType = mixResults[(newType, ManaType)];
+        }
+
+        if (resultType == ManaType.None)
+        {
+            ManaType = newType;
+            ManaCount = count;
+        }
+        else
+        {
+            ManaType = resultType;
+            ManaCount = (ManaCount + count) / 2;
+        }
     }
 
     public void OnTurnStart(Character parent)
