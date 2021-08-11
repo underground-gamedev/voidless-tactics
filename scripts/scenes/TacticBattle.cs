@@ -17,17 +17,12 @@ public class TacticBattle : Node
 
         tacticMap = GetNode<TacticMap>("Map");
 
-        var solidMapGen = GetNode<SolidMapGenerator>("Map/Generators/SolidMapGenerator");
-        solidMapGen?.Generate(tacticMap);
-
         var manaMapGen = GetNode<ManaMapGenerator>("Map/Generators/ManaMapGenerator");
         manaMapGen?.Generate(tacticMap);
 
         tacticMap.Sync();
 
         var camera = GetNode<DraggingCamera>("Camera2D");
-        // camera.Connect(nameof(DraggingCamera.OnCameraMove), hud, nameof(TacticHUD.OnCameraDrag));
-        // camera.Connect(nameof(DraggingCamera.OnCameraZoom), hud, nameof(TacticHUD.OnCameraZoom));
 
         var turnManager = GetNode<TurnManager>("TurnManager");
 

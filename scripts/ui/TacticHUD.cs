@@ -138,8 +138,6 @@ public class TacticHUD: Node
             return;
         }
 
-        // screenPosition.y -= actions.RectSize.y;
-        // actions.RectPosition = screenPosition;
         actions.Visible = true;
         actions.SetActions(actionList);
     }
