@@ -140,6 +140,13 @@ public class VisualLayer: Node, IMapLayer
             }
         }
 
+        for (int x = 0; x < map.Width; x++)
+        {
+            if (!map.GetSolid(x, map.Height-1)) {
+                destMap.SetCell(x, map.Height, fall);
+            }
+        }
+
         destMap.UpdateBitmaskRegion(
             new Vector2(),
             OS.WindowSize
