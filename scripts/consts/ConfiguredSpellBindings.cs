@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 public static class ConfiguredSpellBindings
@@ -9,7 +10,7 @@ public static class ConfiguredSpellBindings
         return pathArr.Select(path => string.Format(PrefabPathPattern, path)).ToArray();
     }
 
-    public static SpellBindings DefaultSpellBindings = new SpellBindings(new System.Collections.Generic.Dictionary<ManaType, string[]> {
+    public static SpellBindings DefaultSpellBindings = new SpellBindings(new Dictionary<ManaType, string[]> {
         [ManaType.Nature] = ApplyPathPattern(
             "Heal"
         ),
