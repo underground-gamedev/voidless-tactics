@@ -13,10 +13,8 @@ public class AttackHoverState: SimpleHoverState
         this.parent = parent; 
     }
 
-    public override bool OnCellHover(int x, int y, Vector2 offset)
+    private void CleanLast()
     {
-        base.OnCellHover(x, y, offset);
-
         if (!Map.IsOutOfBounds(lastX, lastY))
         {
             var lastCharacter = Map.GetCharacter(lastX, lastY);
@@ -26,6 +24,13 @@ public class AttackHoverState: SimpleHoverState
                 lastCharacter.Modulate = savedModulateColor;
             }
         }
+    }
+
+    public override bool OnCellHover(int x, int y, Vector2 offset)
+    {
+        base.OnCellHover(x, y, offset);
+
+        CleanLast();
 
         this.CharacterByPos(x, y, (character) => {
             var availableAttackTargets = parent.AvailableAttackTargets;
@@ -65,6 +70,7 @@ public class AttackHoverState: SimpleHoverState
 
     public override void OnLeave()
     {
+        CleanLast();
         Map.MoveHighlightLayer.Clear();
     }
 }
