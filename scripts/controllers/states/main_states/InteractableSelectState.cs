@@ -15,6 +15,7 @@ public class InteractableSelectState: BaseControllerState
     public List<Character> AvailableAttackTargets => availableAttackTargets;
 
     public const string ManaPickupAction = "Mana Pickup";
+    protected const string SpellAction = "Cast";
 
     public InteractableSelectState(Character character)
     {
@@ -108,12 +109,15 @@ public class InteractableSelectState: BaseControllerState
             case ManaPickupAction:
                 active.Components.FindChild<SpellComponent>().PickupMana(Map, active.Cell);
                 hud?.DisplayActiveCharacter(active);
+                ShowMenuAction();
+                break;
+            case SpellAction:
+                controller.MainStates.PushState(new SpellSelectState(active));
                 break;
             default:
                 GD.PrintErr($"Invalid menu action for {nameof(InteractableSelectState)} named: {action}");
                 break;
         }
-        ShowMenuAction();
         return true;
     }
 
@@ -121,7 +125,9 @@ public class InteractableSelectState: BaseControllerState
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var availableActions = new List<string>();
-        if (active.Components.FindChild<SpellComponent>()?.PickupAvailable(Map, active.Cell) == true) availableActions.Add(ManaPickupAction);
+        var spellComponent = active.Components.FindChild<SpellComponent>();
+        if (spellComponent?.PickupAvailable(Map, active.Cell) == true) availableActions.Add(ManaPickupAction);
+        if (spellComponent?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
 
         hud?.HideMenuWithActions();
         if (availableActions.Count > 0)

@@ -3,34 +3,34 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 
-public class SpellComponent : Node, ISpellComponent
+public partial class SpellComponent : Node, ISpellComponent
 {
     private Character character;
     private bool pickupUsed = false;
 
     [Export]
     private int manaPickupCount = 40;
-
-    private List<ISpell> Spells => this.GetChilds<ISpell>(".");
+    private Dictionary<ManaType, List<ModularSpell>> spells;
+    private List<ModularSpell> activeSpells => spells.ContainsKey(ManaType) ? spells[ManaType] : new List<ModularSpell>();
 
     public ManaType ManaType = ManaType.None;
     public int ManaCount = 0;
 
     public bool CastSpellAvailable()
     {
-        return Spells.Any(spell => spell.CastAvailable());
+        return activeSpells.Any(spell => spell.CastAvailable());
     }
 
     public List<string> GetAvailableSpellNames()
     {
-        return Spells.Where(spell => spell.CastAvailable())
-                     .Select(spell => (spell as Node).Name)
+        return activeSpells.Where(spell => spell.CastAvailable())
+                     .Select(spell => spell.SpellName)
                      .ToList();
     }
 
     public ISpell GetSpellByName(string name)
     {
-        return Spells.FirstOrDefault(spell => (spell as Node).Name == name);
+        return activeSpells.FirstOrDefault(spell => spell.SpellName == name);
     }
 
     public bool PickupAvailable(TacticMap map, MapCell srcMapCell)
@@ -49,6 +49,16 @@ public class SpellComponent : Node, ISpellComponent
         pickupUsed = true;
 
         TakeMana(manaType, consumeCount);
+    }
+
+    public void Consume(int manaCount)
+    {
+        ManaCount -= manaCount;
+        if (ManaCount <= 0)
+        {
+            ManaCount = 0;
+            ManaType = ManaType.None;
+        }
     }
 
     public void TakeMana(ManaType newType, int count)
@@ -92,5 +102,6 @@ public class SpellComponent : Node, ISpellComponent
     public override void _Ready()
     {
         character = this.FindParent<Character>();
+        spells = ConfiguredSpellBindings.DefaultSpellBindings.BindSpells(this);
     }
 }

@@ -28,7 +28,7 @@ public abstract class ForwardAreaSelector : Node, IAreaSelector
 
         var (baseX, baseY) = ctx.TargetCell.Position;
 
-        for (var range = 1; range <= this.range; range++)
+        for (var range = 1; range < this.range; range++)
         {
             var needRemove = new List<(int, int)>();
             foreach (var dir in directions)

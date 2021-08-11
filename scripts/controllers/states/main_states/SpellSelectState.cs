@@ -18,7 +18,7 @@ public class SpellSelectState: BaseControllerState
     public override bool CellClick(int x, int y, Vector2 offset)
     {
         controller.MainStates.PopState();
-        return false;
+        return true;
     }
 
     public override bool MenuActionSelected(string action)

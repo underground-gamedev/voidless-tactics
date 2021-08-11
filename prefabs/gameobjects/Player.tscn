@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/graphics/player.png" type="Texture" id=1]
 [ext_resource path="res://scripts/map_objects/Character.cs" type="Script" id=2]
@@ -7,18 +7,7 @@
 [ext_resource path="res://prefabs/gameobjects/CharacterHUD.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/graphics/player_avatar.png" type="Texture" id=6]
 [ext_resource path="res://scripts/map_objects/AvatarComponent.cs" type="Script" id=7]
-[ext_resource path="res://scripts/magic/spells/FullCrossAreaSelector.cs" type="Script" id=8]
 [ext_resource path="res://scripts/map_objects/SpellComponent.cs" type="Script" id=9]
-[ext_resource path="res://scripts/magic/spells/ModularSpell.cs" type="Script" id=10]
-[ext_resource path="res://scripts/magic/spells/DirectCrossAreaSelector.cs" type="Script" id=11]
-[ext_resource path="res://scripts/magic/spells/FullActionResourceConsumer.cs" type="Script" id=12]
-[ext_resource path="res://scripts/magic/spells/ResourceConsumerChain.cs" type="Script" id=13]
-[ext_resource path="res://scripts/magic/spells/ManaResourceConsumer.cs" type="Script" id=14]
-[ext_resource path="res://scripts/magic/spells/TakeDamageSpellEffect.cs" type="Script" id=15]
-[ext_resource path="res://scripts/magic/spells/HealSpellEffect.cs" type="Script" id=16]
-[ext_resource path="res://scripts/magic/spells/CircleAreaSelector.cs" type="Script" id=17]
-[ext_resource path="res://scripts/magic/spells/DirectLineAreaSelector.cs" type="Script" id=18]
-[ext_resource path="res://scripts/magic/spells/SquareAreaSelector.cs" type="Script" id=19]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
@@ -47,98 +36,6 @@ avatar = ExtResource( 6 )
 
 [node name="SpellComponent" type="Node" parent="Components"]
 script = ExtResource( 9 )
-
-[node name="Magic Shot" type="Node" parent="Components/SpellComponent"]
-script = ExtResource( 10 )
-targetAreaPath = NodePath("TargetArea")
-effectAreaPath = NodePath("EffectArea")
-spellEffectPath = NodePath("TakeDamageEffect")
-resourceConsumerPath = NodePath("ConsumerChain")
-
-[node name="TargetArea" type="Node" parent="Components/SpellComponent/Magic Shot"]
-script = ExtResource( 8 )
-range = 1
-interruptOnCharacter = true
-excludeBasePosition = true
-
-[node name="EffectArea" type="Node" parent="Components/SpellComponent/Magic Shot"]
-script = ExtResource( 18 )
-range = 5
-interruptOnCharacter = true
-
-[node name="TakeDamageEffect" type="Node" parent="Components/SpellComponent/Magic Shot"]
-script = ExtResource( 15 )
-damage = 2
-
-[node name="ConsumerChain" type="Node" parent="Components/SpellComponent/Magic Shot"]
-script = ExtResource( 13 )
-
-[node name="FullActionConsumer" type="Node" parent="Components/SpellComponent/Magic Shot/ConsumerChain"]
-script = ExtResource( 12 )
-actionCount = 1
-
-[node name="ManaConsumer" type="Node" parent="Components/SpellComponent/Magic Shot/ConsumerChain"]
-script = ExtResource( 14 )
-manaRequired = 10
-
-[node name="Magic Touch" type="Node" parent="Components/SpellComponent"]
-script = ExtResource( 10 )
-targetAreaPath = NodePath("TargetArea")
-effectAreaPath = NodePath("EffectArea")
-spellEffectPath = NodePath("TakeDamageEffect")
-resourceConsumerPath = NodePath("ConsumerChain")
-
-[node name="TargetArea" type="Node" parent="Components/SpellComponent/Magic Touch"]
-script = ExtResource( 11 )
-range = 1
-
-[node name="EffectArea" type="Node" parent="Components/SpellComponent/Magic Touch"]
-script = ExtResource( 11 )
-
-[node name="TakeDamageEffect" type="Node" parent="Components/SpellComponent/Magic Touch"]
-script = ExtResource( 15 )
-damage = 4
-
-[node name="ConsumerChain" type="Node" parent="Components/SpellComponent/Magic Touch"]
-script = ExtResource( 13 )
-
-[node name="FullActionConsumer" type="Node" parent="Components/SpellComponent/Magic Touch/ConsumerChain"]
-script = ExtResource( 12 )
-actionCount = 1
-
-[node name="ManaConsumer" type="Node" parent="Components/SpellComponent/Magic Touch/ConsumerChain"]
-script = ExtResource( 14 )
-manaRequired = 15
-
-[node name="Heal" type="Node" parent="Components/SpellComponent"]
-script = ExtResource( 10 )
-targetAreaPath = NodePath("TargetArea")
-effectAreaPath = NodePath("EffectArea")
-spellEffectPath = NodePath("HealEffect")
-resourceConsumerPath = NodePath("ConsumerChain")
-
-[node name="TargetArea" type="Node" parent="Components/SpellComponent/Heal"]
-script = ExtResource( 17 )
-range = 3
-
-[node name="EffectArea" type="Node" parent="Components/SpellComponent/Heal"]
-script = ExtResource( 19 )
-range = 1
-
-[node name="HealEffect" type="Node" parent="Components/SpellComponent/Heal"]
-script = ExtResource( 16 )
-heal = 4
-
-[node name="ConsumerChain" type="Node" parent="Components/SpellComponent/Heal"]
-script = ExtResource( 13 )
-
-[node name="FullActionConsumer" type="Node" parent="Components/SpellComponent/Heal/ConsumerChain"]
-script = ExtResource( 12 )
-actionCount = 1
-
-[node name="ManaConsumer" type="Node" parent="Components/SpellComponent/Heal/ConsumerChain"]
-script = ExtResource( 14 )
-manaRequired = 10
 
 [node name="Stats" type="Node" parent="."]
 script = ExtResource( 3 )

@@ -8,6 +8,8 @@ using System;
 public class ModularSpell : Node, ISpell
 {
     [Export]
+    private string spellName;
+    [Export]
     private NodePath targetAreaPath;
     [Export]
     private NodePath effectAreaPath;
@@ -21,6 +23,8 @@ public class ModularSpell : Node, ISpell
     private ISpellEffect spellEffect;
     private IResourceConsumer resourceConsumer;
     private Character caster;
+
+    public string SpellName => spellName;
 
     public override void _Ready()
     {
@@ -88,7 +92,7 @@ public class ModularSpell : Node, ISpell
     {
         return String.Join("\n", $@"
             [b]Name[/b]
-            {this.Name}
+            {this.spellName}
             [b]Resource Require[/b]
             {resourceConsumer.GetDescription(caster)} 
             [b]Target Area[/b]

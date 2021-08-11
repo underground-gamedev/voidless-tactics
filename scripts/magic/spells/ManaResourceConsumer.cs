@@ -5,26 +5,24 @@ public class ManaResourceConsumer : Node, IResourceConsumer
 {
     [Export]
     private int manaRequired; 
+
+    private SpellComponent GetSpellComponent(SpellComponentContext ctx)
+    {
+        return ctx.Caster.Components.FindChild<SpellComponent>();
+    }
     public void Consume(SpellComponentContext ctx)
     {
-        ctx.TargetCell.Mana.Consume(manaRequired);
-        ctx.Map.ManaLayer.OnSync(ctx.Map);
+        GetSpellComponent(ctx).Consume(manaRequired);
     }
 
     public bool ConsumeAvailable(SpellComponentContext ctx)
     {
-        return ctx.TargetCell.Mana.ActualValue >= manaRequired;
+        return GetSpellComponent(ctx).ManaCount >= manaRequired;
     }
 
     public ConsumeTag GetConsumeTags(SpellComponentContext ctx)
     {
-        switch(ctx.TargetCell.Mana.ManaType)
-        {
-            case ManaType.Magma: return ConsumeTag.MagmaMana;
-            case ManaType.Nature: return ConsumeTag.NatureMana;
-            case ManaType.Water: return ConsumeTag.WaterMana;
-            default: return ConsumeTag.None;
-        }
+        return ConsumeTag.None;
     }
 
     public string GetDescription(Character caster)
