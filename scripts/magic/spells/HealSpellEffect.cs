@@ -6,10 +6,11 @@ public class HealSpellEffect : Node, ISpellEffect
     [Export]
     private int heal;
 
-    private int GetPowerModifier(Character caster)
+    private Stat GetPowerStat(Character caster)
     {
-        return caster.BasicStats.SpellPower.ActualValue;
+        return caster.BasicStats.SpellPower;
     }
+
     public void ApplyEffect(SpellComponentContext ctx, List<MapCell> effectArea, ConsumeTag tag)
     {
         foreach (var cell in effectArea)
@@ -39,6 +40,7 @@ public class HealSpellEffect : Node, ISpellEffect
 
     public string GetDescription(Character caster)
     {
-        return $"{TextHelpers.GetIconBBCode("4_16")} heal: {heal}+[color=#c18fff]{GetPowerModifier(caster)}[/color]";
+        var powerStat = GetPowerStat(caster);
+        return $"{TextHelpers.GetIconBBCode("4_16")} heal: {heal}+{TextHelpers.ColorizeStat(powerStat.Name, powerStat.ActualValue)}";
     }
 }
