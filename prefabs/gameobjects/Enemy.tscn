@@ -59,10 +59,19 @@ script = ExtResource( 4 )
 statName = "Damage"
 actualValue = 3
 
+[node name="ManaControl" type="Node" parent="Stats"]
+script = ExtResource( 4 )
+statName = "Mana Control"
+actualValue = 0
+
+[node name="SpellPower" type="Node" parent="Stats"]
+script = ExtResource( 4 )
+statName = "Spell Power"
+actualValue = 0
+
 [node name="Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0.522, -12.018 )
 frames = SubResource( 3 )
-frame = 1
 playing = true
 flip_h = true
 __meta__ = {

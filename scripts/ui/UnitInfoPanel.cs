@@ -6,6 +6,8 @@ public class UnitInfoPanel: Control
     private Label damageLabel;
     private Label moveLabel;
     private Label initiativeLabel;
+    private Label manaControlLabel;
+    private Label spellPowerLabel;
     private Label manaLabel;
 
     public override void _Ready()
@@ -16,6 +18,8 @@ public class UnitInfoPanel: Control
         moveLabel = labels.GetNode<Label>("MoveLabel");
         initiativeLabel = labels.GetNode<Label>("InitiativeLabel");
         manaLabel = labels.GetNode<Label>("ManaLabel");
+        manaControlLabel = labels.GetNode<Label>("ManaControlLabel");
+        spellPowerLabel = labels.GetNode<Label>("SpellPowerLabel");
 
         Hide();
     }
@@ -29,10 +33,12 @@ public class UnitInfoPanel: Control
 
         Visible = true;
         var stats = character.BasicStats;
-        healthLabel.Text = $"Health: {stats.Health.ActualValue}/{stats.Health.MaxValue}";
-        damageLabel.Text = $"Damage: {stats.Damage.ActualValue}";
-        moveLabel.Text = $"Speed: {stats.Speed.ActualValue}";
-        initiativeLabel.Text = $"Initiative: {stats.Initiative.MinValue}-{stats.Initiative.MaxValue}";
+        healthLabel.Text = $"{stats.Health.Name}: {stats.Health.ActualValue}/{stats.Health.MaxValue}";
+        damageLabel.Text = $"{stats.Damage.Name}: {stats.Damage.ActualValue}";
+        moveLabel.Text = $"{stats.Speed.Name}: {stats.Speed.ActualValue}";
+        initiativeLabel.Text = $"{stats.Initiative.Name}: {stats.Initiative.MinValue}-{stats.Initiative.MaxValue}";
+        manaControlLabel.Text = $"{stats.ManaControl.Name}: {stats.ManaControl.ActualValue}";
+        spellPowerLabel.Text = $"{stats.SpellPower.Name}: {stats.SpellPower.ActualValue}";
 
         var spellComponent = character.Components.FindChild<SpellComponent>();
         if (spellComponent != null)
