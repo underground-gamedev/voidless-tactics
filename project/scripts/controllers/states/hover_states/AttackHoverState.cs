@@ -53,7 +53,8 @@ public class AttackHoverState: SimpleHoverState
         var map = controller.Map;
         var highlightLayer = map.MoveHighlightLayer;
         highlightLayer.Clear();
-        highlightLayer.Highlight(parent.ActiveCharacter.Cell.X, parent.ActiveCharacter.Cell.Y, MoveHighlightType.Active);
+        var activePosition = controller.ActiveCharacter.Cell;
+        highlightLayer.Highlight(activePosition.X, activePosition.Y, MoveHighlightType.Active);
         foreach (var moveCell in parent.AvailableMoveCells)
         {
             var (x, y) = moveCell.MapCell.Position;

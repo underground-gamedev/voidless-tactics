@@ -6,21 +6,14 @@ using Godot;
 
 public class InteractableSelectState: BaseControllerState
 {
-    protected Character active;
     private List<MoveCell> availableMoveCells;
     private List<Character> availableAttackTargets;
 
-    public Character ActiveCharacter => active;
     public List<MoveCell> AvailableMoveCells => availableMoveCells;
     public List<Character> AvailableAttackTargets => availableAttackTargets;
 
     public const string ManaPickupAction = "Mana Pickup";
     protected const string SpellAction = "Cast";
-
-    public InteractableSelectState(Character character)
-    {
-        this.active = character;
-    }
 
     public override bool CellClick(int x, int y, Vector2 offset)
     {
@@ -36,13 +29,13 @@ public class InteractableSelectState: BaseControllerState
 
             controller.MainStates.PopState();
             controller.MainStates.PushState(new EventConsumerMainState());
-            active.Components
+            controller.ActiveCharacter.Components
                 .GetComponent<IMoveComponent>()
                 .MoveTo(srcPos)
                 .GetAwaiter()
                 .OnCompleted(() => {
                     var targetComponent = character.Components.GetComponent<ITargetComponent>();
-                    var attackComponent = active.Components.GetComponent<IAttackComponent>();
+                    var attackComponent = controller.ActiveCharacter.Components.GetComponent<IAttackComponent>();
                     attackComponent
                         .Attack(targetComponent)
                         .GetAwaiter()
@@ -59,7 +52,7 @@ public class InteractableSelectState: BaseControllerState
 
             controller.MainStates.PopState();
             controller.MainStates.PushState(new EventConsumerMainState());
-            active.Components
+            controller.ActiveCharacter.Components
                 .GetComponent<IMoveComponent>()
                 .MoveTo(cell)
                 .GetAwaiter()
@@ -82,7 +75,7 @@ public class InteractableSelectState: BaseControllerState
             [new Vector2(1f, 1f)] = (1, 1),
         }.Where(dir => !Map.IsOutOfBounds(x + dir.Value.Item1, y + dir.Value.Item2))
         .Select(dir => new KeyValuePair<Vector2, MapCell>(dir.Key, Map.CellBy(x + dir.Value.Item1, y + dir.Value.Item2)))
-        .Where(dir => availableMoveCells.Any(c => c.MapCell == dir.Value) || dir.Value == active.Cell)
+        .Where(dir => availableMoveCells.Any(c => c.MapCell == dir.Value) || dir.Value == controller.ActiveCharacter.Cell)
         .ToDictionary(elem => elem.Key, elem => elem.Value);
 
         MapCell srcPos = null;
@@ -102,17 +95,18 @@ public class InteractableSelectState: BaseControllerState
 
     public override bool MenuActionSelected(string action)
     {
+        var activeCharacter = controller.ActiveCharacter;
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayActiveCharacter(active);
+        hud?.DisplayActiveCharacter(activeCharacter);
 
         switch (action) {
             case ManaPickupAction:
-                active.Components.GetComponent<SpellComponent>().PickupMana(Map, active.Cell);
-                hud?.DisplayActiveCharacter(active);
+                activeCharacter.Components.GetComponent<SpellComponent>().PickupMana(Map, activeCharacter.Cell);
+                hud?.DisplayActiveCharacter(activeCharacter);
                 ShowMenuAction();
                 break;
             case SpellAction:
-                controller.MainStates.PushState(new SpellSelectState(active));
+                controller.MainStates.PushState(new SpellSelectState());
                 break;
             default:
                 GD.PrintErr($"Invalid menu action for {nameof(InteractableSelectState)} named: {action}");
@@ -123,10 +117,11 @@ public class InteractableSelectState: BaseControllerState
 
     private void ShowMenuAction()
     {
+        var acitveCharacter = controller.ActiveCharacter;
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var availableActions = new List<string>();
-        var spellComponent = active.Components.GetComponent<SpellComponent>();
-        if (spellComponent?.PickupAvailable(Map, active.Cell) == true) availableActions.Add(ManaPickupAction);
+        var spellComponent = acitveCharacter.Components.GetComponent<SpellComponent>();
+        if (spellComponent?.PickupAvailable(Map, acitveCharacter.Cell) == true) availableActions.Add(ManaPickupAction);
         if (spellComponent?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
 
         hud?.HideMenuWithActions();
@@ -138,27 +133,28 @@ public class InteractableSelectState: BaseControllerState
 
     public override void OnEnter()
     {
+        var activeCharacter = controller.ActiveCharacter;
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayActiveCharacter(active);
+        hud?.DisplayActiveCharacter(activeCharacter);
 
         ShowMenuAction();
 
         availableMoveCells = new List<MoveCell>();
-        var moveComponent = active.Components.GetComponent<IMoveComponent>();
+        var moveComponent = activeCharacter.Components.GetComponent<IMoveComponent>();
         if (moveComponent?.MoveAvailable() == true) {
             availableMoveCells = moveComponent.GetMoveArea();
         }
 
         availableAttackTargets = new List<Character>();
-        var attackComponent = active.Components.GetComponent<IAttackComponent>();
+        var attackComponent = activeCharacter.Components.GetComponent<IAttackComponent>();
         if (attackComponent?.AttackAvailable() == true) {
             var allMoveArea = availableMoveCells.Select(cell => cell.MapCell).ToList();
-            allMoveArea.Add(active.Cell);
+            allMoveArea.Add(activeCharacter.Cell);
             var attackTargets = allMoveArea
                 .SelectMany(cell => attackComponent.GetAttackArea(cell))
                 .Distinct()
                 .Select(cell => cell.MapObject as Character)
-                .Where(ch => ch != null && ch.Controller != active.Controller)
+                .Where(ch => ch != null && ch.Controller != activeCharacter.Controller)
                 .ToList();
 
             availableAttackTargets = attackTargets;

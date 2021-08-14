@@ -6,12 +6,10 @@ using Godot;
 
 public class SpellUseState: BaseControllerState
 {
-    private Character active;
     private ISpell activeSpell;
 
-    public SpellUseState(Character character, ISpell spell)
+    public SpellUseState(ISpell spell)
     {
-        active = character;
         activeSpell = spell;
     }
 
@@ -29,7 +27,7 @@ public class SpellUseState: BaseControllerState
             }
             else
             {
-                controller.MainStates.PushState(new SpellSelectState(active));
+                controller.MainStates.PushState(new SpellSelectState());
             }
 
             return true;
@@ -38,12 +36,13 @@ public class SpellUseState: BaseControllerState
 
     public override void OnEnter()
     {
+        var activeCharacter = controller.ActiveCharacter;
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
-        hud?.DisplayActiveCharacter(active);
-        hud?.DisplayCellInfo(active.Cell);
+        hud?.DisplayActiveCharacter(activeCharacter);
+        hud?.DisplayCellInfo(activeCharacter.Cell);
         hud?.DisplaySpellDescriptor(activeSpell.GetDescription());
         
-        controller.HoverStates.PushState(new SpellUseHoverState(active, activeSpell));
+        controller.HoverStates.PushState(new SpellUseHoverState(activeCharacter, activeSpell));
     }
 
     public override void OnLeave()

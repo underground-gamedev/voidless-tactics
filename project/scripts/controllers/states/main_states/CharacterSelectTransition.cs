@@ -9,7 +9,7 @@ public class CharacterSelectTransition: BaseControllerState
 
     public override void OnEnter()
     {
-        BaseControllerState selectState = new InteractableSelectState(character);
+        BaseControllerState selectState = new InteractableSelectState();
         if (character.Controller != controller)
         {
             selectState = new NonInteractableSelectState(character); 

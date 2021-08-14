@@ -39,8 +39,23 @@ public class MapObject: Node2D
         cell.MapObject = this;
     }
 
+    public void DetachMap()
+    {
+        if (map != null)
+        {
+            SetCell(null);
+            this.map = null;
+        }
+        Visible = false;
+    }
+
     public void BindMap(TacticMap map, MapCell cell)
     {
+        if (map != null)
+        {
+            DetachMap();
+        }
+
         this.map = map;
         SetCell(cell);
         SyncWithMap(map);

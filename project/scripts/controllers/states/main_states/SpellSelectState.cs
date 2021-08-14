@@ -6,14 +6,7 @@ using Godot;
 
 public class SpellSelectState: BaseControllerState
 {
-    protected Character active;
-    protected ISpellComponent spellComponent;
-
-    public SpellSelectState(Character character)
-    {
-        active = character;
-        spellComponent = character.Components.GetComponent<ISpellComponent>();
-    }
+    protected ISpellComponent spellComponent => controller.ActiveCharacter.Components.GetComponent<ISpellComponent>();
 
     public override bool CellClick(int x, int y, Vector2 offset)
     {
@@ -30,20 +23,21 @@ public class SpellSelectState: BaseControllerState
             return false;
         }
 
-        controller.MainStates.ReplaceState(new SpellUseState(active, spell));
+        controller.MainStates.ReplaceState(new SpellUseState(spell));
         return true;
     }
 
     public override void OnEnter()
     {
+        var activeCharacter = controller.ActiveCharacter;
         var map = controller.Map;
         map.MoveHighlightLayer.Clear();
-        map.MoveHighlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
+        map.MoveHighlightLayer.Highlight(activeCharacter.Cell.X, activeCharacter.Cell.Y, MoveHighlightType.Active);
 
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var availableSpells = spellComponent.GetAvailableSpellNames();
         hud?.DisplayMenuWithActions(availableSpells);
-        hud?.DisplayActiveCharacter(active);
+        hud?.DisplayActiveCharacter(activeCharacter);
     }
 
     public override void OnLeave()

@@ -11,7 +11,11 @@ public class HumanController: AbstractController
     private StateStack<BaseControllerState> mainStates;
     public StateStack<BaseControllerState> MainStates => mainStates;
 
+    private Character activeCharacter = null;
+    public Character ActiveCharacter => activeCharacter;
+
     public TacticMap Map => tacticMap;
+
 
     [Signal]
     public delegate void EndTurn();
@@ -48,13 +52,15 @@ public class HumanController: AbstractController
 
     public override async Task MakeTurn(Character active)
     {
+        activeCharacter = active;
         hoverStates.PushState(new SimpleHoverState());
-        mainStates.PushState(new InteractableSelectState(active));
+        mainStates.PushState(new InteractableSelectState());
 
         await ToSignal(this, nameof(EndTurn));
 
         mainStates.Clear();
         hoverStates.Clear();
+        active = null;
     }
 
     public void OnDragStart(int x, int y, Vector2 offset)
