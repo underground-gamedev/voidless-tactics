@@ -6,6 +6,11 @@ public class TakeDamageSpellEffect : Node, ISpellEffect
     [Export]
     private int damage;
 
+    private Stat GetPowerStat(Character caster)
+    {
+        return caster.BasicStats.SpellPower;
+    }
+
     public void ApplyEffect(SpellComponentContext ctx, List<MapCell> effectArea, ConsumeTag tag)
     {
         foreach (var cell in effectArea)
@@ -16,7 +21,7 @@ public class TakeDamageSpellEffect : Node, ISpellEffect
             var targetComponent = targetCharacter.Components.FindChild<ITargetComponent>();
             if (targetComponent is null) continue;
 
-            targetComponent.TakeDamage(damage);
+            targetComponent.TakeDamage(damage + GetPowerStat(ctx.Caster).ActualValue);
         }
     }
 
@@ -35,6 +40,7 @@ public class TakeDamageSpellEffect : Node, ISpellEffect
 
     public string GetDescription(Character caster)
     {
-        return $"{TextHelpers.GetIconBBCode("1_68")} take damage: {damage}";
+        var powerStat = GetPowerStat(caster);
+        return $"{TextHelpers.GetIconBBCode("1_68")} take damage: {damage}+{TextHelpers.ColorizeStat(powerStat.Name, powerStat.ActualValue)}";
     }
 }

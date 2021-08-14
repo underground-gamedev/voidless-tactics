@@ -63,9 +63,20 @@ script = ExtResource( 4 )
 statName = "Speed"
 actualValue = 4
 
+[node name="ManaControl" type="Node" parent="Stats"]
+script = ExtResource( 4 )
+statName = "Mana Control"
+actualValue = 60
+
+[node name="SpellPower" type="Node" parent="Stats"]
+script = ExtResource( 4 )
+statName = "Spell Power"
+actualValue = 4
+
 [node name="Sprite" type="AnimatedSprite" parent="."]
 position = Vector2( 0, -12.0182 )
 frames = SubResource( 3 )
+frame = 1
 playing = true
 __meta__ = {
 "_edit_lock_": true

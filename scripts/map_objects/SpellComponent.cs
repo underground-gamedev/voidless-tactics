@@ -42,13 +42,22 @@ public partial class SpellComponent : Node, ISpellComponent
     {
         ManaCell srcManaCell = srcMapCell.Mana;
         var manaType = srcManaCell.ManaType;
-        var consumeCount = srcManaCell.Consume(manaPickupCount);
 
-        map.ManaLayer.OnSync(map);
+        var manaPickupCountPlanned = manaPickupCount;
+
+        var manaControl = character.BasicStats.ManaControl.ActualValue;
+        if (ManaType == ManaType.None || ManaType == manaType)
+        {
+            manaPickupCountPlanned = Mathf.Min(manaPickupCount, manaControl - ManaCount);
+        }
+
+        var consumeCount = srcManaCell.Consume(manaPickupCountPlanned);
 
         pickupUsed = true;
 
         TakeMana(manaType, consumeCount);
+
+        map.ManaLayer.OnSync(map);
     }
 
     public void Consume(int manaCount)
@@ -66,32 +75,45 @@ public partial class SpellComponent : Node, ISpellComponent
         if (newType == ManaType)
         {
             ManaCount += count;
-            return;
-        }
-
-        var mixResults = new Dictionary<(ManaType, ManaType), ManaType>() {
-            [(ManaType.Magma, ManaType.Wind)] = ManaType.Fire,
-            [(ManaType.Magma, ManaType.Water)] = ManaType.Earth
-        };
-
-        ManaType resultType = ManaType.None;
-        if (mixResults.ContainsKey((ManaType, newType))) {
-            resultType = mixResults[(ManaType, newType)];
-        }
-        else if (mixResults.ContainsKey((newType, ManaType))) {
-            resultType = mixResults[(newType, ManaType)];
-        }
-
-        if (resultType == ManaType.None)
-        {
-            ManaType = newType;
-            ManaCount = count;
         }
         else
         {
-            ManaType = resultType;
-            ManaCount = (ManaCount + count) / 2;
+            var mixResults = new Dictionary<(ManaType, ManaType), ManaType>() {
+                [(ManaType.Magma, ManaType.Wind)] = ManaType.Fire,
+                [(ManaType.Magma, ManaType.Water)] = ManaType.Earth
+            };
+
+            ManaType resultType = ManaType.None;
+            if (mixResults.ContainsKey((ManaType, newType))) {
+                resultType = mixResults[(ManaType, newType)];
+            }
+            else if (mixResults.ContainsKey((newType, ManaType))) {
+                resultType = mixResults[(newType, ManaType)];
+            }
+
+            if (resultType == ManaType.None)
+            {
+                ManaType = newType;
+                ManaCount = count;
+            }
+            else
+            {
+                ManaType = resultType;
+                ManaCount = (ManaCount + count) / 2;
+            }
         }
+
+        var manaControl = character.BasicStats.ManaControl.ActualValue;
+        if (ManaCount > manaControl)
+        {
+            ManaExplosion(ManaCount - manaControl);
+        }
+    }
+
+    private void ManaExplosion(int explosionCount)
+    {
+        Consume(explosionCount);
+        character.Components.FindChild<ITargetComponent>()?.TakeDamage(explosionCount/5);
     }
 
     public void OnTurnStart(Character parent)
