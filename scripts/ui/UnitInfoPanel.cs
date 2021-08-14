@@ -40,7 +40,7 @@ public class UnitInfoPanel: Control
         manaControlLabel.Text = $"{stats.ManaControl.Name}: {stats.ManaControl.ActualValue}";
         spellPowerLabel.Text = $"{stats.SpellPower.Name}: {stats.SpellPower.ActualValue}";
 
-        var spellComponent = character.Components.FindChild<SpellComponent>();
+        var spellComponent = character.Components.GetComponent<SpellComponent>();
         if (spellComponent != null)
         {
             manaLabel.Text = $"Mana: {spellComponent.ManaCount} {spellComponent.ManaType.ToString().ToLower()}";

@@ -113,7 +113,7 @@ public partial class SpellComponent : Node, ISpellComponent
     private void ManaExplosion(int explosionCount)
     {
         Consume(explosionCount);
-        character.Components.FindChild<ITargetComponent>()?.TakeDamage(explosionCount/5);
+        character.Components.GetComponent<ITargetComponent>()?.TakeDamage(explosionCount/5);
     }
 
     public void OnTurnStart(Character parent)

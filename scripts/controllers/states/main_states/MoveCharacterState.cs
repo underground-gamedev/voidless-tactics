@@ -48,7 +48,7 @@ public class MoveCharacterState: BaseControllerState
         highlightLayer.Clear();
         highlightLayer.Highlight(active.Cell.X, active.Cell.Y, MoveHighlightType.Active);
 
-        var moveComponent = active.Components.FindChild<IMoveComponent>();
+        var moveComponent = active.Components.GetComponent<IMoveComponent>();
         if (moveComponent?.MoveAvailable() != true) {
             availableCells = new List<MoveCell>();
             return;

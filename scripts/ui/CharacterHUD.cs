@@ -18,7 +18,7 @@ public class CharacterHUD: Control
 
     public void OnTurnPlanned(Character character, List<Character> plan)
     {
-        var orderComponent = character.Components.FindChild<TurnOrderComponent>();
+        var orderComponent = character.Components.GetComponent<TurnOrderComponent>();
         if (orderComponent == null) return;
         orderLabel.Visible = true;
         orderLabel.Text = orderComponent.OrderNumber.ToString();

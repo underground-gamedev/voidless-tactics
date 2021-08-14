@@ -23,7 +23,7 @@ public class NonInteractableSelectState: BaseControllerState
 
     public override void OnEnter()
     {
-        var moveComponent = active.Components.FindChild<IMoveComponent>();
+        var moveComponent = active.Components.GetComponent<IMoveComponent>();
         if (moveComponent is null) return;
 
         var highlightLayer = controller.Map.MoveHighlightLayer;

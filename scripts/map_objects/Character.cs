@@ -7,8 +7,8 @@ public class Character : MapObject, IBasicStatsPresenter
     private BasicStats basicStats;
     public BasicStats BasicStats => basicStats = basicStats ?? GetNode<BasicStats>("Stats");
 
-    private Node components;
-    public Node Components => components = components ?? GetNode<Node>("Components");
+    private ComponentContainer components;
+    public ComponentContainer Components => components = components ?? GetNode<ComponentContainer>("Components");
 
     private Control characterHUD;
     public Control CharacterHUD => characterHUD = characterHUD ?? GetNode<Control>("CharacterHUD");
@@ -23,13 +23,18 @@ public class Character : MapObject, IBasicStatsPresenter
 
     public override void _Ready()
     {
+        if (this.FindChild<ComponentContainer>() == null)
+        {
+            AddChild(new ComponentContainer());
+        }
+
         var baseComponents = new List<Node>() {
             new TargetComponent(),
             new TurnOrderComponent(),
             new MoveComponent(),
             new AttackComponent(),
         };
-        baseComponents.ForEach(com => Components.AddChild(com));
+        baseComponents.ForEach(com => Components.AddComponent(com));
 
         propagateChilds.Add(Components);
         propagateChilds.Add(CharacterHUD);

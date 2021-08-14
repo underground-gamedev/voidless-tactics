@@ -12,7 +12,7 @@ public class SpellSelectState: BaseControllerState
     public SpellSelectState(Character character)
     {
         active = character;
-        spellComponent = character.Components.FindChild<ISpellComponent>();
+        spellComponent = character.Components.GetComponent<ISpellComponent>();
     }
 
     public override bool CellClick(int x, int y, Vector2 offset)

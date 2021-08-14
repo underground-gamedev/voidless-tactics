@@ -18,7 +18,7 @@ public class HealSpellEffect : Node, ISpellEffect
             var targetCharacter = cell.MapObject as Character;
             if (targetCharacter is null) continue;
 
-            var targetComponent = targetCharacter.Components.FindChild<ITargetComponent>();
+            var targetComponent = targetCharacter.Components.GetComponent<ITargetComponent>();
             if (targetComponent is null) continue;
 
             targetComponent.TakeHeal(heal);

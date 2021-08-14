@@ -18,10 +18,10 @@ public class TurnQueueElement: Control
     public void SetCharacter(Character character)
     {
         this.character = character;
-        var avatarComponent = character.Components.FindChild<AvatarComponent>();
+        var avatarComponent = character.Components.GetComponent<AvatarComponent>();
         var characterTexture = avatarComponent?.Avatar ?? defaultTexture;
         Avatar.Texture = characterTexture;
-        var orderNumber = character.Components.FindChild<TurnOrderComponent>().OrderNumber;
+        var orderNumber = character.Components.GetComponent<TurnOrderComponent>().OrderNumber;
         GetNode<Label>("TurnOrder").Text = orderNumber.ToString();
     }
 

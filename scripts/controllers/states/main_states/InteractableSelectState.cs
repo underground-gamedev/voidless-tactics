@@ -37,12 +37,12 @@ public class InteractableSelectState: BaseControllerState
             controller.MainStates.PopState();
             controller.MainStates.PushState(new EventConsumerMainState());
             active.Components
-                .FindChild<IMoveComponent>()
+                .GetComponent<IMoveComponent>()
                 .MoveTo(srcPos)
                 .GetAwaiter()
                 .OnCompleted(() => {
-                    var targetComponent = character.Components.FindChild<ITargetComponent>();
-                    var attackComponent = active.Components.FindChild<IAttackComponent>();
+                    var targetComponent = character.Components.GetComponent<ITargetComponent>();
+                    var attackComponent = active.Components.GetComponent<IAttackComponent>();
                     attackComponent
                         .Attack(targetComponent)
                         .GetAwaiter()
@@ -60,7 +60,7 @@ public class InteractableSelectState: BaseControllerState
             controller.MainStates.PopState();
             controller.MainStates.PushState(new EventConsumerMainState());
             active.Components
-                .FindChild<IMoveComponent>()
+                .GetComponent<IMoveComponent>()
                 .MoveTo(cell)
                 .GetAwaiter()
                 .OnCompleted(() => controller.TriggerEndTurn());
@@ -107,7 +107,7 @@ public class InteractableSelectState: BaseControllerState
 
         switch (action) {
             case ManaPickupAction:
-                active.Components.FindChild<SpellComponent>().PickupMana(Map, active.Cell);
+                active.Components.GetComponent<SpellComponent>().PickupMana(Map, active.Cell);
                 hud?.DisplayActiveCharacter(active);
                 ShowMenuAction();
                 break;
@@ -125,7 +125,7 @@ public class InteractableSelectState: BaseControllerState
     {
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var availableActions = new List<string>();
-        var spellComponent = active.Components.FindChild<SpellComponent>();
+        var spellComponent = active.Components.GetComponent<SpellComponent>();
         if (spellComponent?.PickupAvailable(Map, active.Cell) == true) availableActions.Add(ManaPickupAction);
         if (spellComponent?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
 
@@ -144,13 +144,13 @@ public class InteractableSelectState: BaseControllerState
         ShowMenuAction();
 
         availableMoveCells = new List<MoveCell>();
-        var moveComponent = active.Components.FindChild<IMoveComponent>();
+        var moveComponent = active.Components.GetComponent<IMoveComponent>();
         if (moveComponent?.MoveAvailable() == true) {
             availableMoveCells = moveComponent.GetMoveArea();
         }
 
         availableAttackTargets = new List<Character>();
-        var attackComponent = active.Components.FindChild<IAttackComponent>();
+        var attackComponent = active.Components.GetComponent<IAttackComponent>();
         if (attackComponent?.AttackAvailable() == true) {
             var allMoveArea = availableMoveCells.Select(cell => cell.MapCell).ToList();
             allMoveArea.Add(active.Cell);

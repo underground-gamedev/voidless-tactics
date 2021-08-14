@@ -18,7 +18,7 @@ public class TakeDamageSpellEffect : Node, ISpellEffect
             var targetCharacter = cell.MapObject as Character;
             if (targetCharacter is null) continue;
 
-            var targetComponent = targetCharacter.Components.FindChild<ITargetComponent>();
+            var targetComponent = targetCharacter.Components.GetComponent<ITargetComponent>();
             if (targetComponent is null) continue;
 
             targetComponent.TakeDamage(damage + GetPowerStat(ctx.Caster).ActualValue);

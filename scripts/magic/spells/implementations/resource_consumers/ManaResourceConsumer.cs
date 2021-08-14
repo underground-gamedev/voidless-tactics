@@ -8,7 +8,7 @@ public class ManaResourceConsumer : Node, IResourceConsumer
 
     private SpellComponent GetSpellComponent(SpellComponentContext ctx)
     {
-        return ctx.Caster.Components.FindChild<SpellComponent>();
+        return ctx.Caster.Components.GetComponent<SpellComponent>();
     }
     public void Consume(SpellComponentContext ctx)
     {

@@ -14,7 +14,7 @@ public class AIController : AbstractController
 		await this.Wait(0.1f);
 		var rand = new Random();
 
-		var moveComponent = active.Components.FindChild<IMoveComponent>();
+		var moveComponent = active.Components.GetComponent<IMoveComponent>();
 		if (moveComponent?.MoveAvailable() != true) return;
 
 		var availableCells = moveComponent.GetMoveArea();
