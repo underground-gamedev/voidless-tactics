@@ -1,0 +1,31 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/magic/spells/implementations/area_selectors/CircleAreaSelector.cs" type="Script" id=2]
+[ext_resource path="res://scripts/magic/spells/implementations/spell_effects/HealSpellEffect.cs" type="Script" id=3]
+[ext_resource path="res://scripts/magic/spells/implementations/area_selectors/SquareAreaSelector.cs" type="Script" id=4]
+[ext_resource path="res://scripts/magic/spells/base/ModularSpell.cs" type="Script" id=5]
+[ext_resource path="res://scripts/magic/spells/implementations/resource_consumers/ManaResourceConsumer.cs" type="Script" id=7]
+
+[node name="Heal" type="Node"]
+script = ExtResource( 5 )
+spellName = "Heal"
+targetAreaPath = NodePath("TargetArea")
+effectAreaPath = NodePath("EffectArea")
+spellEffectPath = NodePath("HealEffect")
+resourceConsumerPath = NodePath("ManaConsumer")
+
+[node name="TargetArea" type="Node" parent="."]
+script = ExtResource( 2 )
+range = 3
+
+[node name="EffectArea" type="Node" parent="."]
+script = ExtResource( 4 )
+range = 1
+
+[node name="HealEffect" type="Node" parent="."]
+script = ExtResource( 3 )
+heal = 4
+
+[node name="ManaConsumer" type="Node" parent="."]
+script = ExtResource( 7 )
+manaRequired = 10
