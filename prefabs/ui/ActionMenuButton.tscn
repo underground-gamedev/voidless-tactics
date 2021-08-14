@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://prefabs/fonts/dynamic_fonts/RegularUIFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scripts/gd/SelfIdentificateButton.cs" type="Script" id=2]
+
+[node name="ActionButton" type="Button"]
+margin_right = 124.0
+margin_bottom = 39.0
+custom_fonts/font = ExtResource( 1 )
+text = "Action"
+flat = true
+align = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

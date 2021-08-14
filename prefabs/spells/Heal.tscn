@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scripts/magic/spells/CircleAreaSelector.cs" type="Script" id=2]
-[ext_resource path="res://scripts/magic/spells/HealSpellEffect.cs" type="Script" id=3]
-[ext_resource path="res://scripts/magic/spells/SquareAreaSelector.cs" type="Script" id=4]
-[ext_resource path="res://scripts/magic/spells/ModularSpell.cs" type="Script" id=5]
-[ext_resource path="res://scripts/magic/spells/ManaResourceConsumer.cs" type="Script" id=7]
+[ext_resource path="res://scripts/magic/spells/implementations/area_selectors/CircleAreaSelector.cs" type="Script" id=2]
+[ext_resource path="res://scripts/magic/spells/implementations/spell_effects/HealSpellEffect.cs" type="Script" id=3]
+[ext_resource path="res://scripts/magic/spells/implementations/area_selectors/SquareAreaSelector.cs" type="Script" id=4]
+[ext_resource path="res://scripts/magic/spells/base/ModularSpell.cs" type="Script" id=5]
+[ext_resource path="res://scripts/magic/spells/implementations/resource_consumers/ManaResourceConsumer.cs" type="Script" id=7]
 
 [node name="Heal" type="Node"]
 script = ExtResource( 5 )
