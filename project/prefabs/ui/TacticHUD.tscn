@@ -1,18 +1,19 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://prefabs/fonts/font_data/SimpleFont.tres" type="DynamicFontData" id=1]
 [ext_resource path="res://prefabs/ui/ActionMenuButton.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-BoldItalic.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://scripts/ui/ActionContainer.cs" type="Script" id=4]
 [ext_resource path="res://scripts/ui/TacticHUD.cs" type="Script" id=5]
-[ext_resource path="res://prefabs/ui/TurnQueueElement.tscn" type="PackedScene" id=6]
+[ext_resource path="res://prefabs/ui/SmallTurnQueueElement.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Italic.otf" type="DynamicFontData" id=7]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Regular.otf" type="DynamicFontData" id=8]
 [ext_resource path="res://assets/fonts/alegreya/Alegreya-Bold.otf" type="DynamicFontData" id=9]
 [ext_resource path="res://prefabs/fonts/dynamic_fonts/RegularUIFont.tres" type="DynamicFont" id=10]
 [ext_resource path="res://prefabs/ui/UnitInfoPanel.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scripts/ui/TurnQueueUI.cs" type="Script" id=12]
-
+[ext_resource path="res://prefabs/ui/BigTurnQueueElement.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scripts/ui/QueueContainer.cs" type="Script" id=14]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -41,12 +42,13 @@ font_data = ExtResource( 8 )
 [node name="TacticHUD" type="CanvasLayer"]
 script = ExtResource( 5 )
 
-[node name="TurnQueue" type="HBoxContainer" parent="."]
+[node name="TurnQueue" type="Control" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 224.34
-margin_top = -72.0
-margin_right = 725.34
+margin_left = 3.92889
+margin_top = -142.757
+margin_right = 157.929
+margin_bottom = 0.242676
 grow_vertical = 0
 script = ExtResource( 12 )
 __meta__ = {
@@ -54,8 +56,49 @@ __meta__ = {
 }
 queueElement = ExtResource( 6 )
 
-[node name="TurnQueueElement2" parent="TurnQueue" instance=ExtResource( 6 )]
-margin_bottom = 72.0
+[node name="SmallElementQueue" type="Container" parent="TurnQueue"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = -196.343
+margin_right = 149.0
+margin_bottom = -108.343
+script = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SmallTurnQueueElement" parent="TurnQueue/SmallElementQueue" instance=ExtResource( 6 )]
+margin_top = -3.2
+margin_bottom = 92.8
+
+[node name="SmallTurnQueueElement2" parent="TurnQueue/SmallElementQueue" instance=ExtResource( 6 )]
+margin_left = 52.8
+margin_top = -56.0
+margin_right = 148.8
+margin_bottom = 40.0
+
+[node name="SmallTurnQueueElement3" parent="TurnQueue/SmallElementQueue" instance=ExtResource( 6 )]
+margin_top = -108.8
+margin_bottom = -12.8
+
+[node name="SmallTurnQueueElement4" parent="TurnQueue/SmallElementQueue" instance=ExtResource( 6 )]
+margin_left = 52.8
+margin_top = -161.6
+margin_right = 148.8
+margin_bottom = -65.6
+
+[node name="SmallTurnQueueElement5" parent="TurnQueue/SmallElementQueue" instance=ExtResource( 6 )]
+margin_top = -214.4
+margin_bottom = -118.4
+
+[node name="BigTurnQueueElement" parent="TurnQueue" instance=ExtResource( 13 )]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 33.7071
+margin_top = -147.929
+margin_right = 172.707
+margin_bottom = -8.92889
 
 [node name="EndTurnButton" type="Control" parent="."]
 anchor_left = 0.5
@@ -141,9 +184,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -403.0
-margin_top = -17.0
-margin_right = -232.0
+margin_left = -518.283
+margin_top = -17.6299
+margin_right = -347.283
+margin_bottom = -0.629883
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 1
@@ -191,23 +235,25 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -223.0
-margin_top = -422.0
+margin_left = -331.0
+margin_top = -265.0
 margin_right = -1.0
 margin_bottom = -133.0
 
 [node name="ActiveUnitInfo" parent="." instance=ExtResource( 11 )]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -289.0
-margin_bottom = 0.0
+margin_left = 191.0
+margin_top = -127.0
+margin_right = 512.0
+margin_bottom = -1.0
 
 [node name="CellInfo" type="Control" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -221.587
+margin_left = -330.0
 margin_top = -131.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -249,7 +295,7 @@ __meta__ = {
 
 [node name="ManaTypeLabel" type="Label" parent="CellInfo/Labels"]
 margin_top = 7.0
-margin_right = 203.0
+margin_right = 312.0
 margin_bottom = 43.0
 custom_fonts/font = ExtResource( 10 )
 text = "Mana: fire"
@@ -260,7 +306,7 @@ __meta__ = {
 
 [node name="DensityLabel" type="Label" parent="CellInfo/Labels"]
 margin_top = 47.0
-margin_right = 203.0
+margin_right = 312.0
 margin_bottom = 83.0
 custom_fonts/font = ExtResource( 10 )
 text = "Density: 45"
@@ -271,7 +317,7 @@ __meta__ = {
 
 [node name="CordsLabel" type="Label" parent="CellInfo/Labels"]
 margin_top = 87.0
-margin_right = 203.0
+margin_right = 312.0
 margin_bottom = 123.0
 custom_fonts/font = ExtResource( 10 )
 text = "x:1 y:1"
@@ -283,9 +329,10 @@ __meta__ = {
 [node name="SpellDescriptor" type="MarginContainer" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -395.0
-margin_right = 307.0
-margin_bottom = -298.0
+margin_left = 192.0
+margin_top = -232.0
+margin_right = 513.0
+margin_bottom = -135.0
 grow_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -293,7 +340,7 @@ __meta__ = {
 
 [node name="Background" type="ColorRect" parent="SpellDescriptor"]
 modulate = Color( 1, 1, 1, 0.611765 )
-margin_right = 307.0
+margin_right = 321.0
 margin_bottom = 97.0
 color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 __meta__ = {
@@ -310,7 +357,7 @@ __meta__ = {
 }
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="SpellDescriptor"]
-margin_right = 307.0
+margin_right = 321.0
 margin_bottom = 97.0
 custom_fonts/bold_italics_font = SubResource( 3 )
 custom_fonts/italics_font = SubResource( 4 )
