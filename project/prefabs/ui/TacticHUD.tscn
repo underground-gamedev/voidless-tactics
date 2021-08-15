@@ -184,9 +184,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -403.0
-margin_top = -17.0
-margin_right = -232.0
+margin_left = -518.283
+margin_top = -17.6299
+margin_right = -347.283
+margin_bottom = -0.629883
 grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 1
@@ -234,25 +235,25 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -223.0
-margin_top = -422.0
+margin_left = -331.0
+margin_top = -265.0
 margin_right = -1.0
 margin_bottom = -133.0
 
 [node name="ActiveUnitInfo" parent="." instance=ExtResource( 11 )]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 1057.8
-margin_top = -716.018
-margin_right = 1277.8
-margin_bottom = -427.018
+margin_left = 191.0
+margin_top = -127.0
+margin_right = 512.0
+margin_bottom = -1.0
 
 [node name="CellInfo" type="Control" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -221.587
+margin_left = -330.0
 margin_top = -131.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -294,7 +295,7 @@ __meta__ = {
 
 [node name="ManaTypeLabel" type="Label" parent="CellInfo/Labels"]
 margin_top = 7.0
-margin_right = 203.0
+margin_right = 312.0
 margin_bottom = 43.0
 custom_fonts/font = ExtResource( 10 )
 text = "Mana: fire"
@@ -305,7 +306,7 @@ __meta__ = {
 
 [node name="DensityLabel" type="Label" parent="CellInfo/Labels"]
 margin_top = 47.0
-margin_right = 203.0
+margin_right = 312.0
 margin_bottom = 83.0
 custom_fonts/font = ExtResource( 10 )
 text = "Density: 45"
@@ -316,7 +317,7 @@ __meta__ = {
 
 [node name="CordsLabel" type="Label" parent="CellInfo/Labels"]
 margin_top = 87.0
-margin_right = 203.0
+margin_right = 312.0
 margin_bottom = 123.0
 custom_fonts/font = ExtResource( 10 )
 text = "x:1 y:1"
@@ -328,10 +329,10 @@ __meta__ = {
 [node name="SpellDescriptor" type="MarginContainer" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 561.865
-margin_top = -101.332
-margin_right = 868.865
-margin_bottom = -4.33179
+margin_left = 192.0
+margin_top = -232.0
+margin_right = 513.0
+margin_bottom = -135.0
 grow_vertical = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -339,7 +340,7 @@ __meta__ = {
 
 [node name="Background" type="ColorRect" parent="SpellDescriptor"]
 modulate = Color( 1, 1, 1, 0.611765 )
-margin_right = 307.0
+margin_right = 321.0
 margin_bottom = 97.0
 color = Color( 0.0509804, 0.0509804, 0.0509804, 1 )
 __meta__ = {
@@ -356,7 +357,7 @@ __meta__ = {
 }
 
 [node name="DescriptionLabel" type="RichTextLabel" parent="SpellDescriptor"]
-margin_right = 307.0
+margin_right = 321.0
 margin_bottom = 97.0
 custom_fonts/bold_italics_font = SubResource( 3 )
 custom_fonts/italics_font = SubResource( 4 )
