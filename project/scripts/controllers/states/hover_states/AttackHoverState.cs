@@ -58,7 +58,7 @@ public class AttackHoverState: SimpleHoverState
         foreach (var moveCell in parent.AvailableMoveCells)
         {
             var (x, y) = moveCell.MapCell.Position;
-            var highlightType = moveCell.ActionNeed == 1 ? MoveHighlightType.NormalMove : MoveHighlightType.LongMove;
+            var highlightType = moveCell.WeakAttack ? MoveHighlightType.LongMove : MoveHighlightType.NormalMove;
             highlightLayer.Highlight(x, y, highlightType);
         }
         parent.AvailableAttackTargets.ForEach(ch => highlightLayer.Highlight(ch.Cell.X, ch.Cell.Y, MoveHighlightType.Attack));

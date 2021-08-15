@@ -26,13 +26,13 @@ public class MoveComponent : Node, IMoveComponent
             .GetAllAvailablePathDest(mapObject.Cell, basicStats.Speed.ModifiedActualValue/2)
             .Select(pos => map.CellBy(pos.Item1, pos.Item2))
             .Where(cell => cell.MapObject == null)
-            .Select(cell => new MoveCell(cell, 1));
+            .Select(cell => new MoveCell(cell, false));
 
         var sprintMoveCells = pathfinder
             .GetAllAvailablePathDest(mapObject.Cell, basicStats.Speed.ModifiedActualValue)
             .Select(pos => map.CellBy(pos.Item1, pos.Item2))
             .Where(cell => cell.MapObject == null && normalMoveCells.All(n => n.MapCell != cell))
-            .Select(cell => new MoveCell(cell, 2));
+            .Select(cell => new MoveCell(cell, true));
 
         return normalMoveCells.Concat(sprintMoveCells).ToList();
     }

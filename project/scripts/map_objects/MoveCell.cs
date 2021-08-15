@@ -1,11 +1,11 @@
 public struct MoveCell
 {
     public MapCell MapCell;
-    public int ActionNeed;
+    public bool WeakAttack;
 
-    public MoveCell(MapCell mapCell, int actionNeed)
+    public MoveCell(MapCell mapCell, bool weakAttack)
     {
         MapCell = mapCell;
-        ActionNeed = actionNeed; 
+        WeakAttack = weakAttack;
     }
 }

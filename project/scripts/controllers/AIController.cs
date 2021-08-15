@@ -11,9 +11,20 @@ public class AIController : AbstractController
 
 	public override async Task MakeTurn(Character active)
 	{
-		await this.Wait(0.1f);
-		var rand = new Random();
+		var aiComponent = active.GetAIComponent();
+		if (aiComponent == null)
+		{
+			await DefaultAI(active);
+		}
+		else
+		{
+			await aiComponent.MakeTurn();
+		}
+	}
 
+	private async Task DefaultAI(Character active)
+	{
+		var rand = new Random();
 		var moveComponent = active.Components.GetComponent<IMoveComponent>();
 		if (moveComponent?.MoveAvailable() != true) return;
 
