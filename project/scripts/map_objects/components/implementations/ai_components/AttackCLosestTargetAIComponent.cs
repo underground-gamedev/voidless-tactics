@@ -3,152 +3,94 @@ using System.Linq;
 using System.Threading.Tasks;
 using Godot;
 
-public class AttackCLosestTargetAIComponent : AIComponent
+public class AttackClosestTargetAIComponent : AIComponent
 {
-    Character Target;
-
-    Character GetClosestTarget()
-    {
-        Character resultC = null;
-
-        Vector2 SelfPosition;
-        Vector2 TargetPosition;
-
-        float MinD = 100 * 100;
-        float D = 0;
-
-        SelfPosition = intintToV2(character.Cell.Position);
-
-        foreach(Character C in enemyCharacters)
-        {
-            TargetPosition = intintToV2(C.Cell.Position);
-
-            D = (TargetPosition - SelfPosition).Length();
-
-            if (D < MinD)
-            {
-                resultC = C;
-
-                MinD = D;
-            }
-        }
-
-        return resultC;
-    }
-
     public override async Task MakeTurn()
     {
-        Target = GetClosestTarget();
+        Character target = GetClosestTarget();
 
-        List<MoveCell> MoveAreaMoveCells = moveComponent.MoveAvailable() ? moveComponent.GetMoveArea() : new List<MoveCell>();
+        if (target == null) return;
 
-        List<MapCell> AttackCircleMapCells = map.AllNeighboursFor(Target.Cell.Position.Item1, Target.Cell.Position.Item2);
+        List<MoveCell> moveAreaMoveCells = moveComponent.MoveAvailable() ? moveComponent.GetMoveArea() : new List<MoveCell>();
+        List<MapCell> attackCircleMapCells = map.AllNeighboursFor(target.Cell.X, target.Cell.Y);
+        List<MapCell> moveAreaMapCells = moveAreaMoveCells.Select(cell => cell.MapCell).ToList();
 
-        List<MapCell> MoveAreaMapCells = new List<MapCell>();
+        moveAreaMapCells.Add(character.Cell);
 
-        foreach (MoveCell MC in MoveAreaMoveCells)
+        List<MapCell> cellsAttackCanOccurFrom = attackCircleMapCells.Where(cell => moveAreaMapCells.Contains(cell)).ToList();
+
+        if (cellsAttackCanOccurFrom.Count > 0)
         {
-            MoveAreaMapCells.Add(MC.MapCell);
-        }
-
-        MoveAreaMapCells.Add(character.Cell);
-
-        List<MapCell> CellsAttackCanOccurFrom = SameMapCells(AttackCircleMapCells, MoveAreaMapCells);
-
-        if (CellsAttackCanOccurFrom.Count > 0)
-        {
-            if (!CellsAttackCanOccurFrom.Contains(character.Cell))
+            if (!cellsAttackCanOccurFrom.Contains(character.Cell))
             {
-                await moveComponent.MoveTo(GetClosestCellFromList(CellsAttackCanOccurFrom));
+                await moveComponent.MoveTo(GetClosestCellFromList(cellsAttackCanOccurFrom));
             }
-
-            await attackComponent.Attack(Target.GetTargetComponent());
+            await attackComponent.Attack(target.GetTargetComponent());
         }
         else
         {
             if (moveComponent.MoveAvailable()) {
 
-                MapCell FarthestCell = null;
+                MapCell farthestCell = null;
 
-                (int, int)[] iiPath = map.PathfindLayer.Pathfind(intintToV2(character.Cell.Position), intintToV2(Target.Cell.Position));
-
-                for (int i = 1; i < iiPath.Length - 1; i++)
+                var path = map.PathfindLayer.Pathfind(character.Cell, target.Cell);
+                foreach(var cell in path.Skip(1))
                 {
-                    if (MoveAreaMapCells.Contains(map.CellBy(iiPath[i].Item1, iiPath[i].Item2)))
-                    {
-                        FarthestCell = map.CellBy(iiPath[i].Item1, iiPath[i].Item2);
-                    }
-                    else
+                    if (!moveAreaMapCells.Contains(cell))
                     {
                         break;
                     }
+                    farthestCell = cell;
                 }
 
-                if(FarthestCell != null)
+                if (farthestCell != null)
                 {
-                    await moveComponent.MoveTo(FarthestCell);
+                    await moveComponent.MoveTo(farthestCell);
                 }
             }
         }
     }
 
-    Vector2 intintToV2((int, int)ii)
+    private int CellDistance(MapCell a, MapCell b)
     {
-        Vector2 rV = Vector2.Zero;
-
-        rV.x = ii.Item1;
-        rV.y = ii.Item2;
-
-        return rV;
+        return Mathf.RoundToInt((new Vector2(b.X, b.Y) - new Vector2(a.X, a.Y)).Length());
     }
 
-    List<MapCell> SameMapCells(List<MapCell> L1, List<MapCell> L2)
+    Character GetClosestTarget()
     {
-        List<MapCell> result = new List<MapCell>();
+        Character result = null;
+        int minDistance = int.MaxValue;
 
-        foreach (MapCell cfl1 in L1)
+        foreach(Character enemy in enemyCharacters)
         {
-            foreach (MapCell cfl2 in L2)
+            int distance = CellDistance(enemy.Cell, character.Cell);
+            if (distance < minDistance)
             {
-                if (cfl1 == cfl2)
-                {
-                    result.Add(cfl1); 
-                }
+                result = enemy;
+                minDistance = distance;
             }
         }
 
         return result;
     }
 
-    MapCell GetClosestCellFromList(List<MapCell> L)
+    MapCell GetClosestCellFromList(List<MapCell> cells)
     {
         MapCell result = null;
 
-        Vector2 SelfPosition;
-        Vector2 CellPosition;
-
-        float MinD = 100 * 100;
-        float D = 0;
-
-        SelfPosition = intintToV2(character.Cell.Position);
-
-        foreach (MapCell MC in L)
+        int minDistance = int.MaxValue;
+        foreach(MapCell cell in cells)
         {
-            CellPosition = intintToV2(MC.Position);
-
-            D = (CellPosition - SelfPosition).Length();
-
-            if (D < MinD)
+            int distance = CellDistance(cell, character.Cell);
+            if (distance < minDistance)
             {
-                result = MC;
-
-                MinD = D;
+                result = cell;
+                minDistance = distance;
             }
         }
 
-        if (result == null) GD.Print("!!!!");
+        if (result == null) GD.PrintErr("Closest position don't found. Something went wrong!");
 
         return result;
     }
-
 }

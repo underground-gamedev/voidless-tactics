@@ -9,7 +9,7 @@
 [ext_resource path="res://scripts/map_objects/components/base/ComponentContainer.cs" type="Script" id=7]
 [ext_resource path="res://prefabs/ui/CharacterHUD.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/graphics/ui/red_team_portrait_small.png" type="Texture" id=9]
-[ext_resource path="res://scripts/map_objects/components/implementations/ai_components/AttackTargetInMoveAreaAIComponent.cs" type="Script" id=10]
+[ext_resource path="res://scripts/map_objects/components/implementations/ai_components/AttackClosestTargetAIComponent.cs" type="Script" id=10]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 1 )
