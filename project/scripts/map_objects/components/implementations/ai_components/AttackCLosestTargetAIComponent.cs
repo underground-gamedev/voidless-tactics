@@ -25,28 +25,28 @@ public class AttackClosestTargetAIComponent : AIComponent
             {
                 await moveComponent.MoveTo(GetClosestCellFromList(cellsAttackCanOccurFrom));
             }
-            await attackComponent.Attack(target.GetTargetComponent());
+
+            if (attackComponent.AttackAvailable())
+            {
+                await attackComponent.Attack(target.GetTargetComponent());
+            }
         }
-        else
-        {
-            if (moveComponent.MoveAvailable()) {
+        else if (moveComponent.MoveAvailable()) {
+            MapCell farthestCell = null;
 
-                MapCell farthestCell = null;
-
-                var path = map.PathfindLayer.Pathfind(character.Cell, target.Cell);
-                foreach(var cell in path.Skip(1))
+            var path = map.PathfindLayer.Pathfind(character.Cell, target.Cell);
+            foreach(var cell in path.Skip(1))
+            {
+                if (!moveAreaMapCells.Contains(cell))
                 {
-                    if (!moveAreaMapCells.Contains(cell))
-                    {
-                        break;
-                    }
-                    farthestCell = cell;
+                    break;
                 }
+                farthestCell = cell;
+            }
 
-                if (farthestCell != null)
-                {
-                    await moveComponent.MoveTo(farthestCell);
-                }
+            if (farthestCell != null)
+            {
+                await moveComponent.MoveTo(farthestCell);
             }
         }
     }
