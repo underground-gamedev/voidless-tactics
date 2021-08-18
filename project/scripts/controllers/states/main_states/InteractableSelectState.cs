@@ -15,6 +15,7 @@ public class InteractableSelectState: BaseControllerState
     protected const string ManaPickupAction = "Mana Pickup";
     protected const string SpellAction = "Cast";
     protected const string WaitAction = "Wait";
+    protected const string SkipTurnAction = "Skip";
 
     public override bool CellClick(int x, int y, Vector2 offset)
     {
@@ -116,6 +117,9 @@ public class InteractableSelectState: BaseControllerState
                     .GetAwaiter()
                     .OnCompleted(() => controller.TriggerEndTurn());
                 break;
+            case SkipTurnAction:
+                controller.TriggerEndTurn();
+                break;
             default:
                 GD.PrintErr($"Invalid menu action for {nameof(InteractableSelectState)} named: {action}");
                 break;
@@ -133,6 +137,7 @@ public class InteractableSelectState: BaseControllerState
         if (spellComponent?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
         var waitComponent = acitveCharacter.GetWaitComponent();
         if (waitComponent.WaitAvailable()) availableActions.Add(WaitAction);
+        availableActions.Add(SkipTurnAction);
 
         hud?.HideMenuWithActions();
         if (availableActions.Count > 0)
