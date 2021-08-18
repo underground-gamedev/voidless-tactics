@@ -116,7 +116,7 @@ public partial class SpellComponent : Node, ISpellComponent
         character.Components.GetComponent<ITargetComponent>()?.TakeDamage(explosionCount/5);
     }
 
-    public void OnTurnStart(Character parent)
+    public void OnRoundStart(Character parent)
     {
         pickupUsed = false;
     }

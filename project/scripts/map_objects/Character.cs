@@ -33,6 +33,7 @@ public class Character : MapObject, IBasicStatsPresenter
             new TurnOrderComponent(),
             new MoveComponent(),
             new AttackComponent(),
+            new WaitComponent(),
         };
         baseComponents.ForEach(com => Components.AddComponent(com));
 

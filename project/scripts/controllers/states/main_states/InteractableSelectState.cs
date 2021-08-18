@@ -12,8 +12,9 @@ public class InteractableSelectState: BaseControllerState
     public List<MoveCell> AvailableMoveCells => availableMoveCells;
     public List<Character> AvailableAttackTargets => availableAttackTargets;
 
-    public const string ManaPickupAction = "Mana Pickup";
+    protected const string ManaPickupAction = "Mana Pickup";
     protected const string SpellAction = "Cast";
+    protected const string WaitAction = "Wait";
 
     public override bool CellClick(int x, int y, Vector2 offset)
     {
@@ -108,6 +109,13 @@ public class InteractableSelectState: BaseControllerState
             case SpellAction:
                 controller.MainStates.PushState(new SpellSelectState());
                 break;
+            case WaitAction:
+                controller.MainStates.PushState(new EventConsumerMainState());
+                activeCharacter.GetWaitComponent()
+                    .Wait()
+                    .GetAwaiter()
+                    .OnCompleted(() => controller.TriggerEndTurn());
+                break;
             default:
                 GD.PrintErr($"Invalid menu action for {nameof(InteractableSelectState)} named: {action}");
                 break;
@@ -123,6 +131,8 @@ public class InteractableSelectState: BaseControllerState
         var spellComponent = acitveCharacter.Components.GetComponent<SpellComponent>();
         if (spellComponent?.PickupAvailable(Map, acitveCharacter.Cell) == true) availableActions.Add(ManaPickupAction);
         if (spellComponent?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
+        var waitComponent = acitveCharacter.GetWaitComponent();
+        if (waitComponent.WaitAvailable()) availableActions.Add(WaitAction);
 
         hud?.HideMenuWithActions();
         if (availableActions.Count > 0)
