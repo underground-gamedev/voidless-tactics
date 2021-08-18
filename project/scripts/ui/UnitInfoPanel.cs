@@ -37,10 +37,10 @@ public class UnitInfoPanel: Control
         initiativeLabel.Text = $"init: {stats.Initiative.MinValue}-{stats.Initiative.MaxValue}";
         spellPowerLabel.Text = $"pwr: {stats.SpellPower.ActualValue}";
 
-        var spellComponent = character.Components.GetComponent<SpellComponent>();
-        if (spellComponent != null)
+        var manaContainer = character.GetManaContainerComponent();
+        if (manaContainer != null)
         {
-            manaLabel.Text = $"mp: {spellComponent.ManaType.ToString().ToLower()} {spellComponent.ManaCount}/{stats.ManaControl.ActualValue}";
+            manaLabel.Text = $"mp: {manaContainer.ManaType} {manaContainer.ManaCount}/{stats.ManaControl.ActualValue}";
         }
         else
         {

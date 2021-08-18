@@ -6,19 +6,15 @@ public class ManaResourceConsumer : Node, IResourceConsumer
     [Export]
     private int manaRequired; 
 
-    private SpellComponent GetSpellComponent(SpellComponentContext ctx)
-    {
-        return ctx.Caster.Components.GetComponent<SpellComponent>();
-    }
     public void Consume(SpellComponentContext ctx)
     {
-        var spellComponent = GetSpellComponent(ctx);
-        spellComponent.Consume(spellComponent.ManaCount);
+        var manaContainer = ctx.Caster.GetManaContainerComponent();
+        manaContainer.ConsumeMana(manaContainer.ManaCount);
     }
 
     public bool ConsumeAvailable(SpellComponentContext ctx)
     {
-        return GetSpellComponent(ctx).ManaCount >= manaRequired;
+        return ctx.Caster.GetManaContainerComponent().ManaCount >= manaRequired;
     }
 
     public ConsumeTag GetConsumeTags(SpellComponentContext ctx)

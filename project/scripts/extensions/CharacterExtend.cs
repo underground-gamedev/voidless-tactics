@@ -22,6 +22,16 @@ public static class CharacterExtend
         return character.Components.GetComponent<ISpellComponent>();
     }
 
+    public static IManaContainerComponent GetManaContainerComponent(this Character character)
+    {
+        return character.Components.GetComponent<IManaContainerComponent>();
+    }
+
+    public static IManaPickupComponent GetManaPickupComponent(this Character character)
+    {
+        return character.Components.GetComponent<IManaPickupComponent>();
+    }
+
     public static IWaitComponent GetWaitComponent(this Character character)
     {
         return character.Components.GetComponent<IWaitComponent>();
