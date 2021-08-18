@@ -6,6 +6,7 @@ using System.Collections;
 
 public class TacticMap: Node, IEnumerable<MapCell>
 {
+    private MapCell[,] cells;
     public int Width { get => width; }
     public int Height { get => height; }
 
@@ -23,6 +24,8 @@ public class TacticMap: Node, IEnumerable<MapCell>
     public VisualLayer VisualLayer => GetNode<VisualLayer>("VisualLayer");
     public MoveHighlightLayer MoveHighlightLayer => GetNode<MoveHighlightLayer>("MoveHighlightLayer");
     public ManaLayer ManaLayer => GetNode<ManaLayer>("ManaLayer");
+
+    public List<Character> GetAllCharacters => this.Where(cell => cell.MapObject is Character).Select(cell => cell.MapObject as Character).ToList();
 
     public TacticMap()
     {
@@ -60,8 +63,6 @@ public class TacticMap: Node, IEnumerable<MapCell>
             }
         }
     }
-
-    private MapCell[,] cells;
 
     public MapCell CellBy(int x, int y)
     {

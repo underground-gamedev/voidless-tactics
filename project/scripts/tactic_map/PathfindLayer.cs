@@ -7,6 +7,7 @@ public class PathfindLayer: Node, IMapLayer
     private int width;
     private int height;
     private AStar2D aStar;
+    private TacticMap map;
 
     private int xyToIdx(int x, int y)
     {
@@ -20,11 +21,11 @@ public class PathfindLayer: Node, IMapLayer
         return (x, y);
     }
 
-    public (int, int)[] Pathfind(Vector2 src, Vector2 dest)
+    public MapCell[] Pathfind(MapCell src, MapCell dest)
     {
-        int srcIdx = xyToIdx((int)src.x, (int)src.y);
-        int destIdx = xyToIdx((int)dest.x, (int)dest.y);
-        return aStar.GetPointPath(srcIdx, destIdx).Select(pos => ((int)pos.x, (int)pos.y)).ToArray();
+        int srcIdx = xyToIdx(src.X, src.Y);
+        int destIdx = xyToIdx(dest.X, dest.Y);
+        return aStar.GetPointPath(srcIdx, destIdx).Select(pos => map.CellBy((int)pos.x, (int)pos.y)).ToArray();
     }
 
     public (int, int)[] GetAllAvailablePathDest(MapCell cell, int range)
@@ -96,6 +97,7 @@ public class PathfindLayer: Node, IMapLayer
     }
     public void OnSync(TacticMap map)
     {
+        this.map = map;
         PreparePathfind(map);
     }
 }

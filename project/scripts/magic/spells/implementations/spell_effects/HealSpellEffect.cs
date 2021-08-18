@@ -21,7 +21,7 @@ public class HealSpellEffect : Node, ISpellEffect
             var targetComponent = targetCharacter.Components.GetComponent<ITargetComponent>();
             if (targetComponent is null) continue;
 
-            targetComponent.TakeHeal(heal);
+            targetComponent.TakeHeal(heal + GetPowerStat(ctx.Caster).ActualValue);
         }
     }
 

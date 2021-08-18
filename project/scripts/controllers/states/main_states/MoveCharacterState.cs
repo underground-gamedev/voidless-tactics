@@ -58,7 +58,7 @@ public class MoveCharacterState: BaseControllerState
         foreach (var moveCell in availableCells)
         {
             var (x, y) = moveCell.MapCell.Position;
-            var highlightType = moveCell.ActionNeed == 1 ? MoveHighlightType.NormalMove : MoveHighlightType.LongMove;
+            var highlightType = moveCell.WeakAttack ? MoveHighlightType.LongMove : MoveHighlightType.NormalMove;
             highlightLayer.Highlight(x, y, highlightType);
         }
     }

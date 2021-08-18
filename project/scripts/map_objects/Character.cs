@@ -13,13 +13,13 @@ public class Character : MapObject, IBasicStatsPresenter
     private Control characterHUD;
     public Control CharacterHUD => characterHUD = characterHUD ?? GetNode<Control>("CharacterHUD");
 
-    private List<Node> propagateChilds = new List<Node>();
-
     private AbstractController controller;
     public AbstractController Controller {
         get => controller;
         set => controller = value;
     }
+
+    private List<Node> propagateChilds = new List<Node>();
 
     public override void _Ready()
     {

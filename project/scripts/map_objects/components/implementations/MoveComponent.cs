@@ -26,13 +26,13 @@ public class MoveComponent : Node, IMoveComponent
             .GetAllAvailablePathDest(mapObject.Cell, basicStats.Speed.ModifiedActualValue/2)
             .Select(pos => map.CellBy(pos.Item1, pos.Item2))
             .Where(cell => cell.MapObject == null)
-            .Select(cell => new MoveCell(cell, 1));
+            .Select(cell => new MoveCell(cell, false));
 
         var sprintMoveCells = pathfinder
             .GetAllAvailablePathDest(mapObject.Cell, basicStats.Speed.ModifiedActualValue)
             .Select(pos => map.CellBy(pos.Item1, pos.Item2))
             .Where(cell => cell.MapObject == null && normalMoveCells.All(n => n.MapCell != cell))
-            .Select(cell => new MoveCell(cell, 2));
+            .Select(cell => new MoveCell(cell, true));
 
         return normalMoveCells.Concat(sprintMoveCells).ToList();
     }
@@ -53,7 +53,7 @@ public class MoveComponent : Node, IMoveComponent
         int y = currentCell.Y;
 
         var map = mapObject.Map;
-        var path = map.PathfindLayer.Pathfind(new Vector2(x, y), new Vector2(target.X, target.Y));
+        var path = map.PathfindLayer.Pathfind(currentCell, target);
 
         if (path == null) return;
 
@@ -63,9 +63,9 @@ public class MoveComponent : Node, IMoveComponent
 
         moved = true;
         mapObject.SetCell(target);
-        foreach(var (posX, posY) in path)
+        foreach(var cell in path)
         {
-            mapObject.SyncWithMap(map, posX, posY);
+            mapObject.SyncWithMap(map, cell.X, cell.Y);
             await this.Wait(0.1f);
         }
         moved = false;
