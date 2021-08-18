@@ -12,7 +12,8 @@ public class ManaResourceConsumer : Node, IResourceConsumer
     }
     public void Consume(SpellComponentContext ctx)
     {
-        GetSpellComponent(ctx).Consume(manaRequired);
+        var spellComponent = GetSpellComponent(ctx);
+        spellComponent.Consume(spellComponent.ManaCount);
     }
 
     public bool ConsumeAvailable(SpellComponentContext ctx)
