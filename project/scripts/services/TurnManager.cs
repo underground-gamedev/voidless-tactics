@@ -25,7 +25,7 @@ public class TurnManager: Node
     public void CharacterWaitTrigger(Character character)
     {
         character.BasicStats.Initiative.AddModifier("initiative.wait", new FixStatModifier(-1, int.MaxValue));
-        var lastWaiterIndex = plannedQueue.FindIndex(ch => ch.BasicStats.Initiative.ModifiedActualValue == 0);
+        var lastWaiterIndex = plannedQueue.FindIndex(ch => ch.BasicStats.Initiative.ModifiedActualValue == -1);
         if (lastWaiterIndex == -1)
         {
             plannedQueue.Add(character);
