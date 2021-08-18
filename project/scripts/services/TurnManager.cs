@@ -13,12 +13,27 @@ public class TurnManager: Node
     public override void _Ready()
     {
         AddToGroup(GDTriggers.CharacterDeathTrigger);
+        AddToGroup(GDTriggers.CharacterWaitTrigger);
     }
 
     public void CharacterDeathTrigger(Character character)
     {
         allCharacters.Remove(character);
         plannedQueue.Remove(character);
+    }
+
+    public void CharacterWaitTrigger(Character character)
+    {
+        character.BasicStats.Initiative.AddModifier("initiative.wait", new FixStatModifier(-1, int.MaxValue));
+        var lastWaiterIndex = plannedQueue.FindIndex(ch => ch.BasicStats.Initiative.ModifiedActualValue == -1);
+        if (lastWaiterIndex == -1)
+        {
+            plannedQueue.Add(character);
+        }
+        else
+        {
+            plannedQueue.Insert(lastWaiterIndex, character);
+        }
     }
 
     public async void TurnLoop(List<AbstractController> controllers) {
@@ -55,6 +70,7 @@ public class TurnManager: Node
 
             hud?.SetPlannedQueue(plannedQueue);
 
+            ClearWaitModifiers();
             allCharacters.ForEach(ch => ch.OnRoundEnd());
         }
     }
@@ -62,6 +78,14 @@ public class TurnManager: Node
     private List<Character> SortByInitiative(List<Character> plannedQueue)
     {
         return plannedQueue.OrderByDescending(ch => ch.BasicStats.Initiative.ModifiedActualValue).ToList();
+    }
+
+    private void ClearWaitModifiers()
+    {
+        foreach(var character in allCharacters)
+        {
+            character.BasicStats.Initiative.RemoveModifier("initiative.wait");
+        }
     }
 
     private List<Character> PlanQueue(List<Character> allCharacters)
