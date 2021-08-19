@@ -13,6 +13,7 @@ public class InteractableSelectState: BaseControllerState
     public List<Character> AvailableAttackTargets => availableAttackTargets;
 
     protected const string ManaPickupAction = "Mana Pickup";
+    protected const string GiveManaAction = "Give Mana";
     protected const string SpellAction = "Cast";
     protected const string WaitAction = "Wait";
     protected const string SkipTurnAction = "Skip";
@@ -103,9 +104,18 @@ public class InteractableSelectState: BaseControllerState
 
         switch (action) {
             case ManaPickupAction:
-                activeCharacter.Components.GetComponent<SpellComponent>().PickupMana(Map, activeCharacter.Cell);
-                hud?.DisplayActiveCharacter(activeCharacter);
-                ShowMenuAction();
+                controller.MainStates.PushState(new EventConsumerMainState());
+                activeCharacter.GetManaPickupComponent()
+                    .ManaPickup(activeCharacter.Cell)
+                    .GetAwaiter()
+                    .OnCompleted(() => {
+                        controller.MainStates.PopState();
+                        hud?.DisplayActiveCharacter(activeCharacter);
+                        ShowMenuAction();
+                    });
+                break;
+            case GiveManaAction:
+                controller.MainStates.PushState(new GiveManaState());
                 break;
             case SpellAction:
                 controller.MainStates.PushState(new SpellSelectState());
@@ -132,11 +142,11 @@ public class InteractableSelectState: BaseControllerState
         var acitveCharacter = controller.ActiveCharacter;
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var availableActions = new List<string>();
-        var spellComponent = acitveCharacter.Components.GetComponent<SpellComponent>();
-        if (spellComponent?.PickupAvailable(Map, acitveCharacter.Cell) == true) availableActions.Add(ManaPickupAction);
-        if (spellComponent?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
-        var waitComponent = acitveCharacter.GetWaitComponent();
-        if (waitComponent.WaitAvailable()) availableActions.Add(WaitAction);
+        if (acitveCharacter.GetManaPickupComponent()?.ManaPickupAvailable(acitveCharacter.Cell) == true) availableActions.Add(ManaPickupAction);
+        if (acitveCharacter.GetManaGiveComponent()?.GiveManaAvailable() == true) availableActions.Add(GiveManaAction);
+        if (acitveCharacter.GetSpellComponent()?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
+        if (acitveCharacter.GetWaitComponent()?.WaitAvailable() == true) availableActions.Add(WaitAction);
+
         availableActions.Add(SkipTurnAction);
 
         hud?.HideMenuWithActions();
