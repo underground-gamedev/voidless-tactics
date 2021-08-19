@@ -35,6 +35,7 @@ public class Character : MapObject, IBasicStatsPresenter
             new AttackComponent(),
             new WaitComponent(),
             new ManaManipulatorComponent(),
+            new ManaGiveComponent(),
         };
         baseComponents.ForEach(com => Components.AddComponent(com));
 

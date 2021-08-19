@@ -32,6 +32,11 @@ public static class CharacterExtend
         return character.Components.GetComponent<IManaPickupComponent>();
     }
 
+    public static IManaGiveComponent GetManaGiveComponent(this Character character)
+    {
+        return character.Components.GetComponent<IManaGiveComponent>();
+    }
+
     public static IWaitComponent GetWaitComponent(this Character character)
     {
         return character.Components.GetComponent<IWaitComponent>();

@@ -13,6 +13,7 @@ public class InteractableSelectState: BaseControllerState
     public List<Character> AvailableAttackTargets => availableAttackTargets;
 
     protected const string ManaPickupAction = "Mana Pickup";
+    protected const string GiveManaAction = "Give Mana";
     protected const string SpellAction = "Cast";
     protected const string WaitAction = "Wait";
     protected const string SkipTurnAction = "Skip";
@@ -113,6 +114,9 @@ public class InteractableSelectState: BaseControllerState
                         ShowMenuAction();
                     });
                 break;
+            case GiveManaAction:
+                controller.MainStates.PushState(new GiveManaState());
+                break;
             case SpellAction:
                 controller.MainStates.PushState(new SpellSelectState());
                 break;
@@ -139,9 +143,10 @@ public class InteractableSelectState: BaseControllerState
         var hud = UserInterfaceService.GetHUD<TacticHUD>();
         var availableActions = new List<string>();
         if (acitveCharacter.GetManaPickupComponent()?.ManaPickupAvailable(acitveCharacter.Cell) == true) availableActions.Add(ManaPickupAction);
+        if (acitveCharacter.GetManaGiveComponent()?.GiveManaAvailable() == true) availableActions.Add(GiveManaAction);
         if (acitveCharacter.GetSpellComponent()?.CastSpellAvailable() == true) availableActions.Add(SpellAction);
-        var waitComponent = acitveCharacter.GetWaitComponent();
-        if (waitComponent?.WaitAvailable() == true) availableActions.Add(WaitAction);
+        if (acitveCharacter.GetWaitComponent()?.WaitAvailable() == true) availableActions.Add(WaitAction);
+
         availableActions.Add(SkipTurnAction);
 
         hud?.HideMenuWithActions();
