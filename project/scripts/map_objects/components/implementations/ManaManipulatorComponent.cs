@@ -9,7 +9,8 @@ public class ManaManipulatorComponent : Node, IManaContainerComponent, IManaPick
 
     static Dictionary<(ManaType, ManaType), ManaType> mixResults = new Dictionary<(ManaType, ManaType), ManaType>() {
         [(ManaType.Magma, ManaType.Wind)] = ManaType.Fire,
-        [(ManaType.Magma, ManaType.Water)] = ManaType.Earth
+        [(ManaType.Magma, ManaType.Water)] = ManaType.Earth,
+        [(ManaType.Water, ManaType.Wind)] = ManaType.Ice,
     };
 
     private ManaType GetMixResult(ManaType first, ManaType second)

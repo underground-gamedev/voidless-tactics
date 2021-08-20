@@ -8,4 +8,5 @@ public enum ManaType
     Arcane,
     Fire,
     Earth,
+    Ice,
 }
