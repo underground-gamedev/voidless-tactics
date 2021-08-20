@@ -23,18 +23,12 @@ public class MoveComponent : Node, IMoveComponent
         var pathfinder = mapObject.Map.PathfindLayer;
 
         var normalMoveCells = pathfinder
-            .GetAllAvailablePathDest(mapObject.Cell, basicStats.Speed.ModifiedActualValue/2)
+            .GetAllAvailablePathDest(mapObject.Cell, basicStats.Speed.ModifiedActualValue)
             .Select(pos => map.CellBy(pos.Item1, pos.Item2))
             .Where(cell => cell.MapObject == null)
             .Select(cell => new MoveCell(cell, false));
 
-        var sprintMoveCells = pathfinder
-            .GetAllAvailablePathDest(mapObject.Cell, basicStats.Speed.ModifiedActualValue)
-            .Select(pos => map.CellBy(pos.Item1, pos.Item2))
-            .Where(cell => cell.MapObject == null && normalMoveCells.All(n => n.MapCell != cell))
-            .Select(cell => new MoveCell(cell, true));
-
-        return normalMoveCells.Concat(sprintMoveCells).ToList();
+        return normalMoveCells.ToList();
     }
 
     public bool MoveAvailable()
