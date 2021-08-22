@@ -18,7 +18,7 @@ public class TacticBattle : Node
         tacticMap = GetNode<TacticMap>("Map");
 
         var manaMapGen = GetNode<ManaMapGenerator>("Map/Generators/ManaMapGenerator");
-        manaMapGen?.Generate(tacticMap);
+        manaMapGen?.GenerateFromTexture(tacticMap);
 
         tacticMap.Sync();
 

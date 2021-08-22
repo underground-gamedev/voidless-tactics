@@ -11,6 +11,13 @@ public class ManaMapGenerator: Node
     private int prepareMoveCount = 4;
     private Random rand;
 
+    [Export] private Texture rasterPatternMap;
+    [Export] private int magmaPower = 100;
+    [Export] private int naturePower = 100;
+    [Export] private int waterPower = 100;
+    [Export] private int windPower = 100;
+
+
     public override void _Ready()
     {
         rand = (seed == -1) ? new Random() : new Random(seed);
@@ -43,4 +50,67 @@ public class ManaMapGenerator: Node
         }
         
     }
+
+    public void GenerateFromTexture (TacticMap map)
+    {
+        if (rasterPatternMap == null) Generate(map);
+
+        Image rasterImage = rasterPatternMap.GetData();
+
+        int xOffset = rand.Next(0, rasterImage.GetWidth());
+        int yOffset = rand.Next(0, rasterImage.GetHeight());
+
+        rasterImage.Lock();
+
+        //GD.Print("Width Size " + rasterImage.GetWidth() + " Height Size " + rasterImage.GetWidth());
+
+        foreach (MapCell cell in map)
+        {
+            Color color = rasterImage.GetPixel(CoordToTexSpace(cell.X + xOffset, rasterImage.GetWidth()),
+                                               CoordToTexSpace(cell.Y + yOffset, rasterImage.GetHeight()));
+
+            //GD.Print(cell.Position + " " + color);
+
+            if(color.r > 0.8f && color.g < 0.8f && color.b < 0.8f)
+            {
+                cell.Mana.SetInfinity(ManaType.Magma, magmaPower);
+                continue;
+            }
+            if (color.g > 0.8f && color.b < 0.8f && color.r < 0.8f)
+            {
+                cell.Mana.SetInfinity(ManaType.Nature, naturePower); //For now
+                continue;
+            }
+            if (color.b > 0.8f && color.r < 0.8f && color.g < 0.8f)
+            {
+                cell.Mana.SetInfinity(ManaType.Water, waterPower); //For now
+                continue;
+            }
+
+            cell.Mana.SetInfinity(ManaType.Wind, windPower);
+        }
+
+        rasterImage.Unlock();
+
+        var manaMover = new ManaMover(map);
+        var state = GDPrint.active;
+    }
+
+    int CoordToTexSpace(int coord, int axisMax)
+    {
+        int sign = Math.Abs(coord) / coord;
+
+        coord = Math.Abs(coord);
+
+        if (coord >= axisMax)
+        {
+            coord = coord % axisMax;
+        }
+
+        if (sign < 0)
+            coord = axisMax - coord - 1;
+           
+        return coord;
+    }
+
 }
