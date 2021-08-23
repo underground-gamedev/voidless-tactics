@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace Battle
+﻿namespace Battle
 {
     public enum ManaType
     {

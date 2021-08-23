@@ -13,6 +13,14 @@ namespace Battle
         [SerializeField]
         private int height = 20;
 
+        [SerializeField]
+        private VisualMapLayer visualLayer;
+        public VisualMapLayer VisualLayer => visualLayer ??= GetComponent<VisualMapLayer>();
+
+        [SerializeField]
+        private MapObjectsBindingsLayer objectsBindingsLayer;
+        public MapObjectsBindingsLayer MapObjectsBindingsLayer => objectsBindingsLayer ??= GetComponent<MapObjectsBindingsLayer>();
+
         private PathfindLayer pathfindLayer;
         public PathfindLayer PathfindLayer => pathfindLayer ??= GetComponent<PathfindLayer>();
 
@@ -21,15 +29,8 @@ namespace Battle
         public int Height { get => height; }
         public int TileCount { get => width * height; }
 
-        public TacticMap()
+        public void Start()
         {
-            InitCells();
-        }
-
-        public TacticMap(int width, int height)
-        {
-            this.width = width;
-            this.height = height;
             InitCells();
         }
 

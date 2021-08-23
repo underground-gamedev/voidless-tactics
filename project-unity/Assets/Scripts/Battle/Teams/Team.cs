@@ -25,6 +25,12 @@ namespace Battle
         [HideInInspector]
         public Character ActiveCharacter;
 
+        private BaseTeamController teamController;
+        public BaseTeamController TeamController => teamController ??= GetComponent<BaseTeamController>();
+
+        private BaseTeamSetup teamSetup;
+        public BaseTeamSetup TeamSetup => teamSetup ??= GetComponent<BaseTeamSetup>();
+
         private void Start()
         {
             foreach (var character in characters)

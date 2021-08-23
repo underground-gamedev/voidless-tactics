@@ -27,22 +27,20 @@ namespace Battle
         {
             SetCell(null);
         }
-        //public void SyncWithMap(TacticMap map)
-        //{
-        //    var (x, y) = cell.XY;
-        //    SyncWithMap(map, x, y);
-        //}
 
-        //public void SyncWithMap(TacticMap map, int x, int y)
-        //{
-        //    var tilemap = map.VisualLayer.TileMap;
-        //    var offset = tilemap.CellSize * (new Vector2(x, y) + new Vector2(0.5f, 0.5f));
-        //    GlobalPosition = tilemap.GlobalPosition + offset;
-        //    if (!map.IsOutOfBounds(x, y))
-        //    {
-        //        ZIndex = map.VisualLayer.GetZ(map, map.CellBy(x, y), 0);
-        //    }
-        //}
+        public void SyncWithMap(TacticMap map)
+        {
+            if (cell == null) return;
+
+            var (x, y) = cell.XY;
+            SyncWithMap(map, x, y);
+        }
+
+        public void SyncWithMap(TacticMap map, int x, int y)
+        {
+            var pos = new Vector2Int(x, y);
+            transform.position = map.MapObjectsBindingsLayer.MapToGlobal(pos);
+        }
 
         public void SetCell(MapCell cell)
         {
@@ -77,6 +75,7 @@ namespace Battle
 
             this.map = map;
             SetCell(cell);
+            SyncWithMap(map);
         }
     }
 }

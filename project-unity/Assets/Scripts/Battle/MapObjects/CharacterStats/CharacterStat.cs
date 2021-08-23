@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sirenix.OdinInspector;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,11 +7,11 @@ using UnityEngine;
 namespace Battle
 {
     [Serializable]
-    public class CharacterStat
+    public class CharacterStat: ISerializationCallbackReceiver
     {
         [SerializeField]
         private int baseValue = 5;
-        Dictionary<string, CharacterStatModifier> modifiers = new Dictionary<string, CharacterStatModifier>();
+        private Dictionary<string, CharacterStatModifier> modifiers = new Dictionary<string, CharacterStatModifier>();
         public int BaseValue { get => baseValue; set => baseValue = value; }
         public int Value => GetModified(BaseValue, (mod, curr) => mod.ModifyValue(baseValue, curr));
 
@@ -48,6 +49,15 @@ namespace Battle
         public CharacterStat(int actualValue)
         {
             BaseValue = actualValue;
+        }
+
+        void ISerializationCallbackReceiver.OnBeforeSerialize()
+        {
+        }
+
+        void ISerializationCallbackReceiver.OnAfterDeserialize()
+        {
+            modifiers = new Dictionary<string, CharacterStatModifier>();
         }
     }
 }
