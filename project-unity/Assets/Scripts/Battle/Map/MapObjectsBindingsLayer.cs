@@ -16,7 +16,7 @@ namespace Battle
         {
             var basePos = new Vector2(position.x, position.y);
             var result2d = offset + basePos * cellSize + cellSize/2;
-            return result2d;
+            return new Vector3(result2d.x, 0, result2d.y);
         }
 
         public Vector2Int GlobalToMap(Vector3 position)
