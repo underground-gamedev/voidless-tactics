@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Battle
 {
@@ -42,6 +43,11 @@ namespace Battle
                 for (int y = 0; y < height; y++)
                 {
                     cells[x, y] = new MapCell(x, y);
+                    if (Random.Range(0f, 1f) > 0.90f)
+                    {
+                        Debug.Log("Set solid");
+                        cells[x, y].Solid = true;
+                    }
                 }
             }
         }
