@@ -12,9 +12,9 @@ namespace Battle
         private Tilemap tilemap;
 
         [SerializeField]
-        private Tile wallTile;
+        private TileBase wallTile;
         [SerializeField]
-        private Tile floorTile;
+        private TileBase floorTile;
         private void Start()
         {
             Redraw();
