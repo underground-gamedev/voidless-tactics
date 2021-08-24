@@ -415,7 +415,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28ef8c68bade09b41aca258d42a632f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastTab: 0
+  lastTab: 2
   movementSettingsFoldout: 0
   zoomingSettingsFoldout: 0
   rotationSettingsFoldout: 0
@@ -424,8 +424,8 @@ MonoBehaviour:
   targetingSettingsFoldout: 0
   inputSettingsFoldout: 0
   useFixedUpdate: 0
-  keyboardMovementSpeed: 30
-  screenEdgeMovementSpeed: 3
+  keyboardMovementSpeed: 25
+  screenEdgeMovementSpeed: 20
   followingSpeed: 5
   rotationSped: 3
   panningSpeed: 10
@@ -456,10 +456,10 @@ MonoBehaviour:
   zoomOutKey: 113
   useScrollwheelZooming: 1
   zoomingAxis: Mouse ScrollWheel
-  useKeyboardRotation: 1
+  useKeyboardRotation: 0
   rotateRightKey: 120
   rotateLeftKey: 122
-  useMouseRotation: 1
+  useMouseRotation: 0
   mouseRotationKey: 324
 --- !u!20 &519420031
 Camera:
