@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace Battle
 {
+    [DebuggerDisplay("{X},{Y}")]
     public class MapCell : IEquatable<MapCell>
     {
         public int X { get; }

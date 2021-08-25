@@ -22,6 +22,7 @@ namespace Battle
         private MapObjectsBindingsLayer objectsBindingsLayer;
         public MapObjectsBindingsLayer MapObjectsBindingsLayer => objectsBindingsLayer ??= GetComponent<MapObjectsBindingsLayer>();
 
+        [SerializeField]
         private PathfindLayer pathfindLayer;
         public PathfindLayer PathfindLayer => pathfindLayer ??= GetComponent<PathfindLayer>();
 
@@ -29,6 +30,8 @@ namespace Battle
         public int Width { get => width; }
         public int Height { get => height; }
         public int TileCount { get => width * height; }
+
+        public List<MapObject> MapObjects => this.Select(cell => cell.MapObject).Where(cell => cell != null).ToList();
 
         public void Start()
         {
@@ -43,11 +46,6 @@ namespace Battle
                 for (int y = 0; y < height; y++)
                 {
                     cells[x, y] = new MapCell(x, y);
-                    if (Random.Range(0f, 1f) > 0.90f)
-                    {
-                        Debug.Log("Set solid");
-                        cells[x, y].Solid = true;
-                    }
                 }
             }
         }

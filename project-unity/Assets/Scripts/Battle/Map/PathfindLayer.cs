@@ -82,7 +82,8 @@ namespace Battle
 
             while(open.Count > 0)
             {
-                var curr = GetNextCell(pathCostEstimate);
+                var curr = GetNextCell(closed, pathCostEstimate);
+
                 if (curr == dest)
                 {
                     var path = BuildPath(from, src, dest);
@@ -103,10 +104,10 @@ namespace Battle
                         pathCostEstimate[neigh] = tempG + h(neigh, dest);
                     }
 
-                    if (!closed.Contains(neigh)) open.Add(neigh);
+                    open.Add(neigh);
                 };
 
-                foreach(var neigh in map.DirectNeighboursFor(curr.X, curr.Y))
+                foreach(var neigh in map.DirectNeighboursFor(curr.X, curr.Y).Where(neigh => !closed.Contains(neigh)))
                 {
                     if (!neigh.Solid)
                     {
@@ -114,7 +115,7 @@ namespace Battle
                     }
                 }
 
-                foreach(var neigh in map.DiagonalNeighboursFor(curr.X, curr.Y))
+                foreach(var neigh in map.DiagonalNeighboursFor(curr.X, curr.Y).Where(neigh => !closed.Contains(neigh)))
                 {
                     if (!neigh.Solid)
                     {
@@ -125,13 +126,14 @@ namespace Battle
 
             return FailurePathfind();
         }
-        private MapCell GetNextCell(Dictionary<MapCell, float> estimatedCosts)
+        private MapCell GetNextCell(HashSet<MapCell> closed, Dictionary<MapCell, float> estimatedCosts)
         {
             float min = float.PositiveInfinity;
             MapCell result = null;
 
             foreach (var est in estimatedCosts)
             {
+                if (closed.Contains(est.Key)) continue;
                 if (est.Value < min)
                 {
                     min = est.Value;
@@ -161,7 +163,6 @@ namespace Battle
             public bool IsSuccess;
             public List<MapCell> Path;
             public float Cost;
-
         }
         private static PathfindResult FailurePathfind()
         {
@@ -174,7 +175,7 @@ namespace Battle
         private static PathfindResult SuccessPathfind(List<MapCell> path, float cost)
         {
             return new PathfindResult() { 
-                IsSuccess = false,
+                IsSuccess = true,
                 Path = path,
                 Cost = cost,
             };

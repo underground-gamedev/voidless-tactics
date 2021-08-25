@@ -28,6 +28,9 @@ namespace Battle
         private IWaitComponent waitComponent;
         public IWaitComponent WaitComponent => waitComponent ??= GetComponent<IWaitComponent>();
 
+        private IMoveComponent moveComponent;
+        public IMoveComponent MoveComponent => moveComponent ??= GetComponent<IMoveComponent>();
+
         private ISpellComponent spellComponent;
         public ISpellComponent SpellComponent => spellComponent ??= GetComponent<ISpellComponent>();
 
@@ -36,6 +39,9 @@ namespace Battle
 
         private IManaGiveComponent manaGiveComponent;
         public IManaGiveComponent ManaGiveComponent => manaGiveComponent ??= GetComponent<IManaGiveComponent>();
+
+        private AIComponent aiComponent;
+        public AIComponent AIComponent => aiComponent ??= GetComponent<AIComponent>();
 
         private List<ITurnWatcher> turnWatchers;
         public IReadOnlyList<ITurnWatcher> TurnWatchers => turnWatchers ??= GetComponents<ITurnWatcher>().Where(watcher => !watcher.Equals(this)).ToList();

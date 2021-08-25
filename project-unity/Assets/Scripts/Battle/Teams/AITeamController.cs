@@ -7,7 +7,11 @@ namespace Battle
     {
         public override IEnumerator MakeTurn(TacticMap map, Team team, Character character)
         {
-            yield break;
+            var aiComponent = character.AIComponent;
+            if (aiComponent != null)
+            {
+                yield return aiComponent.MakeTurn();
+            }
         }
     }
 }

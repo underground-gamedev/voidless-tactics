@@ -56,7 +56,7 @@ namespace Battle
             mapObject.SetCell(target);
             foreach(var cell in path.Path)
             {
-                //mapObject.SyncWithMap(map, cell.X, cell.Y);
+                mapObject.SyncWithMap(map, cell.X, cell.Y);
                 yield return new WaitForSeconds(0.1f);
             }
             moved = false;
