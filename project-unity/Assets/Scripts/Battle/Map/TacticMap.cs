@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using Sirenix.OdinInspector;
 
 namespace Battle
 {
@@ -14,23 +15,31 @@ namespace Battle
         [SerializeField]
         private int height = 20;
 
+        [FoldoutGroup("Layers")]
+        [VerticalGroup("Layers/Group")]
         [SerializeField]
         private VisualMapLayer visualLayer;
         public VisualMapLayer VisualLayer => visualLayer ??= GetComponent<VisualMapLayer>();
 
+        [VerticalGroup("Layers/Group")]
         [SerializeField]
         private MapObjectsBindingsLayer objectsBindingsLayer;
         public MapObjectsBindingsLayer MapObjectsBindingsLayer => objectsBindingsLayer ??= GetComponent<MapObjectsBindingsLayer>();
 
+        [VerticalGroup("Layers/Group")]
         [SerializeField]
         private PathfindLayer pathfindLayer;
         public PathfindLayer PathfindLayer => pathfindLayer ??= GetComponent<PathfindLayer>();
+
+        [VerticalGroup("Layers/Group")]
+        [SerializeField]
+        private InputHandleLayer inputHandleLayer;
+        public InputHandleLayer InputHandleLayer => inputHandleLayer ??= GetComponent<InputHandleLayer>();
 
         private MapCell[,] cells;
         public int Width { get => width; }
         public int Height { get => height; }
         public int TileCount { get => width * height; }
-
         public List<MapObject> MapObjects => this.Select(cell => cell.MapObject).Where(cell => cell != null).ToList();
 
         public void Start()

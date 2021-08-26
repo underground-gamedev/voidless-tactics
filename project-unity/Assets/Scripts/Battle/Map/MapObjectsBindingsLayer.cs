@@ -6,25 +6,19 @@ namespace Battle
     public class MapObjectsBindingsLayer : MonoBehaviour
     {
         [SerializeField]
-        private Vector2 offset;
-        [SerializeField]
-        private Vector2 cellSize;
+        private Grid grid;
         [SerializeField]
         private TacticMap map;
 
         public Vector3 MapToGlobal(Vector2Int position)
         {
-            var basePos = new Vector2(position.x, position.y);
-            var result2d = offset + basePos * cellSize + cellSize/2;
-            return new Vector3(result2d.x, 0, result2d.y);
+            return grid.CellToWorld(new Vector3Int(position.x, position.y, 0)) + new Vector3(grid.cellSize.x, 0, grid.cellSize.y)/2;
         }
 
         public Vector2Int GlobalToMap(Vector3 position)
         {
-            var pos2d = new Vector2(position.x, position.z);
-            var fixedPos = pos2d - offset;
-            var local = fixedPos / cellSize;
-            return new Vector2Int((int)local.x, (int)local.y);
+            var cell = grid.WorldToCell(position);
+            return new Vector2Int(cell.x, cell.z);
         }
 
         public int GetZOrder(Vector2Int position, int layer)

@@ -38,7 +38,6 @@ namespace Battle
             while (true)
             {
                 roundNumber++;
-                Debug.Log($"Round {roundNumber}");
                 allCharacters.ForEach(ch => ch.OnRoundStart());
                 plannedQueue = PlanQueue(allCharacters);
                 // allCharacters.ForEach(ch => ch.OnTurnPlanned(plannedQueue));

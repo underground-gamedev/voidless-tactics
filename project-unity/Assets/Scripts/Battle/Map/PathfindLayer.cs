@@ -5,19 +5,18 @@ using UnityEngine;
 
 namespace Battle
 {
-    [RequireComponent(typeof(TacticMap))]
     public class PathfindLayer : MonoBehaviour
     {
         [SerializeField]
         private float DirectCost = 1;
         [SerializeField]
         private float DiagonalCost = 1.4142f;
-
+        [SerializeField]
         private TacticMap map;
 
         private void Start()
         {
-            map = GetComponent<TacticMap>();
+            map ??= GetComponent<TacticMap>();
         }
 
         public List<MapCell> GetAreaByDistance(MapCell src, float distance)
