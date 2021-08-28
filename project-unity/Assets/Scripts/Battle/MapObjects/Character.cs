@@ -52,7 +52,6 @@ namespace Battle
         public void Death()
         {
             DeathTrigger?.Invoke();
-            DeathTrigger?.RemoveAllListeners();
             Destroy(gameObject);
         }
 
@@ -86,6 +85,11 @@ namespace Battle
             {
                 watcher.OnRoundEnd();
             }
+        }
+
+        private void OnDestroy()
+        {
+            DeathTrigger?.RemoveAllListeners();
         }
     }
 }

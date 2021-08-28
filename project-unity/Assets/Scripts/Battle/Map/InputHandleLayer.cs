@@ -14,11 +14,11 @@ namespace Battle
         [SerializeField]
         private Collider rayCollider;
 
-        public UnityAction<MapCell, Vector2> OnCellClick;
-        public UnityAction OnClickOutOfBounds;
+        public UnityEvent<MapCell, Vector2> OnCellClick;
+        public UnityEvent OnClickOutOfBounds;
 
-        public UnityAction<MapCell, Vector2> OnCellHover;
-        public UnityAction OnHoverOutOfBounds;
+        public UnityEvent<MapCell, Vector2> OnCellHover;
+        public UnityEvent OnHoverOutOfBounds;
 
         private bool lastFramePressed;
 
@@ -54,6 +54,14 @@ namespace Battle
                 if (isClick) OnCellClick?.Invoke(cell, offsetRelative);
             }
             lastFramePressed = mousePressed;
+        }
+
+        private void OnDestroy()
+        {
+            OnCellHover?.RemoveAllListeners();
+            OnCellClick?.RemoveAllListeners();
+            OnHoverOutOfBounds?.RemoveAllListeners();
+            OnClickOutOfBounds?.RemoveAllListeners();
         }
     }
 }
