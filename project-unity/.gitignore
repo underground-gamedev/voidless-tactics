@@ -1,3 +1,7 @@
+# Jetbrain Rider Cache
+.idea/
+Assets/Plugins/Editor/JetBrains*
+
 # Basic unity folders
 /[Ll]ibrary/
 /[Tt]emp/
