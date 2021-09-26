@@ -275,21 +275,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daead898c60c789408a5deb46801654d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map: {fileID: 703747158}
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes: []
   grid: {fileID: 2118047371}
   rayCollider: {fileID: 145766428}
-  OnCellClick:
-    m_PersistentCalls:
-      m_Calls: []
-  OnClickOutOfBounds:
-    m_PersistentCalls:
-      m_Calls: []
-  OnCellHover:
-    m_PersistentCalls:
-      m_Calls: []
-  OnHoverOutOfBounds:
-    m_PersistentCalls:
-      m_Calls: []
+  mainCamera: {fileID: 0}
 --- !u!1 &162785351
 GameObject:
   m_ObjectHideFlags: 0
@@ -495,7 +492,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 2118047371}
-  map: {fileID: 703747158}
 --- !u!4 &431789925
 Transform:
   m_ObjectHideFlags: 0
@@ -1724,10 +1720,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 30
   height: 20
-  visualLayer: {fileID: 882137433}
-  objectsBindingsLayer: {fileID: 431789924}
-  pathfindLayer: {fileID: 1851291568}
-  inputHandleLayer: {fileID: 145766429}
 --- !u!4 &703747159
 Transform:
   m_ObjectHideFlags: 0
@@ -1837,7 +1829,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e0224f4af330724682df6ec114b49bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  map: {fileID: 703747158}
   tilemap: {fileID: 1514424581}
   yborder: {fileID: 509114666}
   xborder: {fileID: 2041399450}

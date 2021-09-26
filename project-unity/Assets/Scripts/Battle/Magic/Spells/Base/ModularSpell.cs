@@ -36,7 +36,8 @@ namespace Battle
 
         private SpellComponentContext MakeContext()
         {
-            return new SpellComponentContext(caster);
+            return default;
+            // return new SpellComponentContext(caster);
         }
 
         public bool CastAvailable(Character caster, MapCell target)

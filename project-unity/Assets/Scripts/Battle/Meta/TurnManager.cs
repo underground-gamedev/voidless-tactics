@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+/*
 namespace Battle
 {
     public class TurnManager : MonoBehaviour
     {
         [SerializeField]
-        private TacticMap map;
+        private EditableMapMono mapMono;
 
         [SerializeField]
         private List<Team> teams;
@@ -21,7 +22,7 @@ namespace Battle
         {
             allCharacters = teams
                 .SelectMany(c => c.Characters)
-                .Where(ch => ch.MapObject.Map != null)
+                .Where(ch => ch.MapObject.MapMono != null)
                 .ToList();
 
             foreach (var character in allCharacters)
@@ -50,7 +51,7 @@ namespace Battle
                     var team = activeCharacter.Team;
                     team.ActiveCharacter = activeCharacter;
                     activeCharacter.OnTurnStart();
-                    yield return activeController.MakeTurn(map, team, activeCharacter);
+                    yield return activeController.MakeTurn(mapMono, team, activeCharacter);
                     activeCharacter.OnTurnEnd();
                     team.ActiveCharacter = null;
 
@@ -98,3 +99,4 @@ namespace Battle
         }
     }
 }
+*/

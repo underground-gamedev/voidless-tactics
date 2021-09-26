@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Battle.Algorithms.AreaPatterns;
+using UnityEditor;
 using UnityEngine;
 
 namespace Battle
@@ -10,13 +12,16 @@ namespace Battle
         [SerializeField]
         private int range;
 
+        private IAreaPattern pattern;
+        
+        private void Awake()
+        {
+            pattern = new CirclePattern(range);
+        }
+
         public List<MapCell> GetFullArea(SpellComponentContext ctx)
         {
-            var (cx, cy) = ctx.TargetCell.XY;
-            return AreaSelectorHelpers.GetCircle(cx, cy, range)
-                .Where(pos => !ctx.Map.IsOutOfBounds(pos.Item1, pos.Item2))
-                .Select(pos => ctx.Map.CellBy(pos.Item1, pos.Item2))
-                .ToList();
+            return pattern.GetPattern(ctx.Map, ctx.TargetCell).ToList();
         }
 
         public List<MapCell> GetRealArea(SpellComponentContext ctx)

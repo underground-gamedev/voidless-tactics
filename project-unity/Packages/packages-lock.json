@@ -1,5 +1,22 @@
 {
   "dependencies": {
+    "com.solidalloy.type-references": {
+      "version": "https://github.com/SolidAlloy/ClassTypeReference-for-Unity.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.solidalloy.util": "1.31.0",
+        "com.unity.settings-manager": "1.0.3"
+      },
+      "hash": "3c01f3ad0f3d491ca950e40c24107982f1c2b9e6"
+    },
+    "com.solidalloy.util": {
+      "version": "https://github.com/SolidAlloy/SolidUtilities.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "36a7165032f9f218659664c53a1f264b72d0dcff"
+    },
     "com.unity.2d.animation": {
       "version": "5.0.6",
       "depth": 0,
@@ -138,6 +155,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.settings-manager": {
+      "version": "1.0.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.sysroot": {
       "version": "0.1.19-preview",
       "depth": 1,
@@ -204,6 +228,22 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
+    },
+    "nuget.castle-core": {
+      "version": "1.0.1",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "nuget.moq": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "nuget.castle-core": "1.0.1"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

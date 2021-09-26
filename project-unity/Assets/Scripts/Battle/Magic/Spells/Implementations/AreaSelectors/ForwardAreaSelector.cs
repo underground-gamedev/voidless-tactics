@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Battle.Algorithms.AreaPatterns;
 using UnityEngine;
 
 namespace Battle
@@ -13,55 +15,31 @@ namespace Battle
         [SerializeField]
         protected bool excludeBasePosition;
 
-        protected abstract List<(int, int)> GetDirections(SpellComponentContext ctx);
+        protected abstract List<MapCell> GetDirections();
 
-        private List<MapCell> GetArea(SpellComponentContext ctx, Func<MapCell, bool> dropDirectionPredicate)
+        private IAreaPattern fullAreaPattern;
+        private IAreaPattern realAreaPattern;
+
+        private void Awake()
         {
-            var map = ctx.Map;
-            var area = new List<MapCell>();
-
-            if (!excludeBasePosition)
-            {
-                area.Add(ctx.TargetCell);
-                if (interruptOnCharacter && dropDirectionPredicate(ctx.TargetCell)) { return area; }
-            }
-
-            var directions = GetDirections(ctx);
-
-            var (baseX, baseY) = ctx.TargetCell.XY;
-
-            for (var range = 1; range < this.range; range++)
-            {
-                var needRemove = new List<(int, int)>();
-                foreach (var dir in directions)
-                {
-                    var (offsetX, offsetY) = dir;
-                    var targetX = baseX + offsetX * range;
-                    var targetY = baseY + offsetY * range;
-                    if (map.IsOutOfBounds(targetX, targetY)) continue;
-                    var cell = map.CellBy(targetX, targetY);
-                    area.Add(cell);
-
-                    if (interruptOnCharacter && dropDirectionPredicate(cell))
-                    {
-                        needRemove.Add(dir);
-                    }
-                }
-
-                needRemove.ForEach(dir => directions.Remove(dir));
-            }
-
-            return area;
+            fullAreaPattern = new DirectionalPattern(GetDirections(), range)
+                .InterruptOnCharacter(interruptOnCharacter)
+                .InterruptOnCharacter(false)
+                .ExcludeBasePositions(excludeBasePosition) ;
+            realAreaPattern = new DirectionalPattern(GetDirections(), range)
+                .InterruptOnCharacter(interruptOnCharacter)
+                .InterruptOnCharacter(true)
+                .ExcludeBasePositions(excludeBasePosition);
         }
 
         public List<MapCell> GetFullArea(SpellComponentContext ctx)
         {
-            return GetArea(ctx, (cell) => false);
+            return fullAreaPattern.GetPattern(ctx.Map, ctx.TargetCell).ToList();
         }
 
         public List<MapCell> GetRealArea(SpellComponentContext ctx)
         {
-            return GetArea(ctx, (cell) => cell?.MapObject?.AsCharacter != null);
+            return realAreaPattern.GetPattern(ctx.Map, ctx.TargetCell).ToList();
         }
 
         public abstract string GetDescription(Character caster);

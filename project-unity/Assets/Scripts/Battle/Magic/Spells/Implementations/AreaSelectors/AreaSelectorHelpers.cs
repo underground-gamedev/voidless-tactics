@@ -1,41 +1,35 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public static class AreaSelectorHelpers
 {
-    private static void Swap(ref int a, ref int b)
-    {
-        int c = a;
-        a = b;
-        b = c;
-    }
-
-    private static List<(int, int)> GetLine(int x0, int y0, int x1, int y1)
+    private static List<Vector2Int> GetLine(int x0, int y0, int x1, int y1)
     {
         var steep = Math.Abs(y1 - y0) > Math.Abs(x1 - x0);
 
         if (steep)
         {
-            Swap(ref x0, ref x1);
-            Swap(ref y0, ref y1);
+            (x0, x1) = (x1, x0);
+            (y0, y1) = (y1, y0);
         }
 
         if (x0 > x1)
         {
-            Swap(ref x0, ref x1);
-            Swap(ref y0, ref y1);
+            (x0, x1) = (x1, x0);
+            (y0, y1) = (y1, y0);
         }
 
         var deltaX = Math.Abs(x1 - x0);
         var deltaY = Math.Abs(y1 - y0);
-        var positions = new List<(int, int)>();
+        var positions = new List<Vector2Int>();
         var error = deltaX / 2;
         var y = y0;
         var yStep = y0 < y1 ? 1 : -1;
 
         for (var x = x0; x <= x1; x++)
         {
-            var newPos = steep ? (y, x) : (x, y);
+            var newPos = steep ? new Vector2Int(y, x) : new Vector2Int(x, y);
             positions.Add(newPos);
 
             error -= deltaY;
@@ -49,12 +43,12 @@ public static class AreaSelectorHelpers
         return positions;
     }
 
-    public static List<(int, int)> GetCircle(int cx, int cy, int radius)
+    public static List<Vector2Int> GetCircle(int cx, int cy, int radius)
     {
         var d = 3 - 2 * radius;
         var (x, y) = (radius, 0);
 
-        var positions = new List<(int, int)>();
+        var positions = new List<Vector2Int>();
         while (y <= x)
         {
             positions.AddRange(GetLine(cx - x, cy - y, cx + x, cy - y));

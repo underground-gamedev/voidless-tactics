@@ -1,15 +1,15 @@
-using System;
+using Battle.Map.Interfaces;
 
 namespace Battle
 {
-    public struct SpellComponentContext
+    public readonly struct SpellComponentContext
     {
-        public Character Caster;
-        public TacticMap Map;
-        public MapCell TargetCell;
-        public MapCell SourceCell;
+        public readonly ICharacter Caster;
+        public readonly ILayeredMap Map;
+        public readonly MapCell TargetCell;
+        public readonly MapCell SourceCell;
 
-        public SpellComponentContext(Character caster, TacticMap map, MapCell sourceCell, MapCell targetCell)
+        public SpellComponentContext(ICharacter caster, ILayeredMap map, MapCell sourceCell, MapCell targetCell)
         {
             Caster = caster;
             Map = map;
@@ -17,24 +17,24 @@ namespace Battle
             TargetCell = targetCell; 
         }
 
-        public SpellComponentContext(Character caster, TacticMap map, MapCell targetCell): this(caster, map, targetCell, targetCell)
+        /*public SpellComponentContext(ICharacter caster, ILayeredMap map, MapCell targetCell): this(caster, map, targetCell, targetCell)
         {
         }
 
-        public SpellComponentContext(Character caster, MapCell baseCell): this(caster, caster.MapObject.Map, baseCell)
+        public SpellComponentContext(ICharacter caster, MapCell baseCell): this(caster, caster.MapObject.MapMono, baseCell)
         {
         }
 
-        public SpellComponentContext(Character caster): this(caster, caster.MapObject.Cell)
+        public SpellComponentContext(ICharacter caster): this(caster, caster.MapObject.Cell)
         {
-        }
+        }*/
 
-        public SpellComponentContext SetCaster(Character caster)
+        public SpellComponentContext SetCaster(ICharacter caster)
         {
             return new SpellComponentContext(caster, Map, SourceCell, TargetCell);
         }
 
-        public SpellComponentContext SetMap(TacticMap map)
+        public SpellComponentContext SetMap(ILayeredMap map)
         {
             return new SpellComponentContext(Caster, map, SourceCell, TargetCell);
         }

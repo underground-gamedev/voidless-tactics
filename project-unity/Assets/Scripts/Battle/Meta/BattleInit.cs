@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
 namespace Battle
 {
     public class BattleInit : MonoBehaviour
@@ -30,3 +31,4 @@ namespace Battle
         }
     }
 }
+*/

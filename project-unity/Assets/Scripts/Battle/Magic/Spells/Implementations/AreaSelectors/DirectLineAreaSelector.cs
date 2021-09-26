@@ -1,28 +1,33 @@
 using System.Collections.Generic;
+using System.Linq;
+using Battle.Algorithms.AreaPatterns;
 using UnityEngine;
 
 namespace Battle
 {
-    public class DirectLineAreaSelector : ForwardAreaSelector, IAreaSelector
+    public class DirectLineAreaSelector : ScriptableObject, IAreaSelector
     {
-        protected override List<(int, int)> GetDirections(SpellComponentContext ctx)
+        [SerializeField]
+        private int range;
+
+        private IRelativeAreaPattern areaPattern;
+
+        private void Awake()
         {
-            var srcPos = ctx.SourceCell.XY;
-            var (srcX, srcY) = srcPos;
-            var targetPos = ctx.TargetCell.XY;
-            var (targetX, targetY) = targetPos;
-            var dirX = Mathf.Clamp(targetX - srcX, -1, 1);
-            var dirY = Mathf.Clamp(targetY - srcY, -1, 1);
-
-            if (dirX == 0 && dirY == 0)
-            {
-                return new List<(int, int)>();
-            }
-
-            return new List<(int, int)>() { (dirX, dirY) };
+            this.areaPattern = new RelativeLinePattern(range);
         }
 
-        public override string GetDescription(Character caster)
+        public List<MapCell> GetFullArea(SpellComponentContext ctx)
+        {
+            return areaPattern.GetPattern(ctx.Map, ctx.SourceCell, ctx.TargetCell).ToList();
+        }
+
+        public List<MapCell> GetRealArea(SpellComponentContext ctx)
+        {
+            return GetFullArea(ctx);
+        }
+
+        public string GetDescription(Character caster)
         {
             return $"relative line: {range}";
         }

@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Battle.Algorithms.AreaPatterns;
 using UnityEngine;
 
 namespace Battle
@@ -8,22 +11,16 @@ namespace Battle
         [SerializeField]
         private int range;
 
+        private IAreaPattern areaPattern;
+
+        private void Awake()
+        {
+            areaPattern = new SquarePattern(range);
+        }
+
         public List<MapCell> GetFullArea(SpellComponentContext ctx)
         {
-            var (cx, cy) = ctx.TargetCell.XY;
-            var result = new List<MapCell>();
-            for (int x = cx - range; x <= cx + range; x++)
-            {
-                for (int y = cy - range; y <= cy + range; y++)
-                {
-                    if (!ctx.Map.IsOutOfBounds(x, y))
-                    {
-                        result.Add(ctx.Map.CellBy(x, y));
-                    }
-                }
-            }
-
-            return result;
+            return areaPattern.GetPattern(ctx.Map, ctx.TargetCell).ToList();
         }
 
         public List<MapCell> GetRealArea(SpellComponentContext ctx)

@@ -1,14 +1,13 @@
 using System.Collections.Generic;
+using Battle.Map.Extensions;
 
 namespace Battle
 {
     public class DirectCrossAreaSelector : ForwardAreaSelector, IAreaSelector
     {
-        protected override List<(int, int)> GetDirections(SpellComponentContext ctx)
+        protected override List<MapCell> GetDirections()
         {
-            return new List<(int, int)>() {
-                (0, 1), (1, 0), (0, -1), (-1, 0),
-            };
+            return MapDirections.Direct();
         }
         public override string GetDescription(Character caster)
         {

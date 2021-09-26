@@ -1,5 +1,6 @@
 using UnityEngine;
 
+/*
 namespace Battle
 {
     public class ManaResourceConsumer : ScriptableObject, IResourceConsumer
@@ -10,12 +11,12 @@ namespace Battle
         public void Consume(SpellComponentContext ctx)
         {
             var manaContainer = ctx.Caster.ManaContainerComponent;
-            manaContainer.ConsumeMana(manaContainer.ManaCount);
+            manaContainer.ConsumeMana(manaContainer.Mana.Count);
         }
 
         public bool ConsumeAvailable(SpellComponentContext ctx)
         {
-            return ctx.Caster.ManaContainerComponent.ManaCount >= manaRequired;
+            return ctx.Caster.ManaContainerComponent.Mana.Count >= manaRequired;
         }
 
         public string GetDescription(Character caster)
@@ -24,3 +25,4 @@ namespace Battle
         }
     }
 }
+*/
