@@ -73,8 +73,9 @@ namespace Battle
                         }
                     }
                 };
-                
-                foreach (var neigh in neighbourPattern(map, curr))
+
+                var neighbours = neighbourPattern(map, curr);
+                foreach (var neigh in neighbours.Where(neigh => !closed.Contains(neigh)))
                 {
                     var neighDistance = neighbourDistance(map, curr, neigh);
                     addNeighbour(curr, neigh, neighDistance);

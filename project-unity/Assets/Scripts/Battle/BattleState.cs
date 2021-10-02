@@ -1,20 +1,22 @@
-using System.Collections.Generic;
+using Battle.EventSystem;
 using Battle.Map.Interfaces;
 
 namespace Battle
 {
     public class BattleState
     {
-        public ILayeredMap Map { get; }
-        public IList<ICharacter> Characters { get; }
-        public IList<ITeam> Teams { get; }
-        public TimeLine TimeLine { get; }
+        public IEventQueue EventQueue { get; }
+        public ILayeredMapHolder Map { get; }
+        public ICharactersHolder Characters { get; }
+        public ITeamsHolder Teams { get; }
+        public ITimeLine TimeLine { get; }
 
-        public BattleState(ILayeredMap map)
+        public BattleState()
         {
-            Map = map;
-            Characters = new List<ICharacter>();
-            Teams = new List<ITeam>();
+            EventQueue = new EventSystem.EventQueue();
+            Map = new MapHolder();
+            Characters = new CharactersHolder();
+            Teams = new TeamsHolder();
             TimeLine = new TimeLine();
         }
     }

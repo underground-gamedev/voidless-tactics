@@ -66,12 +66,17 @@ namespace Battle
             return layers.Get<T>();
         }
 
+        void ILayeredMap.AddLayer<T>(T layer)
+        {
+            AddLayer<T>(layer);
+        }
+
         public void RemoveLayer<T>() where T : class, IMapLayer
         {
             layers.DeAttach<T>();
         }
 
-        public void RemoveAllLayers()
+        public void RemoveAll()
         {
             layers.DeAttachAll();
         }

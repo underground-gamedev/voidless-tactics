@@ -45,8 +45,9 @@ namespace Battle
         public void Remove([NotNull] T delElem)
         {
             var active = Active;
-            var existedPair = queue.FirstOrDefault(elem => elem.Value.Equals(delElem));
+            if (active == null) return;
             
+            var existedPair = queue.FirstOrDefault(elem => elem.Value.Equals(delElem));
             if (existedPair.Value == null) return;
             
             queue.Remove(existedPair);
