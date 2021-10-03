@@ -7,12 +7,12 @@ using UnityEngine;
 namespace Battle
 {
     [CreateAssetMenu(fileName = "MapGeneratorSetup.asset", menuName = "CUSTOM/Setups/MapGeneratorSetupStep", order = 2)]
-    public class MapGeneratorSetupStep: SerializedScriptableObject, IBattleStateSetupStep
+    public class MapGeneratorSetupStep: SerializableSetupStep
     {
         [OdinSerialize, Required]
         private List<IMapGeneratorStep> steps = new List<IMapGeneratorStep>();
-        
-        public void Setup(BattleState state)
+
+        public override void Setup(BattleState state)
         {
             var map = state.Map.Map;
             
@@ -21,5 +21,7 @@ namespace Battle
                 step.Generate(map);
             }
         }
+
+        protected override SetupOrder SetupOrder => SetupOrder.MapGenerator;
     }
 }

@@ -15,7 +15,9 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: b9f43d17f72a9ca478c90fa6cd2a9034, type: 2}
+    - {fileID: 11400000, guid: 8a4245edbc23b01478cdcb52ab889393, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
@@ -26,7 +28,13 @@ MonoBehaviour:
       Data: 0|System.Collections.Generic.List`1[[Battle.TeamTemplate, Core]], mscorlib
     - Name: 
       Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 10
       Data: 0
+    - Name: 
+      Entry: 10
+      Data: 1
     - Name: 
       Entry: 13
       Data: 

@@ -7,11 +7,12 @@ using UnityEngine;
 namespace Battle
 {
     [CreateAssetMenu(fileName = "MapViewSetupStep.asset", menuName = "CUSTOM/Setups/MapViewSetupStep", order = 1)]
-    public class MapViewSetupStep : SerializedScriptableObject, IBattleStateSetupStep
+    public class MapViewSetupStep : SerializableSetupStep
     {
         [OdinSerialize, AssetsOnly, Required]
         private MapView viewAsset;
-        public void Setup(BattleState state)
+
+        public override void Setup(BattleState state)
         {
             if (viewAsset == null)
             {
@@ -33,5 +34,7 @@ namespace Battle
             map.AddLayer<IVisualMapLayer>(view.VisualPresentation);
             map.AddLayer<IInputMapLayer>(view.InputController);
         }
+
+        protected override SetupOrder SetupOrder => SetupOrder.MapView;
     }
 }

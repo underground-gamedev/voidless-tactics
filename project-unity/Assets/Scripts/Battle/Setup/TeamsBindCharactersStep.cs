@@ -1,14 +1,15 @@
 using System.Linq;
 using Battle.Components.TeamTagComponent;
 using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using UnityEngine;
 
 namespace Battle
 {
     [CreateAssetMenu(fileName = "TeamsBindCharactersStep.asset", menuName = "CUSTOM/Setups/TeamsBindCharacterStep", order = 6)]
-    public class TeamsBindCharactersStep : SerializedScriptableObject, IBattleStateSetupStep
+    public class TeamsBindCharactersStep : SerializableSetupStep
     {
-        public void Setup(BattleState state)
+        public override void Setup(BattleState state)
         {
             var teams = state.Teams.Teams;
             var characters = state.Characters.Characters;
@@ -32,5 +33,7 @@ namespace Battle
                 Debug.LogError($"{nameof(TeamsBindCharactersStep)}:: Team with tag {teamTagCom.TeamTag} not found. Recheck configuration");
             }
         }
+
+        protected override SetupOrder SetupOrder => SetupOrder.TeamsBindCharacters;
     }
 }

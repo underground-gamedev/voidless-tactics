@@ -7,12 +7,12 @@ using UnityEngine;
 namespace Battle
 {
     [CreateAssetMenu(fileName = "TeamsLogicalSetupStep.asset", menuName = "CUSTOM/Setups/TeamsLogicalSetupStep", order = 5)]
-    public class TeamsLogicalSetupStep : SerializedScriptableObject, IBattleStateSetupStep
+    public class TeamsLogicalSetupStep : SerializableSetupStep
     {
         [OdinSerialize, Required]
         private List<TeamTemplate> templates = new List<TeamTemplate>();
-        
-        public void Setup(BattleState state)
+
+        public override void Setup(BattleState state)
         {
             var teams = templates.Select(template => template.Generate()).ToList();
             if (teams.Select(team => team.Info.TeamTag).Distinct().Count() != teams.Count)
@@ -26,5 +26,7 @@ namespace Battle
                 state.Teams.AddTeam(team);
             }
         }
+
+        protected override SetupOrder SetupOrder => SetupOrder.TeamsLogical;
     }
 }

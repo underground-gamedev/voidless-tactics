@@ -1,3 +1,8 @@
+using System;
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
+using UnityEngine;
+
 namespace Battle
 {
     public interface IBattleStateSetupStep
