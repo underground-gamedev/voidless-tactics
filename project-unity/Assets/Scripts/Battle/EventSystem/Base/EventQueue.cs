@@ -61,9 +61,10 @@ namespace Battle.EventSystem
 
         public void Handle(IGlobalEvent globalEvent)
         {
-            if (delayedEvents.Count > 0)
+            delayedEvents.Enqueue(globalEvent);
+            
+            if (delayedEvents.Count > 1)
             {
-                delayedEvents.Enqueue(globalEvent);
                 return;
             }
 
