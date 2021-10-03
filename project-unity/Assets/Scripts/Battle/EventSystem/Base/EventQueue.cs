@@ -91,6 +91,8 @@ namespace Battle.EventSystem
         private void HandleSingle(IGlobalEvent globalEvent)
         {
             var resultStatus = HandleStatus.Skipped;
+            
+            tracers.ForEach(tracer => tracer.TraceBeforeAllHandlers(globalEvent));
 
             foreach (var handler in handlers)
             {
@@ -103,10 +105,14 @@ namespace Battle.EventSystem
                 if (handleStatus == HandleStatus.Consumed) break;
             }
             
+            tracers.ForEach(tracer => tracer.TraceAfterAllHandlers(globalEvent));
+            
             foreach (var watcher in watchers)
             {
                 watcher.Watch(globalEvent, resultStatus);
             }
+            
+            tracers.ForEach(tracer => tracer.TraceAfterAllWatchers(globalEvent));
         }
     }
 }

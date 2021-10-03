@@ -9,7 +9,7 @@ namespace Battle.Map.Interfaces
         void RemoveCharacter(ICharacter character);
         
         ICharacter GetCharacter(MapCell cell);
-        MapCell? GetPosition(Character character);
+        MapCell? GetPosition(ICharacter character);
         ICharacter[] GetAllCharacters();
     }
 }

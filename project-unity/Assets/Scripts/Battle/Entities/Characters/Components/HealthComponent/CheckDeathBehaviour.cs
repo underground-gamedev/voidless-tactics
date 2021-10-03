@@ -19,7 +19,7 @@ namespace Battle
             if (stats.Get(StatType.CurrentHealth)?.Value <= 0)
             {
                 var emitter = character.GetGlobalEmitter();
-                emitter?.Emit(new DeathCharacterGlobalEvent(character));
+                emitter?.Emit(new DeathCharacterGameEvent(character));
             }
         }
 

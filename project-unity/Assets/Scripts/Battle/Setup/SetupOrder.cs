@@ -2,11 +2,14 @@ namespace Battle
 {
     public enum SetupOrder
     {
+        EventTracer,
         MapLogical,
         MapGenerator,
         CharactersLogical,
         TeamsLogical,
-        TeamsBindCharacters,
+        BindTeamsWithCharacters,
+        BindMapWithCharacters,
         MapView,
+        CharactersView,
     }
 }

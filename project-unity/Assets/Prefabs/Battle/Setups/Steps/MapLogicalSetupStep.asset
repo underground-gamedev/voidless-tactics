@@ -20,5 +20,8 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
+    SerializationNodes:
+    - Name: Enabled
+      Entry: 5
+      Data: true
   size: {x: 30, y: 20}

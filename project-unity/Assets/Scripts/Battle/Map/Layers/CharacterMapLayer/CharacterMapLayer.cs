@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Battle.Components.MapBindingComponent;
 using Battle.Map.Extensions;
 using Battle.Map.Interfaces;
 
@@ -8,7 +9,7 @@ namespace Battle
 {
     public class CharacterMapLayer : ICharacterMapLayer
     {
-        private ISizedMap map;
+        private ILayeredMap map;
         private Dictionary<MapCell, ICharacter> posToChars;
         private Dictionary<ICharacter, MapCell> charsToPos;
         public void OnAttached(ILayeredMap map)
@@ -41,6 +42,8 @@ namespace Battle
             
             charsToPos.Add(character, cell);
             posToChars.Add(cell, character);
+
+            character.AddComponent<MapBindingComponent>(new MapBindingComponent(map));
         }
 
         public void RelocateCharacter(ICharacter character, MapCell cell)
@@ -70,6 +73,8 @@ namespace Battle
             if (!charsToPos.ContainsKey(character)) return;
             posToChars.Remove(charsToPos[character]);
             charsToPos.Remove(character);
+            
+            character.RemoveComponent<MapBindingComponent>();
         }
 
         public ICharacter GetCharacter(MapCell cell)
@@ -77,7 +82,7 @@ namespace Battle
             return posToChars.TryGetValue(cell, out var character) ? character : null;
         }
 
-        public MapCell? GetPosition(Character character)
+        public MapCell? GetPosition(ICharacter character)
         {
             return charsToPos.TryGetValue(character, out var cell) ? new MapCell?(cell) : null;
         }

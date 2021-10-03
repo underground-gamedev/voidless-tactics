@@ -23,6 +23,9 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
+    - Name: Enabled
+      Entry: 5
+      Data: true
     - Name: templates
       Entry: 7
       Data: 0|System.Collections.Generic.List`1[[Battle.CharacterTemplate, Core]],

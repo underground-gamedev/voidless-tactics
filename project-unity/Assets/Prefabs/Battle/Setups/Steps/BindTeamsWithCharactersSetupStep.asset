@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 816335cb7e284eb5aff2c1d4049adde5, type: 3}
-  m_Name: DemoCharacter2
+  m_Script: {fileID: 11500000, guid: 5dd1770f75224e37a293ff6d8b383249, type: 3}
+  m_Name: BindTeamsWithCharactersSetupStep
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -20,8 +20,7 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  teamTag: 1
-  viewTag: 1
-  health: 10
-  spawnPosition: {x: 20, y: 0}
+    SerializationNodes:
+    - Name: Enabled
+      Entry: 5
+      Data: true

@@ -12,7 +12,7 @@ namespace UnitTests.Entities.Characters.Components
             var deathTriggered = false;
             
             var mockEmitter = new Mock<IGlobalEventEmitter>();
-            mockEmitter.Setup(emitter => emitter.Emit(It.IsAny<DeathCharacterGlobalEvent>()))
+            mockEmitter.Setup(emitter => emitter.Emit(It.IsAny<DeathCharacterGameEvent>()))
                 .Callback<IGlobalEvent>(globalEvent => deathTriggered |= globalEvent != null);
             
             var character = new Character();
@@ -32,7 +32,7 @@ namespace UnitTests.Entities.Characters.Components
             var damagedTriggered = false;
             
             var mockEmitter = new Mock<IGlobalEventEmitter>();
-            mockEmitter.Setup(emitter => emitter.Emit(It.IsAny<DamagedGlobalEvent>()))
+            mockEmitter.Setup(emitter => emitter.Emit(It.IsAny<DamagedGameEvent>()))
                 .Callback<IGlobalEvent>(globalEvent => damagedTriggered |= globalEvent != null);
             
             var character = new Character();

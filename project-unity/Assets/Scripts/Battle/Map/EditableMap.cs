@@ -4,8 +4,11 @@ using Core.Components;
 
 namespace Battle
 {
-    public class EditableMap: ILayeredMap
+    public class EditableMap: Entity, ILayeredMap
     {
+        public event Action<Type, IMapLayer> OnLayerAssociated;
+        public event Action<Type, IMapLayer> OnLayerUnAssociated;
+
         public int Width { get; }
         public int Height { get; }
 
@@ -19,15 +22,16 @@ namespace Battle
             layers = new ComponentContainer<IMapLayer>(OnLayerAdded, OnLayerRemoved);
         }
 
-        public ILayeredMap AddLayer(Type type, IMapLayer map)
+        public ILayeredMap AddLayer(Type type, IMapLayer layer)
         {
-            layers.Attach(type, map);
+            layers.Attach(type, layer);
+            OnLayerAssociated?.Invoke(type, layer);
             return this;
         }
         
         public EditableMap AddLayer<T>(T layer) where T : class, IMapLayer
         {
-            layers.Attach(layer);
+            AddLayer(typeof(T), layer);
             return this;
         }
 
@@ -40,8 +44,8 @@ namespace Battle
                 throw new InvalidOperationException();
             }
             
-            layers.Attach<T1>(layer);
-            layers.Attach<T2>(layer as T2);
+            AddLayer<T1>(layer);
+            AddLayer<T2>(layer as T2);
             return this;
         }
 
@@ -55,9 +59,9 @@ namespace Battle
                 throw new InvalidOperationException();
             }
             
-            layers.Attach<T1>(layer);
-            layers.Attach<T2>(layer as T2);
-            layers.Attach<T3>(layer as T3);
+            AddLayer<T1>(layer);
+            AddLayer<T2>(layer as T2);
+            AddLayer<T3>(layer as T3);
             return this;
         }
 
@@ -73,7 +77,12 @@ namespace Battle
 
         public void RemoveLayer<T>() where T : class, IMapLayer
         {
+            var layer = layers.Get<T>();
+            
+            if (layer == null) return;
+            
             layers.DeAttach<T>();
+            OnLayerUnAssociated?.Invoke(typeof(T), layer);
         }
 
         public void RemoveAll()

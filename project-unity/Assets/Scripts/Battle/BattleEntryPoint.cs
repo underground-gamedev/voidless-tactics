@@ -18,7 +18,7 @@ namespace Battle
         {
             yield return new WaitForEndOfFrame();
             state = setup.Setup();
-            state.EventQueue.Handle(new StartGlobalEvent());
+            state.EventQueue.Handle(new StartUtilityEvent());
         }
     }
 }

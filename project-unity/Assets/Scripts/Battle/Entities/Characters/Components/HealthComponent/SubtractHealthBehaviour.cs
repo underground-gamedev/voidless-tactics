@@ -21,7 +21,7 @@ namespace Battle
             if (health != null)
             {
                 health.BaseValue -= hitEvent.Value;
-                character.GetGlobalEmitter()?.Emit(new DamagedGlobalEvent(character, hitEvent.Value));
+                character.GetGlobalEmitter()?.Emit(new DamagedGameEvent(character, hitEvent.Value));
             }
         }
 
