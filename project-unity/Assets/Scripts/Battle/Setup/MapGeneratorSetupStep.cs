@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Battle
 {
-    [CreateAssetMenu(fileName = "MapGeneratorSetup.asset", menuName = "CUSTOM/Setups/MapGeneratorSetupStep", order = 2)]
+    [CreateAssetMenu(fileName = "MapGeneratorSetup.asset", menuName = "CUSTOM/Setups/MapGeneratorSetupStep", order = (int)SetupOrder.MapGenerator)]
     public class MapGeneratorSetupStep: SerializableSetupStep
     {
         [OdinSerialize, Required]

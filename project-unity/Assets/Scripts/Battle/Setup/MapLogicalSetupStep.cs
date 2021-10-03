@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Battle
 {
-    [CreateAssetMenu(fileName = "MapLogicalSetupStep.asset", menuName = "CUSTOM/Setups/MapLogicalSetupStep", order = 1)]
+    [CreateAssetMenu(fileName = "MapLogicalSetupStep.asset", menuName = "CUSTOM/Setups/MapLogicalSetupStep", order = (int)SetupOrder.MapLogical)]
     public class MapLogicalSetupStep : SerializableSetupStep
     {
         [SerializeField] private Vector2Int size;

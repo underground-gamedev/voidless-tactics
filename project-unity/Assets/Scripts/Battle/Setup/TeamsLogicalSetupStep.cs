@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Battle
 {
-    [CreateAssetMenu(fileName = "TeamsLogicalSetupStep.asset", menuName = "CUSTOM/Setups/TeamsLogicalSetupStep", order = 5)]
+    [CreateAssetMenu(fileName = "TeamsLogicalSetupStep.asset", menuName = "CUSTOM/Setups/TeamsLogicalSetupStep", order = (int)SetupOrder.TeamsLogical)]
     public class TeamsLogicalSetupStep : SerializableSetupStep
     {
         [OdinSerialize, Required]

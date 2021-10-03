@@ -6,8 +6,8 @@ using UnityEngine;
 
 namespace Battle
 {
-    [CreateAssetMenu(fileName = "TeamsBindCharactersStep.asset", menuName = "CUSTOM/Setups/TeamsBindCharacterStep", order = 6)]
-    public class TeamsBindCharactersStep : SerializableSetupStep
+    [CreateAssetMenu(fileName = "TeamsBindCharactersSetupStep.asset", menuName = "CUSTOM/Setups/TeamsBindCharactersSetupStep", order = (int)SetupOrder.TeamsBindCharacters)]
+    public class TeamsBindCharactersSetupStep : SerializableSetupStep
     {
         public override void Setup(BattleState state)
         {
@@ -20,7 +20,7 @@ namespace Battle
                 var teamTagCom = character.GetComponent<TeamTagComponent>();
                 if (teamTagCom == null)
                 {
-                    Debug.LogWarning($"{nameof(TeamsBindCharactersStep)}:: Unexpected character without TeamTagComponent");
+                    Debug.LogWarning($"{nameof(TeamsBindCharactersSetupStep)}:: Unexpected character without TeamTagComponent");
                     continue;
                 }
 
@@ -30,7 +30,7 @@ namespace Battle
                     continue;
                 }
                 
-                Debug.LogError($"{nameof(TeamsBindCharactersStep)}:: Team with tag {teamTagCom.TeamTag} not found. Recheck configuration");
+                Debug.LogError($"{nameof(TeamsBindCharactersSetupStep)}:: Team with tag {teamTagCom.TeamTag} not found. Recheck configuration");
             }
         }
 

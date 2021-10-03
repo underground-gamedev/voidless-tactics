@@ -10,7 +10,7 @@ namespace Battle
     [CreateAssetMenu(fileName = "BattleSetup.asset", menuName = "CUSTOM/Setups/BattleSetup", order = 0)]
     public class BattleSetup : SerializedScriptableObject, IBattleStateSetup
     {
-        [DetailedInfoBox("Usage Info", 
+        [DetailedInfoBox("Basic Info", 
             "This object describes how to initialize the battle scene. To do this, separate objects of \"steps\" are used that make small changes in the game state.\n\n" +
             "Step objects are automatically sorted by internal priority. There is no need to do the ordering manually.\n" +
             "The order is defined as follows: \n" +
