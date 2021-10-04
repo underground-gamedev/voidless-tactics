@@ -14,29 +14,6 @@ namespace Battle.Components.ViewComponent
         {
             this.character = character;
             this.enabled = true;
-            var mapBindingCom = character.GetComponent<MapBindingComponent.MapBindingComponent>();
-            
-            if (mapBindingCom?.Map == null)
-            {
-                throw new InvalidOperationException(
-                    $"{nameof(CharacterViewComponent)}:: Invalid configuration. Expected map binding component");
-            }
-
-            var map = mapBindingCom.Map;
-
-            var characterLayer = map.GetLayer<ICharacterMapLayer>();
-            var coordinateConverterLayer = map.GetLayer<ICoordinateConverterLayer>();
-
-            var pos = characterLayer.GetPosition(character);
-            
-            if (!pos.HasValue)
-            {
-                throw new InvalidOperationException(
-                    $"{nameof(CharacterViewComponent)}:: Invalid configuration. Expected position in map binding");
-            }
-
-            var globalPos = coordinateConverterLayer.MapToGlobal(pos.Value);
-            transform.position = globalPos;
         }
 
         public void OnAttached(IEntity entity)
@@ -52,6 +29,11 @@ namespace Battle.Components.ViewComponent
         {
             this.character = null;
             this.enabled = false;
+        }
+
+        public void Relocate(Vector3 position)
+        {
+            transform.position = position;
         }
     }
 }

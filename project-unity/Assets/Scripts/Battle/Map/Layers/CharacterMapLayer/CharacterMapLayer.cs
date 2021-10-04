@@ -44,6 +44,9 @@ namespace Battle
             posToChars.Add(cell, character);
 
             character.AddComponent<MapBindingComponent>(new MapBindingComponent(map));
+
+            var emitter = map.GetComponent<IGlobalEventEmitter>();
+            emitter?.Emit(new CharacterAddedOnMapGameEvent(map, character, cell));
         }
 
         public void RelocateCharacter(ICharacter character, MapCell cell)
@@ -66,6 +69,9 @@ namespace Battle
             charsToPos[character] = cell;
             posToChars.Remove(oldCell);
             posToChars.Add(cell, character);
+
+            var emitter = map.GetComponent<IGlobalEventEmitter>();
+            emitter?.Emit(new CharacterRelocatedGameEvent(map, character, oldCell, cell));
         }
 
         public void RemoveCharacter(ICharacter character)
@@ -75,6 +81,9 @@ namespace Battle
             charsToPos.Remove(character);
             
             character.RemoveComponent<MapBindingComponent>();
+
+            var emitter = map.GetComponent<IGlobalEventEmitter>();
+            emitter?.Emit(new CharacterRemovedFromMapGameEvent(map, character));
         }
 
         public ICharacter GetCharacter(MapCell cell)
