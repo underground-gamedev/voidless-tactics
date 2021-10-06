@@ -33,7 +33,7 @@ namespace Battle
             
             map.AddLayer<ICoordinateConverterLayer>(view.CoordinateConverterLayer);
             map.AddLayer<IVisualMapLayer>(view.VisualPresentation);
-            map.AddLayer<IInputMapLayer>(view.InputController);
+            map.AddLayer<InputEmitterLayer>(view.InputEmitterLayer);
         }
 
         protected override SetupOrder SetupOrder => SetupOrder.MapView;

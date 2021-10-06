@@ -44,15 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daead898c60c789408a5deb46801654d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
   grid: {fileID: 6987270828539142348}
   rayCollider: {fileID: 6987270826979467777}
   mainCamera: {fileID: 0}
@@ -2841,7 +2832,7 @@ MonoBehaviour:
     - Name: visualPresentation
       Entry: 10
       Data: 0
-    - Name: inputController
+    - Name: inputEmitterLayer
       Entry: 10
       Data: 1
     - Name: coordinateConverter

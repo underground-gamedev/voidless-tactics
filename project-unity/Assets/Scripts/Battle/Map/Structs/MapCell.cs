@@ -49,6 +49,11 @@ namespace Battle
             hashCode = hashCode * -1521134295 + Y.GetHashCode();
             return hashCode;
         }
+        
+        public override string ToString()
+        {
+            return $"({X}, {Y})";
+        }
 
         public static bool operator ==(MapCell left, MapCell right)
         {
@@ -71,7 +76,6 @@ namespace Battle
         {
             return new MapCell(pos);
         }
-
     }
 }
 

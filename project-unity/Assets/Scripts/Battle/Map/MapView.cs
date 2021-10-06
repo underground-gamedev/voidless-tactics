@@ -10,12 +10,12 @@ namespace Battle
         [OdinSerialize, Required]
         private IVisualMapLayer visualPresentation;
         [OdinSerialize, Required]
-        private IInputMapLayer inputController;
+        private InputEmitterLayer inputEmitterLayer;
         [OdinSerialize, Required]
         private ICoordinateConverterLayer coordinateConverter;
         
         public IVisualMapLayer VisualPresentation => visualPresentation;
-        public IInputMapLayer InputController => inputController;
+        public InputEmitterLayer InputEmitterLayer => inputEmitterLayer;
         public ICoordinateConverterLayer CoordinateConverterLayer => coordinateConverter;
     }
 }
