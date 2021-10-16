@@ -12,7 +12,14 @@ namespace Battle.EventSystem
         private Queue<IGlobalEvent> delayedEvents = new Queue<IGlobalEvent>();
         
         private List<object> blockers = new List<object>();
+
+        private BattleState state;
         public bool IsBlocked => blockers.Any();
+
+        public EventQueue(BattleState state)
+        {
+            this.state = state;
+        }
 
         public void AddWatcher(IEventWatcher watcher)
         {
@@ -97,7 +104,7 @@ namespace Battle.EventSystem
             foreach (var handler in handlers)
             {
                 tracers.ForEach(tracer => tracer.TraceBefore(handler, globalEvent));
-                var handleStatus = handler.Handle(globalEvent);
+                var handleStatus = handler.Handle(state, globalEvent);
                 tracers.ForEach(tracer => tracer.TraceAfter(handler, globalEvent, handleStatus));
 
                 if (handleStatus == HandleStatus.Skipped) continue;

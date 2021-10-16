@@ -41,7 +41,7 @@ namespace Battle
         
         private class RelocateViewAfterLogicalRelocation : IEventHandler
         {
-            public HandleStatus Handle(IGlobalEvent globalEvent)
+            public HandleStatus Handle(BattleState state, IGlobalEvent globalEvent)
             {
                 return globalEvent switch
                 {
@@ -76,7 +76,7 @@ namespace Battle
                 this.viewController = viewController;
             }
             
-            public HandleStatus Handle(IGlobalEvent globalEvent)
+            public HandleStatus Handle(BattleState state, IGlobalEvent globalEvent)
             {
                 return globalEvent switch
                 {

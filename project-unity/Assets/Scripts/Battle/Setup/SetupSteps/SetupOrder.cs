@@ -4,8 +4,10 @@ namespace Battle
     {
         // Debug Steps
         EventTracer,
+        Yield,
         
         // Logical Steps
+        TurnSystem,
         MapLogical,
         MapGenerator,
         CharactersLogical,
@@ -14,6 +16,7 @@ namespace Battle
         // Binding Steps
         BindTeamsWithCharacters,
         BindMapWithCharacters,
+        BindRandom,
         
         // View Steps
         MapView,

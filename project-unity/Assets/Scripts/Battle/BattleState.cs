@@ -13,7 +13,7 @@ namespace Battle
 
         public BattleState()
         {
-            EventQueue = new EventSystem.EventQueue();
+            EventQueue = new EventQueue(this);
             Map = new MapHolder();
             Characters = new CharactersHolder();
             Teams = new TeamsHolder();

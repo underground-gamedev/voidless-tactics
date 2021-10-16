@@ -1,3 +1,4 @@
+using Battle.Components.InitiativeComponent;
 using Battle.Components.SpawnPositionComponent;
 using Battle.Components.TeamTagComponent;
 using Battle.Components.ViewTagComponent;
@@ -16,6 +17,12 @@ namespace Battle
         
         [SerializeField]
         private int health;
+
+        [SerializeField]
+        private int minInitiative;
+        [SerializeField]
+        private int maxInitiative;
+        
         [SerializeField]
         private Vector2Int spawnPosition;
 
@@ -26,6 +33,7 @@ namespace Battle
             character.AddComponent<ViewTagComponent>(new ViewTagComponent(viewTag));
             character.AddComponent<HealthComponent>(new HealthComponent(health));
             character.AddComponent<SpawnPositionComponent>(new SpawnPositionComponent(MapCell.FromVector(spawnPosition)));
+            character.AddComponent<InitiativeComponent>(new InitiativeComponent(minInitiative, maxInitiative));
 
             return character;
         }
