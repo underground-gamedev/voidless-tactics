@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Battle;
 using NUnit.Framework;
 
-namespace UnitTests.Editor
+namespace UnitTests.Structures
 {
     public class PriorityQueueTests
     {

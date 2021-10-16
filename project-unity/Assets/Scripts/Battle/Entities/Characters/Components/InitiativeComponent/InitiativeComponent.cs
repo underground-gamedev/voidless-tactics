@@ -11,7 +11,7 @@ namespace Battle.Components.InitiativeComponent
         private int maxInitiative;
 
         private ICharacter character;
-        
+        private TurnWaitBehaviour turnWaitBehaviour;
         public InitiativeComponent(int min, int max)
         {
             minInitiative = min;
@@ -25,6 +25,8 @@ namespace Battle.Components.InitiativeComponent
             this.character = character;
             character.Stats.Add(StatType.MinInitiative, new EntityStat(minInitiative));
             character.Stats.Add(StatType.MaxInitiative, new EntityStat(maxInitiative));
+            turnWaitBehaviour = new TurnWaitBehaviour(character);
+            character.Behaviours.Add(turnWaitBehaviour);
         }
 
         public void OnDeAttached()
@@ -33,6 +35,7 @@ namespace Battle.Components.InitiativeComponent
             
             character.Stats.Remove(StatType.MinInitiative);
             character.Stats.Remove(StatType.MaxInitiative);
+            character.Behaviours.Remove(turnWaitBehaviour);
             this.character = null;
         }
 
@@ -64,7 +67,7 @@ namespace Battle.Components.InitiativeComponent
 
             public bool RespondTo(Type eventType)
             {
-                return eventType == typeof(TakeTurnPersonalEvent);
+                return eventType == typeof(StartRoundGameEvent);
             }
         }
     }
