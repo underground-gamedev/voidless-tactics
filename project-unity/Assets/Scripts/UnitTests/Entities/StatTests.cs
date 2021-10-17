@@ -22,9 +22,9 @@ namespace UnitTests.Entities
             var baseValue = 10;
             var stat = new Stat(baseValue);
 
-            Assert.AreEqual(baseValue * 2, (stat + baseValue).BaseValue);
-            Assert.AreEqual(baseValue * 3, (stat + baseValue * 2).BaseValue);
-            Assert.AreEqual(0, (stat - baseValue).BaseValue);
+            Assert.AreEqual(new Stat(baseValue * 2), stat + baseValue);
+            Assert.AreEqual(new Stat(baseValue * 3), stat + baseValue * 2);
+            Assert.AreEqual(new Stat(0), stat - baseValue);
         }
 
         [Test]

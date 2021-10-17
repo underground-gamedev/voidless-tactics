@@ -15,8 +15,7 @@ namespace UnitTests.Entities.Characters.Components
             statCom.Add(StatType.Test, stat);
             
             
-            Assert.AreEqual(stat.BaseValue, statCom.Get(StatType.Test)?.BaseValue);
-            Assert.AreEqual(stat.ModifiedValue, statCom.Get(StatType.Test)?.ModifiedValue);
+            Assert.AreEqual(stat, statCom.Get(StatType.Test));
         }
 
         [Test]
@@ -29,8 +28,7 @@ namespace UnitTests.Entities.Characters.Components
             statCom.Set(StatType.Test, stat);
             
             
-            Assert.AreEqual(stat.BaseValue, statCom.Get(StatType.Test)?.BaseValue);
-            Assert.AreEqual(stat.ModifiedValue, statCom.Get(StatType.Test)?.ModifiedValue);
+            Assert.AreEqual(stat, statCom.Get(StatType.Test));
         }
 
         [Test]
