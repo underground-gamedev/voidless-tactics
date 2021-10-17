@@ -78,6 +78,27 @@ namespace Battle
                 .Aggregate(baseValue, (curr, mod) => mod.ModifyValue(baseValue, curr));
         }
         
+        protected bool Equals(Stat other)
+        {
+            return baseValue == other.baseValue && modifiedValue == other.modifiedValue;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Stat) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (baseValue * 397) ^ modifiedValue;
+            }
+        }
+        
         public static Stat operator +(Stat stat, int value)
         {
             return new Stat(stat.baseValue + value, stat.modifiers);
@@ -87,5 +108,6 @@ namespace Battle
         {
             return stat + -value;
         }
+        
     }
 }

@@ -72,5 +72,12 @@ namespace UnitTests.Entities
             Assert.AreEqual(baseValue * 2 + modificationAddition, modifiedStat.ModifiedValue);
             Assert.AreEqual(baseValue * 3 + modificationAddition, statSecondAddition.ModifiedValue);
         }
+
+        [Test]
+        public void TestEquality()
+        {
+            Assert.AreEqual(new Stat(10), new Stat(5) + 5);
+            Assert.AreNotEqual(new Stat(10), new Stat(11));
+        }
     }
 }
