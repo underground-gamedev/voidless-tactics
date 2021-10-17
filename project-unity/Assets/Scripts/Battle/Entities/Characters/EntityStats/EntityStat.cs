@@ -1,5 +1,4 @@
-﻿using Sirenix.OdinInspector;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -58,6 +57,11 @@ namespace Battle
         void ISerializationCallbackReceiver.OnAfterDeserialize()
         {
             modifiers = new Dictionary<StatModifierSource, EntityStatModifier>();
+        }
+        
+        public static EntityStat operator +(EntityStat stat, int addition)
+        {
+            return new EntityStat(stat.baseValue + addition);
         }
     }
 }
