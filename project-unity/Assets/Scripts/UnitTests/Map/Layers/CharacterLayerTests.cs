@@ -10,7 +10,7 @@ namespace UnitTests.Map.Layers
         [Test]
         public void TestCharacterAddOnLayer()
         {
-            var characterLayer = new CharacterMapLayer();
+            ICharacterMapLayer characterLayer = new CharacterMapLayer();
             characterLayer.OnAttached(CreateTestMap());
 
             var mockCharacter = new Mock<ICharacter>();
@@ -32,7 +32,7 @@ namespace UnitTests.Map.Layers
         [Test]
         public void TestCharacterRemoveFromLayer()
         {
-            var characterLayer = new CharacterMapLayer();
+            ICharacterMapLayer characterLayer = new CharacterMapLayer();
             characterLayer.OnAttached(CreateTestMap());
 
             var mockCharacter = new Mock<ICharacter>();
@@ -55,7 +55,7 @@ namespace UnitTests.Map.Layers
         public void TestCharacterRelocateOnLayer()
         {
             var map = CreateTestMap();
-            var characterLayer = new CharacterMapLayer();
+            ICharacterMapLayer characterLayer = new CharacterMapLayer();
             characterLayer.OnAttached(map);
 
             var mockCharacter = new Mock<ICharacter>();
