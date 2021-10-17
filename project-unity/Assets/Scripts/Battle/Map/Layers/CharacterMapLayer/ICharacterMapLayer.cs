@@ -4,9 +4,9 @@ namespace Battle.Map.Interfaces
 {
     public interface ICharacterMapLayer: IMapLayer
     {
-        public event Action<ICharacter, MapCell> OnCharacterAdded;
-        public event Action<ICharacter> OnCharacterRemoved;
-        public event Action<ICharacter, MapCell> OnCharacterRelocated;
+        event Action<ICharacter, MapCell> OnCharacterAdded;
+        event Action<ICharacter> OnCharacterRemoved;
+        event Action<ICharacter, MapCell> OnCharacterRelocated;
         
         void AddCharacter(ICharacter character, MapCell cell);
         void RelocateCharacter(ICharacter character, MapCell cell);
