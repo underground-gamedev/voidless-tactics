@@ -10,6 +10,7 @@ namespace Battle
     public class CharacterMapLayer : ICharacterMapLayer
     {
         public event Action<ICharacter> OnCharacterAdded;
+        public event Action<ICharacter> OnCharacterRemoved;
         
         private ILayeredMap map;
         private Dictionary<MapCell, ICharacter> posToChars;
@@ -89,6 +90,8 @@ namespace Battle
 
             var emitter = map.GetComponent<IGlobalEventEmitter>();
             emitter?.Emit(new CharacterRemovedFromMapGameEvent(map, character));
+            
+            OnCharacterRemoved?.Invoke(character);
         }
 
         public ICharacter GetCharacter(MapCell cell)

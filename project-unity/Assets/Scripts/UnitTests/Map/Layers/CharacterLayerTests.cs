@@ -48,12 +48,16 @@ namespace UnitTests.Map.Layers
 
             var mockCharacter = new Mock<ICharacter>();
             var spawnPosition = new MapCell(0, 0);
+
+            var characterRemoveTriggered = false;
+            characterLayer.OnCharacterRemoved += character => characterRemoveTriggered |= character == mockCharacter.Object;
             
             
             characterLayer.AddCharacter(mockCharacter.Object, spawnPosition);
             characterLayer.RemoveCharacter(mockCharacter.Object);
 
 
+            Assert.IsTrue(characterRemoveTriggered);
             Assert.IsNull(characterLayer.GetCharacter(spawnPosition));
             Assert.IsNull(characterLayer.GetPosition(mockCharacter.Object));
         }
