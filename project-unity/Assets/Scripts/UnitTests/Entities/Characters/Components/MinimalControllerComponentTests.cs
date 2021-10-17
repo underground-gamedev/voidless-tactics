@@ -13,14 +13,8 @@ namespace UnitTests.Entities.Characters.Components
             var endTurnTriggered = false;
             
             var mockEmitter = new Mock<IGlobalEventEmitter>();
-            mockEmitter.Setup(emitter => emitter.Emit(It.IsAny<IGlobalEvent>()))
-                .Callback<IGlobalEvent>(globalEvent =>
-                {
-                    if (globalEvent is EndTurnGameEvent endTurnEvent)
-                    {
-                        endTurnTriggered = true;
-                    }
-                });
+            mockEmitter.Setup(emitter => emitter.Emit(It.IsAny<EndTurnGameEvent>()))
+                .Callback<IGlobalEvent>(globalEvent => endTurnTriggered |= globalEvent != null);
             
             var character = new Character();
             character.AddComponent<MinimalControllerComponent>(new MinimalControllerComponent());
