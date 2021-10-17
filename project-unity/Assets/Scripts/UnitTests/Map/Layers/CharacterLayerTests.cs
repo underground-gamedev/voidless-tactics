@@ -52,5 +52,24 @@ namespace UnitTests.Map.Layers
 
             Assert.IsNull(characterLayer.GetCharacter(spawnPosition));
         }
+
+        [Test]
+        public void TestCharacterRelocateOnLayer()
+        {
+            var map = GetTestMap();
+            var characterLayer = new CharacterMapLayer();
+            characterLayer.OnAttached(map);
+
+            var mockCharacter = new Mock<ICharacter>();
+            var spawnPosition = new MapCell(0, 0);
+            var relocatePosition = new MapCell(map.Width - 1, map.Height - 1);
+            
+            
+            characterLayer.AddCharacter(mockCharacter.Object, spawnPosition);
+            characterLayer.RelocateCharacter(mockCharacter.Object, relocatePosition);
+            
+            Assert.IsNull(characterLayer.GetCharacter(spawnPosition));
+            Assert.AreSame(mockCharacter.Object, characterLayer.GetCharacter(relocatePosition));
+        }
     }
 }
