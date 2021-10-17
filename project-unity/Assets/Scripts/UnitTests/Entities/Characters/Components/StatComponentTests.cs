@@ -1,3 +1,4 @@
+using System;
 using Battle;
 using NUnit.Framework;
 
@@ -16,6 +17,17 @@ namespace UnitTests.Entities.Characters.Components
             
             
             Assert.AreEqual(stat, statCom.Get(StatType.Test));
+        }
+
+        [Test]
+        public void TestDoubleAddStat()
+        {
+            var statCom = new EntityStats();
+            var stat = new Stat(10);
+            
+            
+            statCom.Add(StatType.Test, stat);
+            Assert.Throws<ArgumentException>(() => statCom.Add(StatType.Test, stat));
         }
 
         [Test]
