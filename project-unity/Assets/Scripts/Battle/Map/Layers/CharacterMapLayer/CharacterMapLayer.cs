@@ -11,6 +11,7 @@ namespace Battle
     {
         public event Action<ICharacter> OnCharacterAdded;
         public event Action<ICharacter> OnCharacterRemoved;
+        public event Action<ICharacter, MapCell> OnCharacterRelocated;
         
         private ILayeredMap map;
         private Dictionary<MapCell, ICharacter> posToChars;
@@ -78,6 +79,8 @@ namespace Battle
 
             var emitter = map.GetComponent<IGlobalEventEmitter>();
             emitter?.Emit(new CharacterRelocatedGameEvent(map, character, oldCell, cell));
+            
+            OnCharacterRelocated?.Invoke(character, cell);
         }
 
         public void RemoveCharacter(ICharacter character)
