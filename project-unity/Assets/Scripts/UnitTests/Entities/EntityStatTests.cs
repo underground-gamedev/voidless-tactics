@@ -10,7 +10,7 @@ namespace UnitTests.Entities
         {
             var baseValue = 10;
             var stat = new EntityStat(baseValue);
-            
+
             Assert.AreEqual(baseValue, stat.Value);
             Assert.AreEqual(baseValue, stat.BaseValue);
         }

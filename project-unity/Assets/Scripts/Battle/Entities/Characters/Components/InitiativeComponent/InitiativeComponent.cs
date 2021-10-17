@@ -23,7 +23,8 @@ namespace Battle.Components.InitiativeComponent
             this.character = character;
             character.Stats.Add(StatType.MinInitiative, new EntityStat(minInitiative));
             character.Stats.Add(StatType.MaxInitiative, new EntityStat(maxInitiative));
-            turnWaitBehaviour = new TurnWaitBehaviour(character);
+            turnWaitBehaviour = new TurnWaitBehaviour(minInitiative, maxInitiative);
+            turnWaitBehaviour.OnWait += EmitWaitToGlobal;
             character.Behaviours.Add(turnWaitBehaviour);
         }
 
@@ -34,7 +35,14 @@ namespace Battle.Components.InitiativeComponent
             character.Stats.Remove(StatType.MinInitiative);
             character.Stats.Remove(StatType.MaxInitiative);
             character.Behaviours.Remove(turnWaitBehaviour);
+            turnWaitBehaviour.OnWait -= EmitWaitToGlobal;
             this.character = null;
+        }
+
+        private void EmitWaitToGlobal(int initiative)
+        {
+            var emitter = character?.GetComponent<IGlobalEventEmitter>();
+            emitter?.Emit(new WaitTurnGameEvent(character, initiative));
         }
     }
 }
