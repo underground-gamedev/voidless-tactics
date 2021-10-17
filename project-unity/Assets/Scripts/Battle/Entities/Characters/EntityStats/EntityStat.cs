@@ -19,15 +19,26 @@ namespace Battle
             BaseValue = actualValue;
         }
 
-        public void AddModifier(StatModifierSource source, EntityStatModifier modifier)
+        private EntityStat(int actualValue, Dictionary<StatModifierSource, EntityStatModifier> modifiers)
         {
-            if (modifiers.ContainsKey(source))
-            {
-                modifiers[source] = modifiers[source].StackWith(modifier);
-                return;
-            }
+            BaseValue = actualValue;
+            this.modifiers = modifiers.ToDictionary(pair => pair.Key, pair => pair.Value);
+        }
 
-            modifiers.Add(source, modifier);
+        public EntityStat AddModifier(StatModifierSource source, EntityStatModifier modifier)
+        {
+            var newStat = new EntityStat(baseValue, modifiers);
+            
+            if (newStat.modifiers.ContainsKey(source))
+            {
+                newStat.modifiers[source] = modifiers[source].StackWith(modifier);
+            }
+            else
+            {
+                newStat.modifiers.Add(source, modifier);
+            }
+            
+            return newStat;
         }
 
         public void RemoveModifier(StatModifierSource source)
@@ -61,7 +72,7 @@ namespace Battle
         
         public static EntityStat operator +(EntityStat stat, int addition)
         {
-            return new EntityStat(stat.baseValue + addition);
+            return new EntityStat(stat.baseValue + addition, stat.modifiers);
         }
     }
 }

@@ -1,6 +1,7 @@
 using Battle;
 using Moq;
 using NUnit.Framework;
+using UnityEditor.VersionControl;
 
 namespace UnitTests.Entities
 {
@@ -36,10 +37,35 @@ namespace UnitTests.Entities
             mockModifier.Setup(modifier => modifier.ModifyValue(It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(0);
             
-            stat.AddModifier(StatModifierSource.Test, mockModifier.Object);
+            var modifiedStat = stat.AddModifier(StatModifierSource.Test, mockModifier.Object);
             
-            Assert.AreEqual(baseValue, stat.BaseValue);
-            Assert.AreEqual(0, stat.Value);
+            Assert.AreEqual(baseValue, modifiedStat.BaseValue);
+            Assert.AreEqual(0, modifiedStat.Value);
+            Assert.AreEqual(baseValue, stat.Value);
+        }
+
+        [Test]
+        public void TestStatModificationAndAddition()
+        {
+            var baseValue = 10;
+            var modificationAddition = 5;
+            var stat = new EntityStat(baseValue);
+            
+            var mockModifier = new Mock<EntityStatModifier>();
+            mockModifier
+                .Setup(modifier => modifier.ModifyValue(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns<int, int>((baseValue, modified) => baseValue + modificationAddition);
+
+            
+            var statAddition = stat + baseValue;
+            var modifiedStat = statAddition.AddModifier(StatModifierSource.Test, mockModifier.Object);
+            var statSecondAddition = modifiedStat + baseValue;
+            
+            
+            Assert.AreEqual(baseValue, stat.Value);
+            Assert.AreEqual(baseValue * 2, statAddition.Value);
+            Assert.AreEqual(baseValue * 2 + modificationAddition, modifiedStat.Value);
+            Assert.AreEqual(baseValue * 3 + modificationAddition, statSecondAddition.Value);
         }
     }
 }
