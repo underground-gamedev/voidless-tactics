@@ -1,0 +1,50 @@
+using Battle;
+using NUnit.Framework;
+
+namespace UnitTests.Entities.Characters.Components
+{
+    public class StatComponentTests
+    {
+        [Test]
+        public void TestAddStat()
+        {
+            var statCom = new EntityStats();
+            var stat = new Stat(10);
+            
+            
+            statCom.Add(StatType.Test, stat);
+            
+            
+            Assert.AreEqual(stat.BaseValue, statCom.Get(StatType.Test)?.BaseValue);
+            Assert.AreEqual(stat.ModifiedValue, statCom.Get(StatType.Test)?.ModifiedValue);
+        }
+
+        [Test]
+        public void TestSetStat()
+        {
+            var statCom = new EntityStats();
+            var stat = new Stat(10);
+
+            
+            statCom.Set(StatType.Test, stat);
+            
+            
+            Assert.AreEqual(stat.BaseValue, statCom.Get(StatType.Test)?.BaseValue);
+            Assert.AreEqual(stat.ModifiedValue, statCom.Get(StatType.Test)?.ModifiedValue);
+        }
+
+        [Test]
+        public void TestRemoveStat()
+        {
+            var statCom = new EntityStats();
+            var stat = new Stat(10);
+
+            
+            statCom.Add(StatType.Test, stat);
+            statCom.Remove(StatType.Test);
+            
+            
+            Assert.IsNull(statCom.Get(StatType.Test));
+        }
+    }
+}

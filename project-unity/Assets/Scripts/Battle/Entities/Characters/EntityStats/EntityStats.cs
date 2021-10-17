@@ -20,5 +20,10 @@ namespace Battle
         {
             return stats.TryGetValue(statType, out var stat) ? stat : null;
         }
+
+        public void Set(StatType test, Stat stat)
+        {
+            stats[test] = stat;
+        }
     }
 }

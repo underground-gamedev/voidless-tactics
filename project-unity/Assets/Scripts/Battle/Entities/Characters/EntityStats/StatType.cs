@@ -2,6 +2,8 @@ namespace Battle
 {
     public enum StatType
     {
+        Test,
+        
         CurrentHealth,
         MaxHealth,
         
