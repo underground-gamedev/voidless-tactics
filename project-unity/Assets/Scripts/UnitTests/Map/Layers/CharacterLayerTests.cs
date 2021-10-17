@@ -51,6 +51,7 @@ namespace UnitTests.Map.Layers
 
 
             Assert.IsNull(characterLayer.GetCharacter(spawnPosition));
+            Assert.IsNull(characterLayer.GetPosition(mockCharacter.Object));
         }
 
         [Test]
@@ -68,8 +69,10 @@ namespace UnitTests.Map.Layers
             characterLayer.AddCharacter(mockCharacter.Object, spawnPosition);
             characterLayer.RelocateCharacter(mockCharacter.Object, relocatePosition);
             
+            
             Assert.IsNull(characterLayer.GetCharacter(spawnPosition));
             Assert.AreSame(mockCharacter.Object, characterLayer.GetCharacter(relocatePosition));
+            Assert.AreEqual(relocatePosition, characterLayer.GetPosition(mockCharacter.Object));
         }
     }
 }
