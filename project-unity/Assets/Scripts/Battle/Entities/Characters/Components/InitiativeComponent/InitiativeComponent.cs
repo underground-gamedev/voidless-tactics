@@ -1,6 +1,4 @@
-using System;
-using Battle.Components.RandomGeneratorComponent;
-using Battle.Systems.RandomSystem;
+using Battle.Characters.Behaviours;
 using Core.Components;
 
 namespace Battle.Components.InitiativeComponent
@@ -37,38 +35,6 @@ namespace Battle.Components.InitiativeComponent
             character.Stats.Remove(StatType.MaxInitiative);
             character.Behaviours.Remove(turnWaitBehaviour);
             this.character = null;
-        }
-
-        private class TurnWaitBehaviour : IBehaviour
-        {
-            public int HandlePriority => 0;
-            
-            private ICharacter character;
-            
-            public TurnWaitBehaviour(ICharacter character)
-            {
-                this.character = character;
-            }
-            
-            public void Handle(IPersonalEvent personalEvent)
-            {
-                if (!RespondTo(personalEvent.GetType())) return;
-
-                var minInitiative = character.Stats.Get(StatType.MinInitiative);
-                var maxInitiative = character.Stats.Get(StatType.MaxInitiative);
-
-                var random = character.GetComponent<IRandomGeneratorComponent>();
-                var currentInitiative = random?.NextFloat(minInitiative.Value, maxInitiative.Value) ?? (maxInitiative.Value + minInitiative.Value) / 2;
-
-                var emitter = character.GetComponent<IGlobalEventEmitter>();
-                
-                emitter?.Emit(new WaitTurnGameEvent(character, currentInitiative));
-            }
-
-            public bool RespondTo(Type eventType)
-            {
-                return eventType == typeof(StartRoundGameEvent);
-            }
         }
     }
 }
