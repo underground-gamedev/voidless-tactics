@@ -18,14 +18,10 @@ namespace UnitTests.Entities.Characters.Components
             
             var mockEventEmitter = new Mock<IGlobalEventEmitter>();
             mockEventEmitter
-                .Setup(emitter => emitter.Emit(It.IsAny<IGlobalEvent>()))
+                .Setup(emitter => emitter.Emit(It.IsAny<WaitTurnGameEvent>()))
                 .Callback<IGlobalEvent>(globalEvent =>
-                {
-                    if (globalEvent is WaitTurnGameEvent waitEvent)
-                    {
-                        validWaitEvent = waitEvent.Initiative >= minInitiative && waitEvent.Initiative <= maxInitiative;
-                    }
-                });
+                    validWaitEvent |= globalEvent is WaitTurnGameEvent waitEvent 
+                                   && minInitiative <= waitEvent.Initiative && waitEvent.Initiative <= maxInitiative);
             
             var character = new Character();
             character.AddComponent<InitiativeComponent>(new InitiativeComponent(minInitiative, maxInitiative));
