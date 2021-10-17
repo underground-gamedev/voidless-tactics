@@ -50,9 +50,6 @@ namespace Battle
 
             character.AddComponent<MapBindingComponent>(new MapBindingComponent(map));
 
-            var emitter = map.GetComponent<IGlobalEventEmitter>();
-            emitter?.Emit(new CharacterAddedOnMapGameEvent(map, character, cell));
-            
             OnCharacterAdded?.Invoke(character, cell);
         }
 
@@ -77,9 +74,6 @@ namespace Battle
             posToChars.Remove(oldCell);
             posToChars.Add(cell, character);
 
-            var emitter = map.GetComponent<IGlobalEventEmitter>();
-            emitter?.Emit(new CharacterRelocatedGameEvent(map, character, oldCell, cell));
-            
             OnCharacterRelocated?.Invoke(character, cell);
         }
 
@@ -91,9 +85,6 @@ namespace Battle
             
             character.RemoveComponent<MapBindingComponent>();
 
-            var emitter = map.GetComponent<IGlobalEventEmitter>();
-            emitter?.Emit(new CharacterRemovedFromMapGameEvent(map, character));
-            
             OnCharacterRemoved?.Invoke(character);
         }
 
