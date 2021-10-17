@@ -21,7 +21,7 @@ namespace Battle
             this.character = character;
             
             var stats = this.character.Stats;
-            stats.Add(StatType.CurrentHealth, new EntityStat(initialHealth));
+            stats.Add(StatType.CurrentHealth, new Stat(initialHealth));
             
             var behaviours = character.Behaviours;
 

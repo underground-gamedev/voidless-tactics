@@ -4,9 +4,9 @@ namespace Battle
 {
     public class EntityStats: IStatComponent
     {
-        private Dictionary<StatType, EntityStat> stats = new Dictionary<StatType, EntityStat>();
+        private Dictionary<StatType, Stat> stats = new Dictionary<StatType, Stat>();
         
-        public void Add(StatType statType, EntityStat stat)
+        public void Add(StatType statType, Stat stat)
         {
             stats.Add(statType, stat);
         }
@@ -16,7 +16,7 @@ namespace Battle
             stats.Remove(statType);
         }
 
-        public EntityStat Get(StatType statType)
+        public Stat Get(StatType statType)
         {
             return stats.TryGetValue(statType, out var stat) ? stat : null;
         }

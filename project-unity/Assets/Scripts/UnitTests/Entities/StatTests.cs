@@ -4,13 +4,13 @@ using NUnit.Framework;
 
 namespace UnitTests.Entities
 {
-    public class EntityStatTests
+    public class StatTests
     {
         [Test]
         public void TestUnmodifiedStat()
         {
             var baseValue = 10;
-            var stat = new EntityStat(baseValue);
+            var stat = new Stat(baseValue);
 
             Assert.AreEqual(baseValue, stat.Value);
             Assert.AreEqual(baseValue, stat.BaseValue);
@@ -20,7 +20,7 @@ namespace UnitTests.Entities
         public void TestStatAddition()
         {
             var baseValue = 10;
-            var stat = new EntityStat(baseValue);
+            var stat = new Stat(baseValue);
 
             Assert.AreEqual(baseValue * 2, (stat + baseValue).BaseValue);
             Assert.AreEqual(baseValue * 3, (stat + baseValue * 2).BaseValue);
@@ -30,9 +30,9 @@ namespace UnitTests.Entities
         public void TestStatModification()
         {
             var baseValue = 10;
-            var stat = new EntityStat(baseValue);
+            var stat = new Stat(baseValue);
 
-            var mockModifier = new Mock<EntityStatModifier>();
+            var mockModifier = new Mock<StatModifier>();
             mockModifier
                 .Setup(modifier => modifier.ModifyValue(It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(0);
@@ -53,9 +53,9 @@ namespace UnitTests.Entities
         {
             var baseValue = 10;
             var modificationAddition = 5;
-            var stat = new EntityStat(baseValue);
+            var stat = new Stat(baseValue);
             
-            var mockModifier = new Mock<EntityStatModifier>();
+            var mockModifier = new Mock<StatModifier>();
             mockModifier
                 .Setup(modifier => modifier.ModifyValue(It.IsAny<int>(), It.IsAny<int>()))
                 .Returns<int, int>((baseValue, modified) => baseValue + modificationAddition);

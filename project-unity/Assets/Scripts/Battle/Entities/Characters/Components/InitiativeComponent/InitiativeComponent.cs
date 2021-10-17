@@ -21,8 +21,8 @@ namespace Battle.Components.InitiativeComponent
             if (character == null) return;
             
             this.character = character;
-            character.Stats.Add(StatType.MinInitiative, new EntityStat(minInitiative));
-            character.Stats.Add(StatType.MaxInitiative, new EntityStat(maxInitiative));
+            character.Stats.Add(StatType.MinInitiative, new Stat(minInitiative));
+            character.Stats.Add(StatType.MaxInitiative, new Stat(maxInitiative));
             turnWaitBehaviour = new TurnWaitBehaviour(minInitiative, maxInitiative);
             turnWaitBehaviour.OnWait += EmitWaitToGlobal;
             character.Behaviours.Add(turnWaitBehaviour);
