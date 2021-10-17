@@ -7,23 +7,11 @@ namespace UnitTests.Map.Layers
 {
     public class CharacterLayerTests
     {
-        private ILayeredMap GetTestMap()
-        {
-            var mapWidth = 3;
-            var mapHeight = 3;
-
-            var mockMap = new Mock<ILayeredMap>();
-            mockMap.SetupGet(m => m.Height).Returns(mapWidth);
-            mockMap.SetupGet(m => m.Width).Returns(mapHeight);
-
-            return mockMap.Object;
-        }
-        
         [Test]
         public void TestCharacterAddOnLayer()
         {
             var characterLayer = new CharacterMapLayer();
-            characterLayer.OnAttached(GetTestMap());
+            characterLayer.OnAttached(CreateTestMap());
 
             var mockCharacter = new Mock<ICharacter>();
             var spawnPosition = new MapCell(0, 0);
@@ -45,7 +33,7 @@ namespace UnitTests.Map.Layers
         public void TestCharacterRemoveFromLayer()
         {
             var characterLayer = new CharacterMapLayer();
-            characterLayer.OnAttached(GetTestMap());
+            characterLayer.OnAttached(CreateTestMap());
 
             var mockCharacter = new Mock<ICharacter>();
             var spawnPosition = new MapCell(0, 0);
@@ -66,7 +54,7 @@ namespace UnitTests.Map.Layers
         [Test]
         public void TestCharacterRelocateOnLayer()
         {
-            var map = GetTestMap();
+            var map = CreateTestMap();
             var characterLayer = new CharacterMapLayer();
             characterLayer.OnAttached(map);
 
@@ -88,5 +76,18 @@ namespace UnitTests.Map.Layers
             Assert.AreSame(mockCharacter.Object, characterLayer.GetCharacter(relocatePosition));
             Assert.AreEqual(relocatePosition, characterLayer.GetPosition(mockCharacter.Object));
         }
+        
+        private static ILayeredMap CreateTestMap()
+        {
+            const int mapWidth = 3;
+            const int mapHeight = 3;
+
+            var mockMap = new Mock<ILayeredMap>();
+            mockMap.SetupGet(m => m.Height).Returns(mapWidth);
+            mockMap.SetupGet(m => m.Width).Returns(mapHeight);
+
+            return mockMap.Object;
+        }
+        
     }
 }
