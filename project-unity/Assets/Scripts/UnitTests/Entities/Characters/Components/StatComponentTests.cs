@@ -9,7 +9,7 @@ namespace UnitTests.Entities.Characters.Components
         [Test]
         public void TestAddStat()
         {
-            var statCom = new EntityStats();
+            var statCom = new StatComponent();
             var stat = new Stat(10);
             
             
@@ -22,7 +22,7 @@ namespace UnitTests.Entities.Characters.Components
         [Test]
         public void TestDoubleAddStat()
         {
-            var statCom = new EntityStats();
+            var statCom = new StatComponent();
             var stat = new Stat(10);
             
             
@@ -33,7 +33,7 @@ namespace UnitTests.Entities.Characters.Components
         [Test]
         public void TestSetStat()
         {
-            var statCom = new EntityStats();
+            var statCom = new StatComponent();
             var stat = new Stat(10);
 
             
@@ -46,7 +46,7 @@ namespace UnitTests.Entities.Characters.Components
         [Test]
         public void TestRemoveStat()
         {
-            var statCom = new EntityStats();
+            var statCom = new StatComponent();
             var stat = new Stat(10);
 
             

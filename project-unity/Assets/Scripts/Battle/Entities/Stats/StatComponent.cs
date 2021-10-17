@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Battle
 {
-    public class EntityStats: IStatComponent
+    public class StatComponent: IStatComponent
     {
         private Dictionary<StatType, Stat> stats = new Dictionary<StatType, Stat>();
         
