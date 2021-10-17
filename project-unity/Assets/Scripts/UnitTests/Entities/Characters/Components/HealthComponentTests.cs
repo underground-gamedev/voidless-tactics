@@ -56,7 +56,7 @@ namespace UnitTests.Entities.Characters.Components
             
             
             character.Behaviours.Handle(new TakeHitPersonalEvent(5));
-            var actualHealth = character.Stats.Get(StatType.CurrentHealth).Value;
+            var actualHealth = character.Stats.Get(StatType.CurrentHealth).ModifiedValue;
 
             
             Assert.AreEqual(expectedHealth, actualHealth);

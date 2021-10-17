@@ -10,7 +10,7 @@ namespace Battle
     public class Stat
     {
         public int BaseValue => baseValue;
-        public int Value => cachedModifiedValue ??= GetModified(BaseValue, (mod, curr) => mod.ModifyValue(baseValue, curr));
+        public int ModifiedValue => cachedModifiedValue ??= GetModified(BaseValue, (mod, curr) => mod.ModifyValue(baseValue, curr));
         
         [SerializeField]
         private int baseValue = 5;
@@ -65,9 +65,9 @@ namespace Battle
                 .Aggregate(baseVal, (current, modifier) => applyModifier(modifier, current));
         }
 
-        public static Stat operator +(Stat stat, int addition)
+        public static Stat operator +(Stat stat, int value)
         {
-            return new Stat(stat.baseValue + addition, stat.modifiers);
+            return new Stat(stat.baseValue + value, stat.modifiers);
         }
         
         public static Stat operator -(Stat stat, int value)

@@ -12,7 +12,7 @@ namespace UnitTests.Entities
             var baseValue = 10;
             var stat = new Stat(baseValue);
 
-            Assert.AreEqual(baseValue, stat.Value);
+            Assert.AreEqual(baseValue, stat.ModifiedValue);
             Assert.AreEqual(baseValue, stat.BaseValue);
         }
 
@@ -44,9 +44,9 @@ namespace UnitTests.Entities
             
             
             Assert.AreEqual(baseValue, modifiedStat.BaseValue);
-            Assert.AreEqual(0, modifiedStat.Value);
-            Assert.AreEqual(stat.Value, unmodifiedStat.Value);
-            Assert.AreEqual(baseValue, stat.Value);
+            Assert.AreEqual(0, modifiedStat.ModifiedValue);
+            Assert.AreEqual(stat.ModifiedValue, unmodifiedStat.ModifiedValue);
+            Assert.AreEqual(baseValue, stat.ModifiedValue);
         }
 
         [Test]
@@ -67,10 +67,10 @@ namespace UnitTests.Entities
             var statSecondAddition = modifiedStat + baseValue;
             
             
-            Assert.AreEqual(baseValue, stat.Value);
-            Assert.AreEqual(baseValue * 2, statAddition.Value);
-            Assert.AreEqual(baseValue * 2 + modificationAddition, modifiedStat.Value);
-            Assert.AreEqual(baseValue * 3 + modificationAddition, statSecondAddition.Value);
+            Assert.AreEqual(baseValue, stat.ModifiedValue);
+            Assert.AreEqual(baseValue * 2, statAddition.ModifiedValue);
+            Assert.AreEqual(baseValue * 2 + modificationAddition, modifiedStat.ModifiedValue);
+            Assert.AreEqual(baseValue * 3 + modificationAddition, statSecondAddition.ModifiedValue);
         }
     }
 }

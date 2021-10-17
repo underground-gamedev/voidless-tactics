@@ -16,7 +16,7 @@ namespace Battle
         public void Handle(IPersonalEvent personalEvent)
         {
             var stats = character.Stats;
-            if (stats.Get(StatType.CurrentHealth)?.Value <= 0)
+            if (stats.Get(StatType.CurrentHealth)?.ModifiedValue <= 0)
             {
                 var emitter = character.GetGlobalEmitter();
                 emitter?.Emit(new DeathCharacterGameEvent(character));
