@@ -1,6 +1,4 @@
 using System;
-using Battle.Components.RandomGeneratorComponent;
-using Battle.Systems.RandomSystem;
 
 namespace Battle.Characters.Behaviours
 {
@@ -10,15 +8,8 @@ namespace Battle.Characters.Behaviours
         
         public int HandlePriority => 0;
         
-        private ICharacter character;
-
         private int minInitiative;
         private int maxInitiative;
-        
-        public TurnWaitBehaviour(ICharacter character)
-        {
-            this.character = character;
-        }
 
         public TurnWaitBehaviour(int minInitiative, int maxInitiative)
         {
@@ -37,6 +28,5 @@ namespace Battle.Characters.Behaviours
         {
             return eventType == typeof(StartRoundGameEvent);
         }
-
     }
 }
