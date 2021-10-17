@@ -11,17 +11,18 @@ namespace Battle
         [SerializeField]
         private int baseValue = 5;
         private Dictionary<StatModifierSource, EntityStatModifier> modifiers = new Dictionary<StatModifierSource, EntityStatModifier>();
-        public int BaseValue { get => baseValue; set => baseValue = value; }
+        public int BaseValue => baseValue;
+        
         public int Value => GetModified(BaseValue, (mod, curr) => mod.ModifyValue(baseValue, curr));
 
         public EntityStat(int actualValue)
         {
-            BaseValue = actualValue;
+            baseValue = actualValue;
         }
 
         private EntityStat(int actualValue, Dictionary<StatModifierSource, EntityStatModifier> modifiers)
         {
-            BaseValue = actualValue;
+            baseValue = actualValue;
             this.modifiers = modifiers.ToDictionary(pair => pair.Key, pair => pair.Value);
         }
 

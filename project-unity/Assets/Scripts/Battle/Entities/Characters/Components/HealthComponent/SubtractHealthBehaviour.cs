@@ -20,7 +20,8 @@ namespace Battle
             var health = character.Stats.Get(StatType.CurrentHealth);
             if (health != null)
             {
-                health.BaseValue -= hitEvent.Value;
+                character.Stats.Remove(StatType.CurrentHealth);
+                character.Stats.Add(StatType.CurrentHealth, health + -hitEvent.Value);
                 character.GetGlobalEmitter()?.Emit(new DamagedGameEvent(character, hitEvent.Value));
             }
         }
