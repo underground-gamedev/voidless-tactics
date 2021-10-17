@@ -27,11 +27,15 @@ namespace UnitTests.Map.Layers
 
             var mockCharacter = new Mock<ICharacter>();
             var spawnPosition = new MapCell(0, 0);
+
+            var characterAddTriggered = false;
+            characterLayer.OnCharacterAdded += character => characterAddTriggered |= character == mockCharacter.Object;
             
             
             characterLayer.AddCharacter(mockCharacter.Object, spawnPosition);
 
-
+            
+            Assert.IsTrue(characterAddTriggered);
             Assert.AreSame(mockCharacter.Object, characterLayer.GetCharacter(spawnPosition));
             Assert.AreEqual(spawnPosition, characterLayer.GetPosition(mockCharacter.Object));
         }

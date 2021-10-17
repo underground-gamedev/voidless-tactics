@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Battle.Map.Interfaces
 {
     public interface ICharacterMapLayer: IMapLayer
