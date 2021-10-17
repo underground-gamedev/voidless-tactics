@@ -10,61 +10,74 @@ namespace Battle
     public class Stat
     {
         public int BaseValue => baseValue;
-        public int ModifiedValue => cachedModifiedValue ??= GetModified(BaseValue, (mod, curr) => mod.ModifyValue(baseValue, curr));
+        public int ModifiedValue => modifiedValue;
         
         [SerializeField]
         private int baseValue = 5;
+        private int modifiedValue;
         [OdinSerialize]
         private Dictionary<StatModifierSource, StatModifier> modifiers = new Dictionary<StatModifierSource, StatModifier>();
 
-        private int? cachedModifiedValue;
 
         public Stat(int actualValue)
         {
             baseValue = actualValue;
+            modifiedValue = baseValue;
         }
 
         private Stat(int actualValue, Dictionary<StatModifierSource, StatModifier> modifiers)
         {
             baseValue = actualValue;
             this.modifiers = modifiers.ToDictionary(pair => pair.Key, pair => pair.Value);
+            RecalculateModifiedValue();
         }
 
         public Stat AddModifier(StatModifierSource source, StatModifier modifier)
         {
             var newStat = new Stat(baseValue, modifiers);
-            
-            if (newStat.modifiers.ContainsKey(source))
+            newStat.MutableAddModifier(source, modifier);
+            return newStat;
+        }
+
+        private void MutableAddModifier(StatModifierSource source, StatModifier modifier)
+        {
+            if (modifiers.ContainsKey(source))
             {
-                newStat.modifiers[source] = modifiers[source].StackWith(modifier);
+                modifiers[source] = modifiers[source].StackWith(modifier);
             }
             else
             {
-                newStat.modifiers.Add(source, modifier);
+                modifiers.Add(source, modifier);
             }
             
-            return newStat;
+            RecalculateModifiedValue();
         }
 
         public Stat RemoveModifier(StatModifierSource source)
         {
             var newStat = new Stat(baseValue, modifiers);
-            newStat.modifiers.Remove(source);
+            newStat.MutableRemoveModifier(source);
             return newStat;
+        }
+
+        private void MutableRemoveModifier(StatModifierSource source)
+        {
+            modifiers.Remove(source);
+            RecalculateModifiedValue();
         }
 
         public T GetModifier<T>(StatModifierSource source) where T : StatModifier
         {
             return modifiers.ContainsKey(source) ? (T)modifiers[source] : null;
         }
-        
-        private int GetModified(int baseVal, Func<StatModifier, int, int> applyModifier)
-        {
-            return modifiers.Values
-                .OrderBy(mod => mod.ModifyPriority)
-                .Aggregate(baseVal, (current, modifier) => applyModifier(modifier, current));
-        }
 
+        private void RecalculateModifiedValue()
+        {
+             modifiedValue = modifiers.Values
+                .OrderBy(mod => mod.ModifyPriority)
+                .Aggregate(baseValue, (curr, mod) => mod.ModifyValue(baseValue, curr));
+        }
+        
         public static Stat operator +(Stat stat, int value)
         {
             return new Stat(stat.baseValue + value, stat.modifiers);
