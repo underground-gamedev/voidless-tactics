@@ -1,7 +1,6 @@
 using Battle;
 using Moq;
 using NUnit.Framework;
-using UnityEditor.VersionControl;
 
 namespace UnitTests.Entities
 {
@@ -34,11 +33,14 @@ namespace UnitTests.Entities
             var stat = new EntityStat(baseValue);
 
             var mockModifier = new Mock<EntityStatModifier>();
-            mockModifier.Setup(modifier => modifier.ModifyValue(It.IsAny<int>(), It.IsAny<int>()))
+            mockModifier
+                .Setup(modifier => modifier.ModifyValue(It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(0);
+            
             
             var modifiedStat = stat.AddModifier(StatModifierSource.Test, mockModifier.Object);
             var unmodifiedStat = modifiedStat.RemoveModifier(StatModifierSource.Test);
+            
             
             Assert.AreEqual(baseValue, modifiedStat.BaseValue);
             Assert.AreEqual(0, modifiedStat.Value);
