@@ -7,8 +7,7 @@ namespace UnitTests.Map.Layers
 {
     public class CharacterLayerTests
     {
-        [Test]
-        public void TestCharacterAddOnLayer()
+        private ILayeredMap GetTestMap()
         {
             var mapWidth = 3;
             var mapHeight = 3;
@@ -16,9 +15,15 @@ namespace UnitTests.Map.Layers
             var mockMap = new Mock<ILayeredMap>();
             mockMap.SetupGet(m => m.Height).Returns(mapWidth);
             mockMap.SetupGet(m => m.Width).Returns(mapHeight);
-            
+
+            return mockMap.Object;
+        }
+        
+        [Test]
+        public void TestCharacterAddOnLayer()
+        {
             var characterLayer = new CharacterMapLayer();
-            characterLayer.OnAttached(mockMap.Object);
+            characterLayer.OnAttached(GetTestMap());
 
             var mockCharacter = new Mock<ICharacter>();
             var spawnPosition = new MapCell(0, 0);
@@ -34,15 +39,8 @@ namespace UnitTests.Map.Layers
         [Test]
         public void TestCharacterRemoveFromLayer()
         {
-            var mapWidth = 3;
-            var mapHeight = 3;
-
-            var mockMap = new Mock<ILayeredMap>();
-            mockMap.SetupGet(m => m.Height).Returns(mapWidth);
-            mockMap.SetupGet(m => m.Width).Returns(mapHeight);
-            
             var characterLayer = new CharacterMapLayer();
-            characterLayer.OnAttached(mockMap.Object);
+            characterLayer.OnAttached(GetTestMap());
 
             var mockCharacter = new Mock<ICharacter>();
             var spawnPosition = new MapCell(0, 0);
