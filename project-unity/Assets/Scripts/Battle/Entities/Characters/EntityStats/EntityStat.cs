@@ -12,8 +12,9 @@ namespace Battle
         private int baseValue = 5;
         private Dictionary<StatModifierSource, EntityStatModifier> modifiers = new Dictionary<StatModifierSource, EntityStatModifier>();
         public int BaseValue => baseValue;
-        
-        public int Value => GetModified(BaseValue, (mod, curr) => mod.ModifyValue(baseValue, curr));
+
+        private int? cachedModifiedValue;
+        public int Value => cachedModifiedValue ??= GetModified(BaseValue, (mod, curr) => mod.ModifyValue(baseValue, curr));
 
         public EntityStat(int actualValue)
         {
@@ -42,9 +43,11 @@ namespace Battle
             return newStat;
         }
 
-        public void RemoveModifier(StatModifierSource source)
+        public EntityStat RemoveModifier(StatModifierSource source)
         {
-            modifiers.Remove(source);
+            var newStat = new EntityStat(baseValue, modifiers);
+            newStat.modifiers.Remove(source);
+            return newStat;
         }
 
         public T GetModifier<T>(StatModifierSource source) where T : EntityStatModifier

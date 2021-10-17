@@ -38,9 +38,11 @@ namespace UnitTests.Entities
                 .Returns(0);
             
             var modifiedStat = stat.AddModifier(StatModifierSource.Test, mockModifier.Object);
+            var unmodifiedStat = modifiedStat.RemoveModifier(StatModifierSource.Test);
             
             Assert.AreEqual(baseValue, modifiedStat.BaseValue);
             Assert.AreEqual(0, modifiedStat.Value);
+            Assert.AreEqual(stat.Value, unmodifiedStat.Value);
             Assert.AreEqual(baseValue, stat.Value);
         }
 
