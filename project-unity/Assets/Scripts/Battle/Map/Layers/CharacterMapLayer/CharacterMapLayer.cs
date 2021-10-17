@@ -9,7 +9,7 @@ namespace Battle
 {
     public class CharacterMapLayer : ICharacterMapLayer
     {
-        public event Action<ICharacter> OnCharacterAdded;
+        public event Action<ICharacter, MapCell> OnCharacterAdded;
         public event Action<ICharacter> OnCharacterRemoved;
         public event Action<ICharacter, MapCell> OnCharacterRelocated;
         
@@ -53,7 +53,7 @@ namespace Battle
             var emitter = map.GetComponent<IGlobalEventEmitter>();
             emitter?.Emit(new CharacterAddedOnMapGameEvent(map, character, cell));
             
-            OnCharacterAdded?.Invoke(character);
+            OnCharacterAdded?.Invoke(character, cell);
         }
 
         public void RelocateCharacter(ICharacter character, MapCell cell)

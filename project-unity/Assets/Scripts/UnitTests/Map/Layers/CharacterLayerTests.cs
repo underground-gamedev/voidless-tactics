@@ -29,7 +29,8 @@ namespace UnitTests.Map.Layers
             var spawnPosition = new MapCell(0, 0);
 
             var characterAddTriggered = false;
-            characterLayer.OnCharacterAdded += character => characterAddTriggered |= character == mockCharacter.Object;
+            characterLayer.OnCharacterAdded +=
+                (character, cell) => characterAddTriggered |= character == mockCharacter.Object && cell == spawnPosition;
             
             
             characterLayer.AddCharacter(mockCharacter.Object, spawnPosition);
