@@ -17,13 +17,14 @@ namespace UnitTests.Entities
         }
 
         [Test]
-        public void TestStatAddition()
+        public void TestStatBasicOperations()
         {
             var baseValue = 10;
             var stat = new Stat(baseValue);
 
             Assert.AreEqual(baseValue * 2, (stat + baseValue).BaseValue);
             Assert.AreEqual(baseValue * 3, (stat + baseValue * 2).BaseValue);
+            Assert.AreEqual(0, (stat - baseValue).BaseValue);
         }
 
         [Test]

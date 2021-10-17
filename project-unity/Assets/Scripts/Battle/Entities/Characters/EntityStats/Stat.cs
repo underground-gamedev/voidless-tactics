@@ -69,5 +69,10 @@ namespace Battle
         {
             return new Stat(stat.baseValue + addition, stat.modifiers);
         }
+        
+        public static Stat operator -(Stat stat, int value)
+        {
+            return stat + -value;
+        }
     }
 }
