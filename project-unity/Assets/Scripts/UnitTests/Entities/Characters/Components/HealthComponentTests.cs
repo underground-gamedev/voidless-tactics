@@ -9,11 +9,7 @@ namespace UnitTests.Entities.Characters.Components
         [Test]
         public void TestDeathEmitOnZeroHealth()
         {
-            var deathTriggered = false;
-            
             var mockEmitter = new Mock<IGlobalEventEmitter>();
-            mockEmitter.Setup(emitter => emitter.Emit(It.IsAny<DeathCharacterGameEvent>()))
-                .Callback<IGlobalEvent>(globalEvent => deathTriggered |= globalEvent != null);
             
             var character = new Character();
             character.AddComponent<IGlobalEventEmitter>(mockEmitter.Object);
@@ -23,19 +19,14 @@ namespace UnitTests.Entities.Characters.Components
             character.Behaviours.HandleNow(new TakeHitPersonalEvent(10));
 
             
-            Assert.IsTrue(deathTriggered);
+            mockEmitter.Verify(emitter => emitter.Emit(It.IsAny<DeathCharacterGameEvent>()), Times.Once());
         }
 
         [Test]
         public void TestDamagedEmitOnTakeHitSend()
         {
-            var damagedTriggered = false;
-            
-            var mockEmitter = new Mock<IGlobalEventEmitter>();
-            mockEmitter.Setup(emitter => emitter.Emit(It.IsAny<DamagedGameEvent>()))
-                .Callback<IGlobalEvent>(globalEvent => damagedTriggered |= globalEvent != null);
-            
             var character = new Character();
+            var mockEmitter = new Mock<IGlobalEventEmitter>();
             character.AddComponent<IGlobalEventEmitter>(mockEmitter.Object);
             character.AddComponent<HealthComponent>(new HealthComponent(10));
             
@@ -43,7 +34,7 @@ namespace UnitTests.Entities.Characters.Components
             character.Behaviours.HandleNow(new TakeHitPersonalEvent(5));
 
             
-            Assert.IsTrue(damagedTriggered);
+            mockEmitter.Verify(emitter => emitter.Emit(It.IsAny<DamagedGameEvent>()), Times.Once());
         }
 
         [Test]
