@@ -1,9 +1,8 @@
-using System;
 using Battle.Components;
 
 namespace Battle
 {
-    public class CheckDeathBehaviour : IBehaviour
+    public class CheckDeathBehaviour : IBehaviour<TakeHitPersonalEvent>
     {
         private ICharacter character;
         public int HandlePriority => (int)BehaviourPriority.CheckDeath;
@@ -13,19 +12,20 @@ namespace Battle
             character = parent;
         }
         
-        public void Handle(IPersonalEvent personalEvent)
+        public void Handle(TakeHitPersonalEvent _)
         {
             var stats = character.Stats;
-            if (stats.Get(StatType.CurrentHealth)?.ModifiedValue <= 0)
-            {
-                var emitter = character.GetGlobalEmitter();
-                emitter?.Emit(new DeathCharacterGameEvent(character));
-            }
+            
+            if (!(stats.Get(StatType.CurrentHealth)?.ModifiedValue <= 0)) return;
+            
+            var emitter = character.GetGlobalEmitter();
+            emitter?.Emit(new DeathCharacterGameEvent(character));
         }
 
-        public bool RespondTo(Type eventType)
+        
+        public void Handle(IPersonalEvent personalEvent)
         {
-            return true;
+            if (personalEvent is TakeHitPersonalEvent takeHit) Handle(takeHit);
         }
     }
 }

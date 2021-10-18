@@ -2,10 +2,10 @@ using System;
 
 namespace Battle.Characters.Behaviours
 {
-    public class TurnWaitBehaviour : IBehaviour
+    public class TurnWaitBehaviour : IBehaviour<StartRoundGameEvent>
     {
         public event Action<int> OnWait;
-        
+
         public int HandlePriority => 0;
         
         private int minInitiative;
@@ -17,16 +17,14 @@ namespace Battle.Characters.Behaviours
             this.maxInitiative = maxInitiative;
         }
 
-        public void Handle(IPersonalEvent personalEvent)
+        public void Handle(StartRoundGameEvent _)
         {
-            if (!RespondTo(personalEvent.GetType())) return;
-            
-            OnWait?.Invoke(this.minInitiative);
+            OnWait?.Invoke(minInitiative);
         }
 
-        public bool RespondTo(Type eventType)
+        public void Handle(IPersonalEvent personalEvent)
         {
-            return eventType == typeof(StartRoundGameEvent);
+            if (personalEvent is StartRoundGameEvent startRound) Handle(startRound);
         }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using Core.Components;
 
 namespace Battle.Components.MinimalControllerComponent
@@ -20,27 +19,25 @@ namespace Battle.Components.MinimalControllerComponent
             character = null;
         }
         
-        private class SkipTurnBehaviour : IBehaviour
+        private class SkipTurnBehaviour : IBehaviour<TakeTurnPersonalEvent>
         {
             private ICharacter character;
             public SkipTurnBehaviour(ICharacter character)
             {
                 this.character = character;
             }
-            
-            public int HandlePriority => 0;
-            
-            public void Handle(IPersonalEvent personalEvent)
-            {
-                if (!RespondTo(personalEvent.GetType())) return;
 
+            public void Handle(TakeTurnPersonalEvent _)
+            {
                 var emitter = character.GetComponent<IGlobalEventEmitter>();
                 emitter?.Emit(new EndTurnGameEvent(character));
             }
 
-            public bool RespondTo(Type eventType)
+            public int HandlePriority => 0;
+            
+            public void Handle(IPersonalEvent personalEvent)
             {
-                return eventType == typeof(TakeTurnPersonalEvent);
+                if (personalEvent is TakeTurnPersonalEvent takeTurn) Handle(takeTurn);
             }
         }
     }

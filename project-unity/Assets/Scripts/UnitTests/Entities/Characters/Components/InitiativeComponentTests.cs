@@ -2,7 +2,6 @@ using Battle;
 using Battle.Components.InitiativeComponent;
 using Moq;
 using NUnit.Framework;
-using Unity.Collections.LowLevel.Unsafe;
 
 namespace UnitTests.Entities.Characters.Components
 {
