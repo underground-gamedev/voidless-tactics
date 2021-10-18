@@ -1,3 +1,4 @@
+using System;
 using Battle;
 using Battle.Components.InitiativeComponent;
 using Moq;
@@ -13,24 +14,20 @@ namespace UnitTests.Entities.Characters.Components
             var minInitiative = 10;
             var maxInitiative = 20;
 
-            var validWaitEvent = false;
-            
-            var mockEventEmitter = new Mock<IGlobalEventEmitter>();
-            mockEventEmitter
-                .Setup(emitter => emitter.Emit(It.IsAny<WaitTurnGameEvent>()))
-                .Callback<IGlobalEvent>(globalEvent =>
-                    validWaitEvent |= globalEvent is WaitTurnGameEvent waitEvent 
-                                   && minInitiative <= waitEvent.Initiative && waitEvent.Initiative <= maxInitiative);
-            
             var character = new Character();
             character.AddComponent<InitiativeComponent>(new InitiativeComponent(minInitiative, maxInitiative));
+            
+            var mockEventEmitter = new Mock<IGlobalEventEmitter>();
             character.AddComponent<IGlobalEventEmitter>(mockEventEmitter.Object);
             
             
             character.Behaviours.Handle(new StartRoundGameEvent());
             
             
-            Assert.IsTrue(validWaitEvent);
+            mockEventEmitter.Verify(
+                emitter => emitter.Emit(It.Is<WaitTurnGameEvent>(
+                    e => minInitiative <= e.Initiative && e.Initiative <= maxInitiative)), 
+                Times.Once());
         }
 
         [Test]
