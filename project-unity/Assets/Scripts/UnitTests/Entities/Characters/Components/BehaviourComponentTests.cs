@@ -17,12 +17,12 @@ namespace UnitTests.Entities.Characters.Components
             var mockBeh = new Mock<IBehaviour<TestPersonalEvent>>();
             behCom.Add(mockBeh.Object);
 
-
-            var testEvent = new TestPersonalEvent();
-            behCom.Handle(testEvent);
+            
+            behCom.Handle(new TestPersonalEvent());
             
             
             mockBeh.Verify(beh => beh.Handle(It.IsAny<TestPersonalEvent>()), Times.Once());
+            mockBeh.Verify(beh => beh.Handle(It.IsAny<IPersonalEvent>()), Times.Never());
         }
     }
 }

@@ -30,11 +30,13 @@ namespace Battle
             
             foreach (var behaviour in behaviours)
             {
-                behaviour.Handle(personalEvent);
-                
                 if (behaviour is IBehaviour<T> specificBeh)
                 {
                     specificBeh.Handle(personalEvent);
+                }
+                else
+                {
+                    behaviour.Handle(personalEvent);
                 }
             }
 
