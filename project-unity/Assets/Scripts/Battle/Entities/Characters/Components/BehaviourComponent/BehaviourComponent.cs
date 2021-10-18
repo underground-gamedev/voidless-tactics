@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -25,6 +24,19 @@ namespace Battle
 
         public void Handle<T>(T personalEvent) where T : IPersonalEvent
         {
+            if (asyncBlockers.Count > 0)
+            {
+                var blocker = asyncBlockers.Peek();
+                delayedEvents[blocker].Add(personalEvent);
+            }
+            else
+            {
+                HandleNow(personalEvent);
+            }
+        }
+
+        public void HandleNow<T>(T personalEvent) where T : IPersonalEvent
+        {
             asyncBlockers.Push(personalEvent);
             delayedEvents.Add(personalEvent, new List<IPersonalEvent>());
             
@@ -41,29 +53,11 @@ namespace Battle
             var delayed = delayedEvents[personalEvent].ToList();
             foreach (var delayedEvent in delayed)
             {
-                Handle(delayedEvent);
+                HandleNow(delayedEvent);
                 delayedEvents.Remove(delayedEvent);
             }
             
             delayedEvents.Remove(personalEvent);
-        }
-
-        public void DelayedHandle(IPersonalEvent personalEvent)
-        {
-            if (asyncBlockers.Count > 0)
-            {
-                var blocker = asyncBlockers.Peek();
-                delayedEvents[blocker].Add(personalEvent);
-            }
-            else
-            {
-                Handle(personalEvent);
-            }
-        }
-
-        public bool RespondTo(Type eventType)
-        {
-            return true;
         }
     }
 }

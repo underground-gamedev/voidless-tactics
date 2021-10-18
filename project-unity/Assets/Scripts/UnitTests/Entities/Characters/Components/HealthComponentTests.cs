@@ -20,7 +20,7 @@ namespace UnitTests.Entities.Characters.Components
             character.AddComponent<HealthComponent>(new HealthComponent(10));
             
             
-            character.Behaviours.Handle(new TakeHitPersonalEvent(10));
+            character.Behaviours.HandleNow(new TakeHitPersonalEvent(10));
 
             
             Assert.IsTrue(deathTriggered);
@@ -40,7 +40,7 @@ namespace UnitTests.Entities.Characters.Components
             character.AddComponent<HealthComponent>(new HealthComponent(10));
             
             
-            character.Behaviours.Handle(new TakeHitPersonalEvent(5));
+            character.Behaviours.HandleNow(new TakeHitPersonalEvent(5));
 
             
             Assert.IsTrue(damagedTriggered);
