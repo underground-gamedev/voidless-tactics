@@ -28,8 +28,7 @@ namespace Battle
             asyncBlockers.Push(personalEvent);
             delayedEvents.Add(personalEvent, new List<IPersonalEvent>());
             
-            var eventType = personalEvent.GetType();
-            foreach (var behaviour in behaviours.Where(behaviour => behaviour.RespondTo(eventType)))
+            foreach (var behaviour in behaviours)
             {
                 behaviour.Handle(personalEvent);
             }

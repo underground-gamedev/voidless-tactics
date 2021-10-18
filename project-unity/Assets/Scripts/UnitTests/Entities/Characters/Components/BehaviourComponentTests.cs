@@ -1,4 +1,3 @@
-using System;
 using Battle;
 using Moq;
 using NUnit.Framework;
@@ -17,10 +16,6 @@ namespace UnitTests.Entities.Characters.Components
             mockBeh
                 .Setup(beh => beh.Handle(It.IsAny<IPersonalEvent>()))
                 .Callback(() => behaviourTriggered = true);
-
-            mockBeh
-                .Setup(beh => beh.RespondTo(It.IsAny<Type>()))
-                .Returns(true);
             
             behCom.Add(mockBeh.Object);
 
