@@ -60,7 +60,7 @@ namespace Battle
 
         public bool RespondTo(Type eventType)
         {
-            return behaviours.Any(beh => beh.RespondTo(eventType));
+            return true;
         }
     }
 }

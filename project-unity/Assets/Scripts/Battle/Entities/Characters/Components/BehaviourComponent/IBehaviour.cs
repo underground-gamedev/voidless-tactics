@@ -6,6 +6,5 @@ namespace Battle
     {
         int HandlePriority { get; }
         void Handle(IPersonalEvent personalEvent);
-        bool RespondTo(Type eventType);
     }
 }
