@@ -1,3 +1,5 @@
+using System;
+using System.Linq.Expressions;
 using Battle;
 using Moq;
 using NUnit.Framework;
@@ -11,11 +13,10 @@ namespace UnitTests.Entities.Characters.Components
         {
             var behCom = new BehaviourComponent();
 
-            var behaviourTriggered = false;
             var mockBeh = new Mock<IBehaviour>();
             mockBeh
                 .Setup(beh => beh.Handle(It.IsAny<IPersonalEvent>()))
-                .Callback(() => behaviourTriggered = true);
+                .Verifiable();
             
             behCom.Add(mockBeh.Object);
 
@@ -24,7 +25,7 @@ namespace UnitTests.Entities.Characters.Components
             behCom.Handle(mockEvent.Object);
             
             
-            Assert.IsTrue(behaviourTriggered);
+            mockBeh.Verify();
         }
     }
 }
