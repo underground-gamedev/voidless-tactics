@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Battle;
 using Moq;
 using NUnit.Framework;
@@ -28,6 +29,40 @@ namespace UnitTests.Entities.Characters.Components
             
             firstTestBeh.Verify(beh => beh.Handle(It.IsAny<FirstTestPersonalEvent>()), Times.Once());
             secondTestBeh.Verify(beh => beh.Handle(It.IsAny<SecondTestPersonalEvent>()), Times.Once());
+        }
+
+
+        [Test]
+        public void TestBehaviourSequence()
+        {
+            var behCom = new BehaviourComponent();
+
+            var actualCallSequence = new List<IBehaviour>();
+            
+            var firstMockBeh = new Mock<IBehaviour<FirstTestPersonalEvent>>();
+            firstMockBeh.SetupGet(beh => beh.HandlePriority).Returns(0);
+            firstMockBeh.Setup(beh => beh.Handle(It.IsAny<FirstTestPersonalEvent>()))
+                .Callback(() => actualCallSequence.Add(firstMockBeh.Object));
+            
+            var secondMockBeh = new Mock<IBehaviour<FirstTestPersonalEvent>>();
+            secondMockBeh.SetupGet(beh => beh.HandlePriority).Returns(1);
+            secondMockBeh.Setup(beh => beh.Handle(It.IsAny<FirstTestPersonalEvent>()))
+                .Callback(() => actualCallSequence.Add(secondMockBeh.Object));
+            
+            behCom.Add(firstMockBeh.Object);
+            behCom.Add(secondMockBeh.Object);
+
+            var expectedCallSequence = new List<IBehaviour>
+            {
+                secondMockBeh.Object,
+                firstMockBeh.Object,
+            };
+
+            
+            behCom.Handle(new FirstTestPersonalEvent());
+            
+            
+            Assert.AreEqual(expectedCallSequence, actualCallSequence);
         }
     }
 }
