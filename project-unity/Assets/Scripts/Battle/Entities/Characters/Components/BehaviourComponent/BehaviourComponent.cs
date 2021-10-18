@@ -34,10 +34,6 @@ namespace Battle
                 {
                     specificBeh.Handle(personalEvent);
                 }
-                else
-                {
-                    behaviour.Handle(personalEvent);
-                }
             }
 
             asyncBlockers.Pop();

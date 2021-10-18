@@ -1,5 +1,3 @@
-using System;
-using System.Linq.Expressions;
 using Battle;
 using Moq;
 using NUnit.Framework;
@@ -22,7 +20,6 @@ namespace UnitTests.Entities.Characters.Components
             
             
             mockBeh.Verify(beh => beh.Handle(It.IsAny<TestPersonalEvent>()), Times.Once());
-            mockBeh.Verify(beh => beh.Handle(It.IsAny<IPersonalEvent>()), Times.Never());
         }
     }
 }
