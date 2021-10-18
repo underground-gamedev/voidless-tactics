@@ -8,7 +8,7 @@ namespace Battle
         void Add(IBehaviour behaviour);
         void Remove(IBehaviour behaviour);
         
-        void Handle(IPersonalEvent personalEvent);
+        void Handle<T>(T personalEvent) where T : IPersonalEvent;
         void DelayedHandle(IPersonalEvent personalEvent);
         bool RespondTo(Type eventType);
     }

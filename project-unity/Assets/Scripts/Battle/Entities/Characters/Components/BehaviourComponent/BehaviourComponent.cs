@@ -23,7 +23,7 @@ namespace Battle
             behaviours.Remove(behaviour);
         }
 
-        public void Handle(IPersonalEvent personalEvent)
+        public void Handle<T>(T personalEvent) where T : IPersonalEvent
         {
             asyncBlockers.Push(personalEvent);
             delayedEvents.Add(personalEvent, new List<IPersonalEvent>());
@@ -31,6 +31,11 @@ namespace Battle
             foreach (var behaviour in behaviours)
             {
                 behaviour.Handle(personalEvent);
+                
+                if (behaviour is IBehaviour<T> specificBeh)
+                {
+                    specificBeh.Handle(personalEvent);
+                }
             }
 
             asyncBlockers.Pop();
