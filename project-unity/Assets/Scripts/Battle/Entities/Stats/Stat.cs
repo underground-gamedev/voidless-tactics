@@ -1,69 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Sirenix.Serialization;
-using UnityEngine;
 
 namespace Battle
 {
-    [Serializable]
     public class Stat
     {
-        public int BaseValue => baseValue;
-        public int ModifiedValue => modifiedValue;
-        
-        [SerializeField]
-        private int baseValue = 5;
-        private int modifiedValue;
-        [OdinSerialize]
-        private Dictionary<StatModifierSource, StatModifier> modifiers = new Dictionary<StatModifierSource, StatModifier>();
+        public readonly int BaseValue;
+        public readonly int ModifiedValue;
+        private readonly Dictionary<StatModifierSource, StatModifier> modifiers;
 
-
-        public Stat(int actualValue)
+        public Stat(int baseValue) : this(baseValue, default)
         {
-            baseValue = actualValue;
-            modifiedValue = baseValue;
         }
 
-        private Stat(int actualValue, Dictionary<StatModifierSource, StatModifier> modifiers)
+        private Stat(int baseValue, Dictionary<StatModifierSource, StatModifier> statModifiers = null)
         {
-            baseValue = actualValue;
-            this.modifiers = modifiers.ToDictionary(pair => pair.Key, pair => pair.Value);
-            RecalculateModifiedValue();
+            BaseValue = baseValue;
+            modifiers = statModifiers ?? new Dictionary<StatModifierSource, StatModifier>();
+            ModifiedValue = modifiers.Values
+                .OrderBy(mod => mod.ModifyPriority)
+                .Aggregate(BaseValue, (curr, mod) => mod.ModifyValue(BaseValue, curr));
         }
 
         public Stat AddModifier(StatModifierSource source, StatModifier modifier)
         {
-            var newStat = new Stat(baseValue, modifiers);
-            newStat.MutableAddModifier(source, modifier);
-            return newStat;
-        }
-
-        private void MutableAddModifier(StatModifierSource source, StatModifier modifier)
-        {
-            if (modifiers.ContainsKey(source))
-            {
-                modifiers[source] = modifiers[source].StackWith(modifier);
-            }
-            else
-            {
-                modifiers.Add(source, modifier);
-            }
-            
-            RecalculateModifiedValue();
+            var copyModifiers = modifiers.ToDictionary(pair => pair.Key, pair => pair.Value);
+            copyModifiers[source] = copyModifiers.ContainsKey(source) ? copyModifiers[source].StackWith(modifier) : modifier;
+            return new Stat(BaseValue, copyModifiers);
         }
 
         public Stat RemoveModifier(StatModifierSource source)
         {
-            var newStat = new Stat(baseValue, modifiers);
-            newStat.MutableRemoveModifier(source);
-            return newStat;
-        }
-
-        private void MutableRemoveModifier(StatModifierSource source)
-        {
-            modifiers.Remove(source);
-            RecalculateModifiedValue();
+            var copyModifiers = modifiers.ToDictionary(pair => pair.Key, pair => pair.Value);
+            copyModifiers.Remove(source);
+            return new Stat(BaseValue, copyModifiers);
         }
 
         public T GetModifier<T>(StatModifierSource source) where T : StatModifier
@@ -71,23 +41,16 @@ namespace Battle
             return modifiers.ContainsKey(source) ? (T)modifiers[source] : null;
         }
 
-        private void RecalculateModifiedValue()
+        public bool Equals(Stat other)
         {
-             modifiedValue = modifiers.Values
-                .OrderBy(mod => mod.ModifyPriority)
-                .Aggregate(baseValue, (curr, mod) => mod.ModifyValue(baseValue, curr));
-        }
-        
-        protected bool Equals(Stat other)
-        {
-            return baseValue == other.baseValue && modifiedValue == other.modifiedValue;
+            return BaseValue == other.BaseValue && ModifiedValue == other.ModifiedValue;
         }
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((Stat) obj);
         }
 
@@ -95,19 +58,18 @@ namespace Battle
         {
             unchecked
             {
-                return (baseValue * 397) ^ modifiedValue;
+                return (BaseValue * 397) ^ ModifiedValue;
             }
         }
         
         public static Stat operator +(Stat stat, int value)
         {
-            return new Stat(stat.baseValue + value, stat.modifiers);
+            return new Stat(stat.BaseValue + value, stat.modifiers);
         }
         
         public static Stat operator -(Stat stat, int value)
         {
             return stat + -value;
         }
-        
     }
 }
