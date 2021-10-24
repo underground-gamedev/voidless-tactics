@@ -5,7 +5,6 @@ namespace Battle
     public class Character: Entity, ICharacter
     {
         public IStatComponent Stats => this.GetComponent<IStatComponent>();
-        public IActiveSkillComponent Skills => this.GetComponent<IActiveSkillComponent>();
 
         public Character()
         {
@@ -14,8 +13,6 @@ namespace Battle
 
             AddComponent(new StatComponent());
             AssociateComponent(typeof(IStatComponent), typeof(StatComponent));
-            AddComponent(new ActiveSkillComponent());
-            AssociateComponent(typeof(IActiveSkillComponent), typeof(ActiveSkillComponent));
         }
         
         private void TryCallAttachedToCharacter(IComponent com)
