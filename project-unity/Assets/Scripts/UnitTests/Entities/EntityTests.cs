@@ -62,7 +62,17 @@ namespace UnitTests.Entities
             entity.AddWithAssociation<ITestAssociation>(new TestComponent());
 
 
-            Assert.IsTrue(entity.Is(new TestArchtype()));
+            Assert.IsTrue(entity.Is(
+                Archtype.New()
+                    .With<ITestAssociation>()
+                    .Build()
+                ));
+            
+            Assert.IsFalse(entity.Is(
+                Archtype.New()
+                    .With<ITestNonAssociation>()
+                    .Build()
+                ));
         }
 
         public class TestEvent : IPersonalEvent
@@ -79,14 +89,6 @@ namespace UnitTests.Entities
 
         public class TestComponent : IComponent, ITestAssociation, ITestNonAssociation
         {
-        }
-
-        public class TestArchtype : IArchtype
-        {
-            public IReadOnlyList<Type> Components => new List<Type>
-            {
-                typeof(ITestAssociation),
-            };
         }
     }
 }
