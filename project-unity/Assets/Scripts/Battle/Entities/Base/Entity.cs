@@ -32,10 +32,10 @@ namespace Battle
             onComponentDeAttachedHandler?.Invoke(com);
         }
 
-        public void AddComponent(Type associatedType, IComponent com)
+        public void AddComponent(IComponent com)
         {
-            coms.Attach(associatedType, com);
-            OnComponentAssociated(associatedType, com);
+            coms.Attach(com.GetType(), com);
+            OnComponentAssociated(com.GetType(), com);
         }
 
         public void RemoveComponent(Type associatedType)

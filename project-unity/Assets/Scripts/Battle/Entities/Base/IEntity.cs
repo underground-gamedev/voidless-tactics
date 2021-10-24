@@ -6,12 +6,15 @@ namespace Battle
 {
     public interface IEntity
     {
-        void AddComponent(Type associatedType, IComponent com);
+
+        public void AddComponent(IComponent com);
         void RemoveComponent(Type associatedType);
         [CanBeNull] IComponent GetComponent(Type associatedType);
 
         void AddBehaviour(IBehaviour behaviour);
         void RemoveBehaviour(IBehaviour behaviour);
         void HandleEvent<T>(T personalEvent) where T : IPersonalEvent;
+
+        void AssociateComponent(Type comType, Type associatedType);
     }
 }

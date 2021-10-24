@@ -12,8 +12,10 @@ namespace Battle
             OnNewComponentAttached(TryCallAttachedToCharacter);
             OnComponentCompleteDeAttached(TryCallDeAttachedFromCharacter);
 
-            AddComponent(typeof(IStatComponent), new StatComponent());
-            AddComponent(typeof(IActiveSkillComponent), new ActiveSkillComponent());
+            AddComponent(new StatComponent());
+            AssociateComponent(typeof(StatComponent), typeof(IStatComponent));
+            AddComponent(new ActiveSkillComponent());
+            AssociateComponent(typeof(ActiveSkillComponent),typeof(IActiveSkillComponent));
         }
         
         private void TryCallAttachedToCharacter(IComponent com)
