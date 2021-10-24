@@ -15,7 +15,7 @@ namespace Battle.Components.MinimalControllerComponent
 
         public void OnDeAttached()
         {
-            character.Behaviours.Remove(skipTurnBehaviour);
+            character.RemoveBehaviour(skipTurnBehaviour);
             character = null;
         }
         

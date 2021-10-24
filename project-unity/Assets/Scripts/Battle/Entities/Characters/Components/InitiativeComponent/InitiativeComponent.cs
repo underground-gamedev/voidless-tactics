@@ -34,7 +34,7 @@ namespace Battle.Components.InitiativeComponent
             
             character.Stats.Remove(StatType.MinInitiative);
             character.Stats.Remove(StatType.MaxInitiative);
-            character.Behaviours.Remove(turnWaitBehaviour);
+            character.RemoveBehaviour(turnWaitBehaviour);
             turnWaitBehaviour.OnWait -= EmitWaitToGlobal;
             this.character = null;
         }

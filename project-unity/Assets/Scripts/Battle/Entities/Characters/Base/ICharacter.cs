@@ -6,6 +6,5 @@ namespace Battle
     {
         IStatComponent Stats { get; }
         IActiveSkillComponent Skills { get; }
-        IBehaviourComponent Behaviours { get; }
     }
 }

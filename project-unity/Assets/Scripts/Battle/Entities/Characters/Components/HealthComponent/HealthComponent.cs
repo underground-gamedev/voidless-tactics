@@ -44,10 +44,8 @@ namespace Battle
             stats.Remove(StatType.CurrentHealth);
             stats.Remove(StatType.MaxHealth);
             
-            var behaviours = character.Behaviours;
-            
-            behaviours.Remove(subtractHealthBehaviour);
-            behaviours.Remove(checkDeathBehaviour);
+            character.RemoveBehaviour(subtractHealthBehaviour);
+            character.RemoveBehaviour(checkDeathBehaviour);
 
             character = null;
         }

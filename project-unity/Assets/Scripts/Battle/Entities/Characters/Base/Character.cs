@@ -6,7 +6,6 @@ namespace Battle
     {
         public IStatComponent Stats => this.GetComponent<IStatComponent>();
         public IActiveSkillComponent Skills => this.GetComponent<IActiveSkillComponent>();
-        public IBehaviourComponent Behaviours => this.GetComponent<IBehaviourComponent>();
 
         public Character()
         {

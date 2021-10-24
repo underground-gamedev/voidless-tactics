@@ -46,7 +46,7 @@ namespace UnitTests.Entities.Characters.Components
             var expectedHealth = 5;
             
             
-            character.Behaviours.Handle(new TakeHitPersonalEvent(5));
+            character.HandleEvent(new TakeHitPersonalEvent(5));
             var actualHealth = character.Stats.Get(StatType.CurrentHealth).ModifiedValue;
 
             
