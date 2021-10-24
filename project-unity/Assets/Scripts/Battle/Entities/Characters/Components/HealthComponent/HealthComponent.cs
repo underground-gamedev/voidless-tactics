@@ -1,4 +1,3 @@
-using System;
 using Battle.Components;
 using Core.Components;
 using JetBrains.Annotations;
@@ -7,7 +6,7 @@ namespace Battle
 {
     public class HealthComponent: IComponent, IEntityAttachable
     {
-        private IEntity character;
+        private IEntity entity;
         private int initialHealth;
 
         private SubtractHealthBehaviour subtractHealthBehaviour;
@@ -17,34 +16,34 @@ namespace Battle
         {
             this.initialHealth = initialHealth;
         }
-        public void OnAttached([NotNull] IEntity character)
+        public void OnAttached([NotNull] IEntity entity)
         {
-            EntityExt.Correspond(character, Archtype.StatHolder);
+            entity.ShouldCorrespond(Archtype.StatHolder);
             
-            this.character = character;
+            this.entity = entity;
             
-            var stats = this.character.GetStatComponent();
+            var stats = this.entity.GetStatComponent();
             stats.Add(StatType.CurrentHealth, new Stat(initialHealth));
             
-            subtractHealthBehaviour = new SubtractHealthBehaviour(character);
-            checkDeathBehaviour = new CheckDeathBehaviour(character);
+            subtractHealthBehaviour = new SubtractHealthBehaviour(entity);
+            checkDeathBehaviour = new CheckDeathBehaviour(entity);
             
-            character.AddBehaviour(subtractHealthBehaviour);
-            character.AddBehaviour(checkDeathBehaviour);
+            entity.AddBehaviour(subtractHealthBehaviour);
+            entity.AddBehaviour(checkDeathBehaviour);
         }
 
         void IEntityAttachable.OnDeAttached()
         {
-            if (character == null) return;
+            if (entity == null) return;
             
-            var stats = character.GetStatComponent();
+            var stats = entity.GetStatComponent();
             stats.Remove(StatType.CurrentHealth);
             stats.Remove(StatType.MaxHealth);
             
-            character.RemoveBehaviour(subtractHealthBehaviour);
-            character.RemoveBehaviour(checkDeathBehaviour);
+            entity.RemoveBehaviour(subtractHealthBehaviour);
+            entity.RemoveBehaviour(checkDeathBehaviour);
 
-            character = null;
+            entity = null;
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Battle
             ent.RemoveAssociation(typeof(TAssociation));
         }
 
-        public static void Correspond(this IEntity ent, IArchtype archtype)
+        public static void ShouldCorrespond(this IEntity ent, IArchtype archtype)
         {
             if (!ent.Correspond(archtype))
             {
