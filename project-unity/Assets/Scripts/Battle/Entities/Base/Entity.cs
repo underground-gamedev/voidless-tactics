@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Core.Components;
 
 namespace Battle
@@ -6,12 +7,15 @@ namespace Battle
     public class Entity: IEntity
     {
         private readonly ComponentContainer<IComponent> coms;
+        private readonly Dictionary<Type, Type> associations;
+        
         private Action<IComponent> onComponentAttachedHandler;
         private Action<IComponent> onComponentDeAttachedHandler;
 
         public Entity()
         {
             coms = new ComponentContainer<IComponent>(OnComponentAttached, OnComponentDeAttached);
+            associations = new Dictionary<Type, Type>();
             coms.Attach<IBehaviourComponent>(new BehaviourComponent());
             
             OnNewComponentAttached(TryCallOnAttachedToEntity);
@@ -44,6 +48,11 @@ namespace Battle
             }
         }
 
+        public void AssociateComponent(Type comType, Type associatedType)
+        {
+            associations.Add(associatedType, comType);
+        }
+
         public void AddBehaviour(IBehaviour behaviour)
         {
             var behaviourComponent = coms.Get<IBehaviourComponent>();
@@ -63,6 +72,10 @@ namespace Battle
 
         public IComponent GetComponent(Type associatedType)
         {
+            if (associations.TryGetValue(associatedType, out var comType))
+            {
+                return coms.Get(comType);
+            }
             return coms.Get(associatedType);
         }
 

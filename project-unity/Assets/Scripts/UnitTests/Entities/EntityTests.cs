@@ -1,4 +1,5 @@
 using Battle;
+using Core.Components;
 using Moq;
 using NUnit.Framework;
 
@@ -6,7 +7,6 @@ namespace UnitTests.Entities
 {
     public class EntityTests
     {
-        public class TestEvent : IPersonalEvent { }
 
         [Test]
         public void TestHandleEvent()
@@ -23,6 +23,28 @@ namespace UnitTests.Entities
             
             mockBehaviour.Verify(beh => beh.Handle(It.IsAny<TestEvent>()), Times.Once());
         }
+
+       
+        [Test]
+        public void TestComponents()
+        {
+            var entity = new Entity();
+            var testComponent = new TestComponent();
+            
+            
+            entity.AddComponent(testComponent);
+            entity.AssociateComponent(typeof(TestComponent), typeof(ITestAssociation));
+            
+            
+            Assert.AreSame(testComponent, entity.GetComponent<TestComponent>());
+            Assert.AreSame(testComponent, entity.GetComponent<ITestAssociation>());
+            Assert.IsNull(entity.GetComponent<ITestNonAssociation>());
+        }
         
+        public class TestEvent : IPersonalEvent { }
+        public interface ITestAssociation { }
+        public interface ITestNonAssociation { }
+        public class TestComponent : IComponent, ITestAssociation, ITestNonAssociation { }
+                
     }
 }
