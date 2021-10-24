@@ -6,14 +6,13 @@ namespace Battle
     public class Entity: IEntity
     {
         private readonly ComponentContainer<IComponent> coms;
-        private readonly IBehaviourComponent behaviourComponent;
         private Action<IComponent> onComponentAttachedHandler;
         private Action<IComponent> onComponentDeAttachedHandler;
 
         public Entity()
         {
             coms = new ComponentContainer<IComponent>(OnComponentAttached, OnComponentDeAttached);
-            behaviourComponent = new BehaviourComponent();
+            coms.Attach<IBehaviourComponent>(new BehaviourComponent());
             
             OnNewComponentAttached(TryCallOnAttachedToEntity);
             OnComponentCompleteDeAttached(TryCallOnDeAttachedFromEntity);
@@ -45,12 +44,14 @@ namespace Battle
             }
         }
 
-        public void AddBehaviour<T>(IBehaviour<T> behaviour) where T : IPersonalEvent
+        public void AddBehaviour(IBehaviour behaviour)
         {
+            var behaviourComponent = coms.Get<IBehaviourComponent>();
             behaviourComponent.Add(behaviour);
         }
 
         public void HandleEvent<T>(T personalEvent) where T : IPersonalEvent {
+            var behaviourComponent = coms.Get<IBehaviourComponent>();
             behaviourComponent.Handle(personalEvent);
         }
 

@@ -15,7 +15,6 @@ namespace Battle
 
             AddComponent(typeof(IStatComponent), new StatComponent());
             AddComponent(typeof(IActiveSkillComponent), new ActiveSkillComponent());
-            AddComponent(typeof(IBehaviourComponent), new BehaviourComponent());
         }
         
         private void TryCallAttachedToCharacter(IComponent com)

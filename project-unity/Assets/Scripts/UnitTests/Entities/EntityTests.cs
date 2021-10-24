@@ -11,7 +11,7 @@ namespace UnitTests.Entities
         [Test]
         public void TestHandleEvent()
         {
-            var entity = new Entity();
+            IEntity entity = new Entity();
             var mockBehaviour = new Mock<IBehaviour<TestEvent>>();
             entity.AddBehaviour(mockBehaviour.Object);
             

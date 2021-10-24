@@ -25,7 +25,7 @@ namespace Battle.Components.InitiativeComponent
             character.Stats.Add(StatType.MaxInitiative, new Stat(maxInitiative));
             turnWaitBehaviour = new TurnWaitBehaviour(minInitiative, maxInitiative);
             turnWaitBehaviour.OnWait += EmitWaitToGlobal;
-            character.Behaviours.Add(turnWaitBehaviour);
+            character.AddBehaviour(turnWaitBehaviour);
         }
 
         public void OnDeAttached()

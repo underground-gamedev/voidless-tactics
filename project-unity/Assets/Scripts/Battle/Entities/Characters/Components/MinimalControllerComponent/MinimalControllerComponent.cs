@@ -9,7 +9,7 @@ namespace Battle.Components.MinimalControllerComponent
         public void OnAttached(ICharacter character)
         {
             skipTurnBehaviour = new SkipTurnBehaviour(character);
-            character.Behaviours.Add(skipTurnBehaviour);
+            character.AddBehaviour(skipTurnBehaviour);
             this.character = character;
         }
 

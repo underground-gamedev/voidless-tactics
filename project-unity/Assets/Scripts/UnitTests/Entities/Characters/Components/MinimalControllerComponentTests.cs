@@ -21,7 +21,7 @@ namespace UnitTests.Entities.Characters.Components
             character.AddComponent<IGlobalEventEmitter>(mockEmitter.Object);
             
             
-            character.Behaviours.Handle(new TakeTurnPersonalEvent());
+            character.HandleEvent(new TakeTurnPersonalEvent());
             
             
             Assert.IsTrue(endTurnTriggered);

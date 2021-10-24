@@ -42,7 +42,7 @@ namespace Battle
                 var charLayer = state.Map.Map.GetLayer<ICharacterMapLayer>();
                 foreach (var character in charLayer?.GetAllCharacters() ?? new ICharacter[]{})
                 {
-                    character.Behaviours.Handle(new StartRoundGameEvent());
+                    character.HandleEvent(new StartRoundGameEvent());
                 }
                 
                 state.EventQueue.Handle(new SelectNextActiveGameEvent());
@@ -55,7 +55,7 @@ namespace Battle
                 var nextActive = state.TimeLine.Active;
                 if (nextActive != null)
                 {
-                    nextActive.Behaviours.Handle(new TakeTurnPersonalEvent());
+                    nextActive.HandleEvent(new TakeTurnPersonalEvent());
                 }
                 else
                 {
@@ -84,7 +84,7 @@ namespace Battle
             {
                 foreach (var character in state.Characters.Characters)
                 {
-                    character.Behaviours.Handle(new EndRoundGameEvent());
+                    character.HandleEvent(new EndRoundGameEvent());
                 }
                 
                 state.EventQueue.Handle(new YieldUtilityEvent());

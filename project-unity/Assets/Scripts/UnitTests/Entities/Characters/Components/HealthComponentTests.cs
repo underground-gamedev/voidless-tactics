@@ -14,9 +14,9 @@ namespace UnitTests.Entities.Characters.Components
             var character = new Character();
             character.AddComponent<IGlobalEventEmitter>(mockEmitter.Object);
             character.AddComponent<HealthComponent>(new HealthComponent(10));
-            
-            
-            character.Behaviours.HandleNow(new TakeHitPersonalEvent(10));
+
+
+            character.HandleEvent(new TakeHitPersonalEvent(10));
 
             
             mockEmitter.Verify(emitter => emitter.Emit(It.IsAny<DeathCharacterGameEvent>()), Times.Once());
@@ -31,7 +31,7 @@ namespace UnitTests.Entities.Characters.Components
             character.AddComponent<HealthComponent>(new HealthComponent(10));
             
             
-            character.Behaviours.HandleNow(new TakeHitPersonalEvent(5));
+            character.HandleEvent(new TakeHitPersonalEvent(5));
 
             
             mockEmitter.Verify(emitter => emitter.Emit(It.IsAny<DamagedGameEvent>()), Times.Once());

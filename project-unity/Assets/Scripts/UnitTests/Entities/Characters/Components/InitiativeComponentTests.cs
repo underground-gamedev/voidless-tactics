@@ -21,7 +21,7 @@ namespace UnitTests.Entities.Characters.Components
             character.AddComponent<IGlobalEventEmitter>(mockEventEmitter.Object);
             
             
-            character.Behaviours.Handle(new StartRoundGameEvent());
+            character.HandleEvent(new StartRoundGameEvent());
             
             
             mockEventEmitter.Verify(

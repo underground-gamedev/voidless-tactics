@@ -23,13 +23,11 @@ namespace Battle
             var stats = this.character.Stats;
             stats.Add(StatType.CurrentHealth, new Stat(initialHealth));
             
-            var behaviours = character.Behaviours;
-
             subtractHealthBehaviour = new SubtractHealthBehaviour(character);
             checkDeathBehaviour = new CheckDeathBehaviour(character);
             
-            behaviours.Add(subtractHealthBehaviour);
-            behaviours.Add(checkDeathBehaviour);
+            character.AddBehaviour(subtractHealthBehaviour);
+            character.AddBehaviour(checkDeathBehaviour);
         }
 
         public void OnAttached(IEntity entity)
