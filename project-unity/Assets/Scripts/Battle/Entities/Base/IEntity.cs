@@ -8,7 +8,7 @@ namespace Battle
     {
 
         public void AddComponent(IComponent com);
-        void RemoveComponent(Type associatedType);
+        void RemoveComponent(IComponent com);
         [CanBeNull] IComponent GetComponent(Type associatedType);
 
         void AddBehaviour(IBehaviour behaviour);

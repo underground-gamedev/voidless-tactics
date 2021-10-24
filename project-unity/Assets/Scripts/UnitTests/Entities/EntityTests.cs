@@ -42,11 +42,15 @@ namespace UnitTests.Entities
             entity.RemoveAssociation<ITestNonAssociation>();
             var secondAfterRemove = entity.GetComponent<ITestNonAssociation>();
             
+            entity.RemoveComponent(rawCom);
+            var comAfterRemove = entity.GetComponent<TestComponent>();
+            
             
             Assert.AreSame(testComponent, rawCom);
             Assert.AreSame(testComponent, associatedCom);
             Assert.AreSame(testComponent, secondAssociatedCom);
             Assert.IsNull(secondAfterRemove);
+            Assert.IsNull(comAfterRemove);
         }
         
         public class TestEvent : IPersonalEvent { }

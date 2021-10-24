@@ -20,7 +20,12 @@ namespace Battle
 
         public static void RemoveComponent<T>(this IEntity ent) where T : class
         {
-            ent.RemoveComponent(typeof(T));
+            ent.RemoveComponent((IComponent)ent.GetComponent<T>());
+        }
+
+        public static void RemoveComponent(this IEntity ent, IComponent com)
+        {
+            ent.RemoveComponent(com);
         }
 
         public static bool HasComponent<T>(this IEntity ent) where T : class

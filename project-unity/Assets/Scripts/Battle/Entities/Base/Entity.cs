@@ -47,6 +47,11 @@ namespace Battle
                 OnComponentUnAssociated(associatedType, com);
             }
         }
+        
+        public void RemoveComponent(IComponent com)
+        {
+            coms.DeAttach(com.GetType());
+        }
 
         public void AssociateComponent(Type associatedType, Type comType)
         {
