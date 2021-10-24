@@ -19,7 +19,7 @@ namespace Battle
         }
         public void OnAttached([NotNull] IEntity character)
         {
-            character.Correspond(Archtype.StatHolder);
+            EntityExt.Correspond(character, Archtype.StatHolder);
             
             this.character = character;
             

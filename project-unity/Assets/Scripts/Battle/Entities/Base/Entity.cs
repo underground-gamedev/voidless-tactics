@@ -69,7 +69,7 @@ namespace Battle
             behaviourComponent.Handle(personalEvent);
         }
 
-        public bool Is(IArchtype archtype)
+        public bool Correspond(IArchtype archtype)
         {
             return archtype.Components.All(comType => GetComponent(comType) != null);
         }

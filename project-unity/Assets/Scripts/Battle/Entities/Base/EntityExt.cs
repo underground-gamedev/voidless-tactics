@@ -46,7 +46,7 @@ namespace Battle
 
         public static void Correspond(this IEntity ent, IArchtype archtype)
         {
-            if (!ent.Is(archtype))
+            if (!ent.Correspond(archtype))
             {
                 throw new InvalidDataException($"{ent} don't correspond {archtype} archtype");
             }

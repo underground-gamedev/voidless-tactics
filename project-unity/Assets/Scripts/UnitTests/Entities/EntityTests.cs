@@ -60,13 +60,13 @@ namespace UnitTests.Entities
             entity.AddWithAssociation<ITestAssociation>(new TestComponent());
 
 
-            Assert.IsTrue(entity.Is(
+            Assert.IsTrue(entity.Correspond(
                 Archtype.New()
                     .With<ITestAssociation>()
                     .Build()
                 ));
             
-            Assert.IsFalse(entity.Is(
+            Assert.IsFalse(entity.Correspond(
                 Archtype.New()
                     .With<ITestNonAssociation>()
                     .Build()

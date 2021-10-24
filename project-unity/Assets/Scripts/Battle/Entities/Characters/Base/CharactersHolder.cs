@@ -13,7 +13,7 @@ namespace Battle
         
         public void AddCharacter(IEntity character)
         {
-            character.Correspond(Archtype.Character);
+            EntityExt.Correspond(character, Archtype.Character);
             
             characters.Add(character);
             OnCharacterAdded?.Invoke(character);

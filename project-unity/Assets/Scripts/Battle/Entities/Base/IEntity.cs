@@ -17,6 +17,6 @@ namespace Battle
         void AssociateComponent(Type associatedType, Type comType);
         void RemoveAssociation(Type associatedType);
 
-        bool Is(IArchtype archtype);
+        bool Correspond(IArchtype archtype);
     }
 }
