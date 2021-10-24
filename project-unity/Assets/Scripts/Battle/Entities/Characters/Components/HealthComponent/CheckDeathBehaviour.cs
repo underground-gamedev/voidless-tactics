@@ -14,11 +14,11 @@ namespace Battle
         
         public void Handle(TakeHitPersonalEvent _)
         {
-            var stats = character.GetStatComponent();
+            var stats = character.Stats();
             
             if (!(stats.Get(StatType.CurrentHealth)?.ModifiedValue <= 0)) return;
             
-            var emitter = character.GetGlobalEmitter();
+            var emitter = character.Emitter();
             emitter?.Emit(new DeathCharacterGameEvent(character));
         }
 

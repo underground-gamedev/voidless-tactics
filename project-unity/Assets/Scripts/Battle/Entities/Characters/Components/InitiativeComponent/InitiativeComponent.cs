@@ -21,7 +21,7 @@ namespace Battle.Components.InitiativeComponent
             if (character == null) return;
             
             this.character = character;
-            var stats = character.GetStatComponent();
+            var stats = character.Stats();
             stats.Add(StatType.MinInitiative, new Stat(minInitiative));
             stats.Add(StatType.MaxInitiative, new Stat(maxInitiative));
             turnWaitBehaviour = new TurnWaitBehaviour(minInitiative, maxInitiative);
@@ -33,7 +33,7 @@ namespace Battle.Components.InitiativeComponent
         {
             if (character == null) return;
             
-            var stats = character.GetStatComponent();
+            var stats = character.Stats();
             stats.Add(StatType.MinInitiative, new Stat(minInitiative));
             stats.Remove(StatType.MinInitiative);
             stats.Remove(StatType.MaxInitiative);

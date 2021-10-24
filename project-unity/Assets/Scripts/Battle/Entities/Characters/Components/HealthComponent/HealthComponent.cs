@@ -22,7 +22,7 @@ namespace Battle
             
             this.entity = entity;
             
-            var stats = this.entity.GetStatComponent();
+            var stats = this.entity.Stats();
             stats.Add(StatType.CurrentHealth, new Stat(initialHealth));
             
             subtractHealthBehaviour = new SubtractHealthBehaviour(entity);
@@ -36,7 +36,7 @@ namespace Battle
         {
             if (entity == null) return;
             
-            var stats = entity.GetStatComponent();
+            var stats = entity.Stats();
             stats.Remove(StatType.CurrentHealth);
             stats.Remove(StatType.MaxHealth);
             

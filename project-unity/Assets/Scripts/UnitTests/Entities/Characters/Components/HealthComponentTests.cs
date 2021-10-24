@@ -48,7 +48,7 @@ namespace UnitTests.Entities.Characters.Components
             
             
             character.HandleEvent(new TakeHitPersonalEvent(5));
-            var stats = character.GetStatComponent();
+            var stats = character.Stats();
             var actualHealth = stats.Get(StatType.CurrentHealth)?.ModifiedValue;
 
             

@@ -42,7 +42,7 @@ namespace UnitTests.Entities.Characters.Components
             character.AddComponent(new InitiativeComponent(minInitiative, maxInitiative));
 
             
-            var stats = character.GetStatComponent();
+            var stats = character.Stats();
             Assert.AreEqual(minInitiative, stats?.Get(StatType.MinInitiative)?.BaseValue);
             Assert.AreEqual(maxInitiative, stats?.Get(StatType.MaxInitiative)?.BaseValue);
         }
