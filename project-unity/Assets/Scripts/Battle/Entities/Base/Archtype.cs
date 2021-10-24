@@ -6,9 +6,13 @@ namespace Battle
 {
     public static class Archtype
     {
+        public static readonly IArchtype StatHolder = New()
+            .With<IStatComponent>()
+            .Build();
+            
         public static readonly IArchtype Character = New()
-                .With<IStatComponent>()
-                .Build();
+            .Derive(StatHolder)
+            .Build();
 
         
         private sealed class BuildedArchtype : IArchtype
@@ -31,6 +35,19 @@ namespace Battle
             public Builder With<T>()
             {
                 components.Add(typeof(T));
+                return this;
+            }
+
+            public Builder Derive(IArchtype arch)
+            {
+                foreach (var archComponent in arch.Components)
+                {
+                    if (components.Contains(archComponent))
+                    {
+                        components.Add(archComponent);
+                    }
+                }
+
                 return this;
             }
 
