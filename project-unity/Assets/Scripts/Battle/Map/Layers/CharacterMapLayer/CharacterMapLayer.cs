@@ -7,7 +7,7 @@ using Battle.Map.Interfaces;
 
 namespace Battle
 {
-    public class CharacterMapLayer : IEntityMapLayer
+    public class CharacterMapLayer : ICharacterMapLayer
     {
         public event Action<IEntity, MapCell> OnCharacterAdded;
         public event Action<IEntity> OnCharacterRemoved;

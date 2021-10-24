@@ -2,7 +2,7 @@ using System;
 
 namespace Battle.Map.Interfaces
 {
-    public interface IEntityMapLayer: IMapLayer
+    public interface ICharacterMapLayer: IMapLayer
     {
         event Action<IEntity, MapCell> OnCharacterAdded;
         event Action<IEntity> OnCharacterRemoved;

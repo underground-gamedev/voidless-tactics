@@ -5,9 +5,13 @@ namespace Battle
         // Debug Steps
         EventTracer,
         Yield,
+        DebugControl,
+        
+        // Game System Steps
+        TurnSystem,
+        MoveSystem,
         
         // Logical Steps
-        TurnSystem,
         MapLogical,
         MapGenerator,
         CharactersLogical,

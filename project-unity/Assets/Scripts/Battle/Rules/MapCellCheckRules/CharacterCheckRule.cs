@@ -6,7 +6,7 @@ namespace Battle.Rules.MapCellCheckRules
     {
         public bool ApplyRule(ILayeredMap map, MapCell checkedCell)
         {
-            var character = map.GetLayer<IEntityMapLayer>().GetCharacter(checkedCell);
+            var character = map.GetLayer<ICharacterMapLayer>().GetCharacter(checkedCell);
             return character != null;
         }
     }

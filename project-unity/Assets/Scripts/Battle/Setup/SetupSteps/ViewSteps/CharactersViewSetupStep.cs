@@ -25,7 +25,7 @@ namespace Battle
 
             var characters = state.Characters.Characters;
             var map = state.Map.Map;
-            var characterLayer = map.GetLayer<IEntityMapLayer>();
+            var characterLayer = map.GetLayer<ICharacterMapLayer>();
             
             if (characterLayer == null) return;
             foreach (var character in characters)

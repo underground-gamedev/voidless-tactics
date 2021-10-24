@@ -18,7 +18,9 @@ MonoBehaviour:
     ReferencedUnityObjects:
     - {fileID: 11400000, guid: 10a1a344c4e120a46bf7f0545751503c, type: 2}
     - {fileID: 11400000, guid: 2501f1d715e54dd4ea20e552436198ed, type: 2}
+    - {fileID: 11400000, guid: fac2138b7d7baf4429eef3ee68a7680c, type: 2}
     - {fileID: 11400000, guid: c306029c6edc65f4d94578d9fefb47a3, type: 2}
+    - {fileID: 11400000, guid: edf8d45ee5747744584ff1d88c77ce29, type: 2}
     - {fileID: 11400000, guid: 80abdf4b3e59a934694d68f16687e70a, type: 2}
     - {fileID: 11400000, guid: 2d9e15048f52f614e8e9552b3181903e, type: 2}
     - {fileID: 11400000, guid: e1592bf1b82e18848847d8fd8299b571, type: 2}
@@ -36,7 +38,7 @@ MonoBehaviour:
       Data: 0|Battle.SerializableSetupStep[], Core
     - Name: 
       Entry: 12
-      Data: 10
+      Data: 12
     - Name: 
       Entry: 10
       Data: 0
@@ -67,6 +69,12 @@ MonoBehaviour:
     - Name: 
       Entry: 10
       Data: 9
+    - Name: 
+      Entry: 10
+      Data: 10
+    - Name: 
+      Entry: 10
+      Data: 11
     - Name: 
       Entry: 13
       Data: 

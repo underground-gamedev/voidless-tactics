@@ -44,7 +44,7 @@ namespace Battle.Algorithms.AreaPatterns
         {
             var area = new List<MapCell>();
 
-            var charLayer = map.GetLayer<IEntityMapLayer>();
+            var charLayer = map.GetLayer<ICharacterMapLayer>();
             var solidLayer = map.GetLayer<ISolidMapLayer>();
 
             bool IsInterrupt(MapCell cell) => 
