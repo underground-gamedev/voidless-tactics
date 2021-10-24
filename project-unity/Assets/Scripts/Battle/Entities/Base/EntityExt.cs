@@ -27,5 +27,10 @@ namespace Battle
         {
             return ent.GetComponent<T>() != null;
         }
+
+        public static void Associate<TAssociation, TComponent>(this IEntity ent) where TComponent : class, IComponent
+        {
+            ent.AssociateComponent(typeof(TAssociation), typeof(TComponent));
+        }
     }
 }
