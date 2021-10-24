@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Battle
 {
-    public interface IEntitysHolder
+    public interface ICharactersHolder
     {
         event Action<IEntity> OnCharacterAdded;
         event Action<IEntity> OnCharacterRemoved;

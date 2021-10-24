@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Battle
 {
-    public class CharactersHolder: IEntitysHolder
+    public class CharactersHolder: ICharactersHolder
     {
         public event Action<IEntity> OnCharacterAdded;
         public event Action<IEntity> OnCharacterRemoved;
@@ -13,6 +13,8 @@ namespace Battle
         
         public void AddCharacter(IEntity character)
         {
+            character.Correspond(Archtype.Character);
+            
             characters.Add(character);
             OnCharacterAdded?.Invoke(character);
         }
