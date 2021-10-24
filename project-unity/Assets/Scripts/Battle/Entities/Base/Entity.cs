@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core.Components;
 
 namespace Battle
@@ -68,6 +69,11 @@ namespace Battle
         public void HandleEvent<T>(T personalEvent) where T : IPersonalEvent {
             var behaviourComponent = coms.Get<IBehaviourComponent>();
             behaviourComponent.Handle(personalEvent);
+        }
+
+        public bool Is(IArchtype archtype)
+        {
+            return archtype.Components.All(comType => GetComponent(comType) != null);
         }
 
         public IComponent GetComponent(Type associatedType)
