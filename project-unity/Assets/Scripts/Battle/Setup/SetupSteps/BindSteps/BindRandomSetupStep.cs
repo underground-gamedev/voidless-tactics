@@ -14,16 +14,16 @@ namespace Battle
         {
             var rand = seed == -1 ? new PCGRandom() : new PCGRandom(seed);
             
-            state.Map.Map.AddComponent<IRandomGeneratorComponent>(new ExternalRandomGenerator(rand));
+            state.Map.Map.AddWithAssociation<IRandomGeneratorComponent>(new ExternalRandomGenerator(rand));
             
             foreach (var character in state.Characters.Characters)
             {
-                character.AddComponent<IRandomGeneratorComponent>(new ExternalRandomGenerator(rand));
+                character.AddWithAssociation<IRandomGeneratorComponent>(new ExternalRandomGenerator(rand));
             }
             
             foreach (var team in state.Teams.Teams)
             {
-                team.AddComponent<IRandomGeneratorComponent>(new ExternalRandomGenerator(rand));
+                team.AddWithAssociation<IRandomGeneratorComponent>(new ExternalRandomGenerator(rand));
             }
         }
 

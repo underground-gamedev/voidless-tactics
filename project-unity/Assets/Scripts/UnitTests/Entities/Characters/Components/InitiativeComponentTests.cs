@@ -18,7 +18,7 @@ namespace UnitTests.Entities.Characters.Components
             character.AddComponent(new InitiativeComponent(minInitiative, maxInitiative));
             
             var mockEventEmitter = new Mock<IGlobalEventEmitter>();
-            character.AddComponent<IGlobalEventEmitter>(mockEventEmitter.Object);
+            character.AddWithAssociation<IGlobalEventEmitter>(mockEventEmitter.Object);
             
             
             character.HandleEvent(new StartRoundGameEvent());

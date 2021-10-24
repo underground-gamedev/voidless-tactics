@@ -14,9 +14,9 @@ namespace Battle
             OnNewComponentAttached(TryCallAttachedToTeam);
             OnComponentCompleteDeAttached(TryCallDeAttachedFromTeam);
             
-            this.AddComponent<ITeamInfo>(new TeamInfo(name, tag));
-            this.AddComponent<ITeamMemberCollection>(new TeamMemberCollection());
-            this.AddComponent<IRelationComponent>(new TeamRelationComponent());
+            this.AddWithAssociation<ITeamInfo>(new TeamInfo(name, tag));
+            this.AddWithAssociation<ITeamMemberCollection>(new TeamMemberCollection());
+            this.AddWithAssociation<IRelationComponent>(new TeamRelationComponent());
         }
         
         private void TryCallAttachedToTeam(IComponent com)

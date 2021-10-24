@@ -16,7 +16,7 @@ namespace Battle
             foreach (var template in templates)
             {
                 var character = template.Generate();
-                character.AddComponent<IGlobalEventEmitter>(new GlobalEventEmitter(state.EventQueue));
+                character.AddWithAssociation<IGlobalEventEmitter>(new GlobalEventEmitter(state.EventQueue));
                 state.Characters.AddCharacter(character);
             }
         }

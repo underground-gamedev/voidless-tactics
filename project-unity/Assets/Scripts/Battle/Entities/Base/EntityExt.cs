@@ -9,7 +9,7 @@ namespace Battle
             return (T)ent.GetComponent(typeof(T));
         }
 
-        public static void AddComponent<T>(this IEntity ent, T com) where T : class, IComponent
+        public static void AddWithAssociation<T>(this IEntity ent, IComponent com) where T : class
         {
             ent.AddComponent(com);
             if (typeof(T) != com.GetType())

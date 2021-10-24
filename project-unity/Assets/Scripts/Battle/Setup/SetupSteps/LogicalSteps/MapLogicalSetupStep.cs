@@ -14,7 +14,7 @@ namespace Battle
             var map = new EditableMap(size.x, size.y);
             state.Map.Set(map);
 
-            map.AddComponent<IGlobalEventEmitter>(new GlobalEventEmitter(state.EventQueue));
+            map.AddWithAssociation<IGlobalEventEmitter>(new GlobalEventEmitter(state.EventQueue));
             map.AddLayer<MapEventsEmitter>(new MapEventsEmitter());
                 
             map.AddLayer<ISolidMapLayer>(new NonSolidMapLayer())
