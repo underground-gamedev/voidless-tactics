@@ -1,4 +1,5 @@
 using System;
+using Battle.Components;
 using Core.Components;
 using JetBrains.Annotations;
 
@@ -20,7 +21,7 @@ namespace Battle
         {
             this.character = character;
             
-            var stats = this.character.Stats;
+            var stats = this.character.GetStatComponent();
             stats.Add(StatType.CurrentHealth, new Stat(initialHealth));
             
             subtractHealthBehaviour = new SubtractHealthBehaviour(character);
@@ -40,7 +41,7 @@ namespace Battle
         {
             if (character == null) return;
             
-            var stats = character.Stats;
+            var stats = character.GetStatComponent();
             stats.Remove(StatType.CurrentHealth);
             stats.Remove(StatType.MaxHealth);
             

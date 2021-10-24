@@ -6,5 +6,10 @@ namespace Battle.Components
         {
             return character.GetComponent<IGlobalEventEmitter>();
         }
+
+        public static IStatComponent GetStatComponent(this IEntity entity)
+        {
+            return entity.GetComponent<IStatComponent>();
+        }
     }
 }

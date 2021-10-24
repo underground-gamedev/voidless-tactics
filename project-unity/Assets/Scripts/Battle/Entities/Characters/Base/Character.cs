@@ -4,8 +4,6 @@ namespace Battle
 {
     public class Character: Entity, ICharacter
     {
-        public IStatComponent Stats => this.GetComponent<IStatComponent>();
-
         public Character()
         {
             OnNewComponentAttached(TryCallAttachedToCharacter);

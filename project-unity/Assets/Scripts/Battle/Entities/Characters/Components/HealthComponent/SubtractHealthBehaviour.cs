@@ -15,10 +15,11 @@ namespace Battle
             
         public void Handle(TakeHitPersonalEvent hitEvent)
         {
-            var health = character.Stats.Get(StatType.CurrentHealth);
+            var stats = character.GetStatComponent();
+            var health = stats.Get(StatType.CurrentHealth);
             if (health == null) return;
-            character.Stats.Remove(StatType.CurrentHealth);
-            character.Stats.Add(StatType.CurrentHealth, health + -hitEvent.Value);
+            stats.Remove(StatType.CurrentHealth);
+            stats.Add(StatType.CurrentHealth, health - hitEvent.Value);
             character.GetGlobalEmitter()?.Emit(new DamagedGameEvent(character, hitEvent.Value));
         }
 

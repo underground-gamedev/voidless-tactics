@@ -1,4 +1,5 @@
 using Battle;
+using Battle.Components;
 using Moq;
 using NUnit.Framework;
 
@@ -47,7 +48,8 @@ namespace UnitTests.Entities.Characters.Components
             
             
             character.HandleEvent(new TakeHitPersonalEvent(5));
-            var actualHealth = character.Stats.Get(StatType.CurrentHealth).ModifiedValue;
+            var stats = character.GetStatComponent();
+            var actualHealth = stats.Get(StatType.CurrentHealth)?.ModifiedValue;
 
             
             Assert.AreEqual(expectedHealth, actualHealth);

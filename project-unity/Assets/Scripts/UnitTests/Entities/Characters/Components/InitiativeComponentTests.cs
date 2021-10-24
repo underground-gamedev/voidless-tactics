@@ -1,5 +1,6 @@
 using System;
 using Battle;
+using Battle.Components;
 using Battle.Components.InitiativeComponent;
 using Moq;
 using NUnit.Framework;
@@ -42,7 +43,7 @@ namespace UnitTests.Entities.Characters.Components
             character.AddComponent(new InitiativeComponent(minInitiative, maxInitiative));
 
             
-            var stats = character.Stats;
+            var stats = character.GetStatComponent();
             Assert.AreEqual(minInitiative, stats?.Get(StatType.MinInitiative)?.BaseValue);
             Assert.AreEqual(maxInitiative, stats?.Get(StatType.MaxInitiative)?.BaseValue);
         }
