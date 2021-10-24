@@ -19,7 +19,8 @@ namespace Battle
         }
         public void OnAttached([NotNull] IEntity character)
         {
-            character.Correspond(Archtypes.Character);
+            character.Correspond(Archtype.Character);
+            
             this.character = character;
             
             var stats = this.character.GetStatComponent();

@@ -12,7 +12,7 @@ namespace Battle.Components.ViewComponent
         
         public void OnAttached(IEntity character)
         {
-            character.Correspond(Archtypes.Character);
+            character.Correspond(Archtype.Character);
             
             this.character = character;
             this.enabled = true;

@@ -6,7 +6,12 @@ namespace Battle
 {
     public static class Archtype
     {
-        internal sealed class BuildedArchtype : IArchtype
+        public static readonly IArchtype Character = New()
+                .With<IStatComponent>()
+                .Build();
+
+        
+        private sealed class BuildedArchtype : IArchtype
         {
             public IReadOnlyList<Type> Components { get; }
             
