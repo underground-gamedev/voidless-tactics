@@ -32,6 +32,7 @@ namespace Battle
 
                 var pathfinder = map.GetLayer<IPathfindMapLayer>();
                 var entityLayer = map.GetLayer<ICharacterMapLayer>();
+                if (entityLayer.GetCharacter(targetCell) != null) return HandleStatus.Skipped;
 
                 var currCell = entityLayer.GetPosition(ent);
                 if (!currCell.HasValue) return HandleStatus.Skipped;
