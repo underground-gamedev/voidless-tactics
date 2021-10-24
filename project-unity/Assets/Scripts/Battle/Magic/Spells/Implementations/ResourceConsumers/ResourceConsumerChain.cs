@@ -23,7 +23,7 @@ namespace Battle
             return consumers.TrueForAll(consumer => consumer.ConsumeAvailable(ctx));
         }
 
-        public string GetDescription(Character caster)
+        public string GetDescription(IEntity caster)
         {
             return string.Join("\n", consumers.Select(consumer => consumer.GetDescription(caster)));
         }

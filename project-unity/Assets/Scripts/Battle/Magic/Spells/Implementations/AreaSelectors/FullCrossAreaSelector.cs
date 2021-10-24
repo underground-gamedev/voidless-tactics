@@ -9,7 +9,7 @@ namespace Battle
         {
             return MapDirections.All();
         }
-        public override string GetDescription(Character caster)
+        public override string GetDescription(IEntity caster)
         {
             return $"full cross: {range}";
         }

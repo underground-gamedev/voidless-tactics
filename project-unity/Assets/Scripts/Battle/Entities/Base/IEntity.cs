@@ -6,7 +6,6 @@ namespace Battle
 {
     public interface IEntity
     {
-
         public void AddComponent(IComponent com);
         void RemoveComponent(IComponent com);
         [CanBeNull] IComponent GetComponent(Type associatedType);
@@ -17,5 +16,7 @@ namespace Battle
 
         void AssociateComponent(Type associatedType, Type comType);
         void RemoveAssociation(Type associatedType);
+
+        bool Is(IArchtype archtype);
     }
 }

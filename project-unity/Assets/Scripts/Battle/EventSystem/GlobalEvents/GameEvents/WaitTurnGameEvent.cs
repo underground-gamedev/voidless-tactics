@@ -2,10 +2,10 @@ namespace Battle
 {
     public class WaitTurnGameEvent : IGlobalEvent
     {
-        public readonly ICharacter Character;
+        public readonly IEntity Character;
         public readonly float Initiative;
         
-        public WaitTurnGameEvent(ICharacter character, float initiative)
+        public WaitTurnGameEvent(IEntity character, float initiative)
         {
             Character = character;
             Initiative = initiative;

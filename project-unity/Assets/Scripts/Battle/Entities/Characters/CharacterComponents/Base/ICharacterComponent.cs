@@ -1,8 +1,8 @@
 namespace Battle
 {
-    public interface ICharacterComponent
+    public interface IEntityComponent
     {
-        void OnAttached(ICharacter character);
+        void OnAttached(IEntity character);
         void OnDeattached();
     }
 }

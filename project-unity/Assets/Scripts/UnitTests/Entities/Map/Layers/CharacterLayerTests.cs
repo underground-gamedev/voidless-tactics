@@ -10,10 +10,10 @@ namespace UnitTests.Map.Layers
         [Test]
         public void TestCharacterAddOnLayer()
         {
-            ICharacterMapLayer characterLayer = new CharacterMapLayer();
+            IEntityMapLayer characterLayer = new CharacterMapLayer();
             characterLayer.OnAttached(CreateTestMap());
 
-            var mockCharacter = new Mock<ICharacter>();
+            var mockCharacter = new Mock<IEntity>();
             var spawnPosition = new MapCell(0, 0);
 
             var characterAddTriggered = false;
@@ -32,10 +32,10 @@ namespace UnitTests.Map.Layers
         [Test]
         public void TestCharacterRemoveFromLayer()
         {
-            ICharacterMapLayer characterLayer = new CharacterMapLayer();
+            IEntityMapLayer characterLayer = new CharacterMapLayer();
             characterLayer.OnAttached(CreateTestMap());
 
-            var mockCharacter = new Mock<ICharacter>();
+            var mockCharacter = new Mock<IEntity>();
             var spawnPosition = new MapCell(0, 0);
 
             var characterRemoveTriggered = false;
@@ -55,10 +55,10 @@ namespace UnitTests.Map.Layers
         public void TestCharacterRelocateOnLayer()
         {
             var map = CreateTestMap();
-            ICharacterMapLayer characterLayer = new CharacterMapLayer();
+            IEntityMapLayer characterLayer = new CharacterMapLayer();
             characterLayer.OnAttached(map);
 
-            var mockCharacter = new Mock<ICharacter>();
+            var mockCharacter = new Mock<IEntity>();
             var spawnPosition = new MapCell(0, 0);
             var relocatePosition = new MapCell(map.Width - 1, map.Height - 1);
 

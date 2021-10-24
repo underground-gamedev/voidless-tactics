@@ -9,7 +9,7 @@ namespace Battle
         {
             return MapDirections.Diagonal();
         }
-        public override string GetDescription(Character caster)
+        public override string GetDescription(IEntity caster)
         {
             return $"diagonal cross: {range}";
         }

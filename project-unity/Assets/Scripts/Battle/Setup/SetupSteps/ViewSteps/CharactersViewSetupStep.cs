@@ -25,7 +25,7 @@ namespace Battle
 
             var characters = state.Characters.Characters;
             var map = state.Map.Map;
-            var characterLayer = map.GetLayer<ICharacterMapLayer>();
+            var characterLayer = map.GetLayer<IEntityMapLayer>();
             
             if (characterLayer == null) return;
             foreach (var character in characters)
@@ -109,7 +109,7 @@ namespace Battle
                 this.viewBindings = viewBindings;
             }
 
-            public HandleStatus AddViewToCharacter(ICharacter character, ILayeredMap map, MapCell position)
+            public HandleStatus AddViewToCharacter(IEntity character, ILayeredMap map, MapCell position)
             {
                 var coordinateConverter = map.GetLayer<ICoordinateConverterLayer>();
                 if (coordinateConverter == null)
@@ -132,7 +132,7 @@ namespace Battle
                 return HandleStatus.Handled;
             }
 
-            public HandleStatus RemoveViewFromCharacter(ICharacter character)
+            public HandleStatus RemoveViewFromCharacter(IEntity character)
             {
                 var view = character.GetComponent<CharacterViewComponent>();
                 if (view == null) return HandleStatus.Skipped;

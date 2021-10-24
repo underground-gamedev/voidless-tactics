@@ -8,7 +8,7 @@ namespace Battle.Components.RelationComponent
         
         public EntityRelation RelationTo(IEntity entity)
         {
-            if (!(entity is ICharacter)) return EntityRelation.Neutral;
+            if (!(entity is IEntity)) return EntityRelation.Neutral;
             
             var members = team.MemberCollection.Members;
             return members.Contains(entity) ? EntityRelation.Friendly : EntityRelation.Agressive;

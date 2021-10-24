@@ -6,12 +6,12 @@ namespace Battle
 {
     public interface ITeamMemberCollection: IComponent
     {
-        event Action<ICharacter> OnCharacterAdded;
-        event Action<ICharacter> OnCharacterRemoved;
+        event Action<IEntity> OnCharacterAdded;
+        event Action<IEntity> OnCharacterRemoved;
         
-        IReadOnlyList<ICharacter> Members { get; }
+        IReadOnlyList<IEntity> Members { get; }
         
-        void Add(ICharacter character);
-        void Remove(ICharacter character);
+        void Add(IEntity character);
+        void Remove(IEntity character);
     }
 }

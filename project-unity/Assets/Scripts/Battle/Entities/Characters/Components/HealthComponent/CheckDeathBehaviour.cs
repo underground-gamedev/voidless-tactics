@@ -4,10 +4,10 @@ namespace Battle
 {
     public class CheckDeathBehaviour : IBehaviour<TakeHitPersonalEvent>
     {
-        private ICharacter character;
+        private IEntity character;
         public int HandlePriority => (int)BehaviourPriority.CheckDeath;
         
-        public CheckDeathBehaviour(ICharacter parent)
+        public CheckDeathBehaviour(IEntity parent)
         {
             character = parent;
         }

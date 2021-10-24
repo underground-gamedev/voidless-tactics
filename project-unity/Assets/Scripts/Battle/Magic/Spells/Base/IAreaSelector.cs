@@ -6,6 +6,6 @@ namespace Battle
     {
         List<MapCell> GetFullArea(SpellComponentContext ctx);
         List<MapCell> GetRealArea(SpellComponentContext ctx);
-        string GetDescription(Character caster);
+        string GetDescription(IEntity caster);
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using Battle;
 using Battle.Components;
 using Battle.Components.InitiativeComponent;
@@ -15,7 +14,7 @@ namespace UnitTests.Entities.Characters.Components
             var minInitiative = 10;
             var maxInitiative = 20;
 
-            var character = new Character();
+            var character = new Entity();
             character.AddComponent(new InitiativeComponent(minInitiative, maxInitiative));
             
             var mockEventEmitter = new Mock<IGlobalEventEmitter>();
@@ -37,7 +36,7 @@ namespace UnitTests.Entities.Characters.Components
             var minInitiative = 10;
             var maxInitiative = 20;
 
-            var character = new Character();
+            var character = new Entity();
             
             
             character.AddComponent(new InitiativeComponent(minInitiative, maxInitiative));

@@ -10,7 +10,7 @@ namespace Battle
         [SerializeField]
         private int heal;
 
-        private EntityStat GetPowerStat(Character caster)
+        private EntityStat GetPowerStat(IEntity caster)
         {
             return caster.BasicStats.Magic;
         }
@@ -18,7 +18,7 @@ namespace Battle
         public void ApplyEffect(SpellComponentContext ctx, List<MapCell> effectArea)
         {
             var map = ctx.Map;
-            var charLayer = map.GetLayer<ICharacterMapLayer>();
+            var charLayer = map.GetLayer<IEntityMapLayer>();
             foreach (var effectCell in effectArea)
             {
                 var targetCharacter = charLayer.GetCharacter(effectCell);
@@ -34,7 +34,7 @@ namespace Battle
         public bool EffectAvailable(SpellComponentContext ctx, List<MapCell> effectArea)
         {
             var map = ctx.Map;
-            var charLayer = map.GetLayer<ICharacterMapLayer>();
+            var charLayer = map.GetLayer<IEntityMapLayer>();
             foreach (var effectCell in effectArea)
             {
                 var targetCharacter = charLayer.GetCharacter(effectCell);
@@ -46,7 +46,7 @@ namespace Battle
             return false;
         }
 
-        public string GetDescription(Character caster)
+        public string GetDescription(IEntity caster)
         {
             var powerStat = GetPowerStat(caster);
             return $"heal: {heal}+{powerStat.Value}";

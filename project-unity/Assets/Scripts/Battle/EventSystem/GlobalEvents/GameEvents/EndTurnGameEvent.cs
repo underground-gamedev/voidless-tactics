@@ -2,9 +2,9 @@ namespace Battle
 {
     public class EndTurnGameEvent : IGlobalEvent
     {
-        public readonly ICharacter Character;
+        public readonly IEntity Character;
 
-        public EndTurnGameEvent(ICharacter character)
+        public EndTurnGameEvent(IEntity character)
         {
             Character = character;
         }

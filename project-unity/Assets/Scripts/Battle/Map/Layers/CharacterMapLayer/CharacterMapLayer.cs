@@ -7,21 +7,21 @@ using Battle.Map.Interfaces;
 
 namespace Battle
 {
-    public class CharacterMapLayer : ICharacterMapLayer
+    public class CharacterMapLayer : IEntityMapLayer
     {
-        public event Action<ICharacter, MapCell> OnCharacterAdded;
-        public event Action<ICharacter> OnCharacterRemoved;
-        public event Action<ICharacter, MapCell> OnCharacterRelocated;
+        public event Action<IEntity, MapCell> OnCharacterAdded;
+        public event Action<IEntity> OnCharacterRemoved;
+        public event Action<IEntity, MapCell> OnCharacterRelocated;
         
         private ILayeredMap map;
-        private Dictionary<MapCell, ICharacter> posToChars;
-        private Dictionary<ICharacter, MapCell> charsToPos;
+        private Dictionary<MapCell, IEntity> posToChars;
+        private Dictionary<IEntity, MapCell> charsToPos;
         
         public void OnAttached(ILayeredMap map)
         {
             this.map = map;
-            posToChars = new Dictionary<MapCell, ICharacter>();
-            charsToPos = new Dictionary<ICharacter, MapCell>();
+            posToChars = new Dictionary<MapCell, IEntity>();
+            charsToPos = new Dictionary<IEntity, MapCell>();
         }
 
         public void OnDeAttached()
@@ -31,7 +31,7 @@ namespace Battle
             charsToPos = null;
         }
 
-        public void AddCharacter(ICharacter character, MapCell cell)
+        public void AddCharacter(IEntity character, MapCell cell)
         {
             map.CheckOutOfBounds(cell);
             
@@ -53,7 +53,7 @@ namespace Battle
             OnCharacterAdded?.Invoke(character, cell);
         }
 
-        public void RelocateCharacter(ICharacter character, MapCell cell)
+        public void RelocateCharacter(IEntity character, MapCell cell)
         {
             map.CheckOutOfBounds(cell);
             
@@ -77,7 +77,7 @@ namespace Battle
             OnCharacterRelocated?.Invoke(character, cell);
         }
 
-        public void RemoveCharacter(ICharacter character)
+        public void RemoveCharacter(IEntity character)
         {
             if (!charsToPos.ContainsKey(character)) return;
             posToChars.Remove(charsToPos[character]);
@@ -88,17 +88,17 @@ namespace Battle
             OnCharacterRemoved?.Invoke(character);
         }
 
-        public ICharacter GetCharacter(MapCell cell)
+        public IEntity GetCharacter(MapCell cell)
         {
             return posToChars.TryGetValue(cell, out var character) ? character : null;
         }
 
-        public MapCell? GetPosition(ICharacter character)
+        public MapCell? GetPosition(IEntity character)
         {
             return charsToPos.TryGetValue(character, out var cell) ? new MapCell?(cell) : null;
         }
 
-        public ICharacter[] GetAllCharacters()
+        public IEntity[] GetAllCharacters()
         {
             return charsToPos.Keys.ToArray();
         }

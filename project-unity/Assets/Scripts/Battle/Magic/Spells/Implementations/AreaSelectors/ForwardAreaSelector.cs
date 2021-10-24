@@ -42,6 +42,6 @@ namespace Battle
             return realAreaPattern.GetPattern(ctx.Map, ctx.TargetCell).ToList();
         }
 
-        public abstract string GetDescription(Character caster);
+        public abstract string GetDescription(IEntity caster);
     }
 }

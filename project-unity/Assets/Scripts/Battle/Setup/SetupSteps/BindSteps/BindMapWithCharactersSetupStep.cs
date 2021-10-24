@@ -13,7 +13,7 @@ namespace Battle
             var map = state.Map.Map;
             var characters = state.Characters.Characters;
 
-            var characterLayer = map.GetLayer<ICharacterMapLayer>();
+            var characterLayer = map.GetLayer<IEntityMapLayer>();
             var charactersWithSpawnPosition =
                 characters.Where(character => character.HasComponent<SpawnPositionComponent>());
             

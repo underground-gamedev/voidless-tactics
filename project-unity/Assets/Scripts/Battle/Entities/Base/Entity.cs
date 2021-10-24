@@ -18,9 +18,7 @@ namespace Battle
             coms = new ComponentContainer<IComponent>(OnComponentAttached, OnComponentDeAttached);
             associations = new Dictionary<Type, Type>();
             coms.Attach<IBehaviourComponent>(new BehaviourComponent());
-            
-            OnNewComponentAttached(TryCallOnAttachedToEntity);
-            OnComponentCompleteDeAttached(TryCallOnDeAttachedFromEntity);
+            coms.Attach<IStatComponent>(new StatComponent());
         }
 
         private void OnComponentAttached(IComponent com)

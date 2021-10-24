@@ -2,18 +2,18 @@ using System;
 
 namespace Battle.Map.Interfaces
 {
-    public interface ICharacterMapLayer: IMapLayer
+    public interface IEntityMapLayer: IMapLayer
     {
-        event Action<ICharacter, MapCell> OnCharacterAdded;
-        event Action<ICharacter> OnCharacterRemoved;
-        event Action<ICharacter, MapCell> OnCharacterRelocated;
+        event Action<IEntity, MapCell> OnCharacterAdded;
+        event Action<IEntity> OnCharacterRemoved;
+        event Action<IEntity, MapCell> OnCharacterRelocated;
         
-        void AddCharacter(ICharacter character, MapCell cell);
-        void RelocateCharacter(ICharacter character, MapCell cell);
-        void RemoveCharacter(ICharacter character);
+        void AddCharacter(IEntity character, MapCell cell);
+        void RelocateCharacter(IEntity character, MapCell cell);
+        void RemoveCharacter(IEntity character);
         
-        ICharacter GetCharacter(MapCell cell);
-        MapCell? GetPosition(ICharacter character);
-        ICharacter[] GetAllCharacters();
+        IEntity GetCharacter(MapCell cell);
+        MapCell? GetPosition(IEntity character);
+        IEntity[] GetAllCharacters();
     }
 }

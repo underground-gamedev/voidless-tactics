@@ -2,9 +2,9 @@ namespace Battle
 {
     public class NeedActionGameEvent : IGlobalEvent
     {
-        public readonly ICharacter Character;
+        public readonly IEntity Character;
 
-        public NeedActionGameEvent(ICharacter character)
+        public NeedActionGameEvent(IEntity character)
         {
             Character = character;
         }

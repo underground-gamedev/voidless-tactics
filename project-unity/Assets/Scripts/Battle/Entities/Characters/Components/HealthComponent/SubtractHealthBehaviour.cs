@@ -4,9 +4,9 @@ namespace Battle
 {
     public class SubtractHealthBehaviour : IBehaviour<TakeHitPersonalEvent>
     {
-        private ICharacter character;
+        private IEntity character;
 
-        public SubtractHealthBehaviour(ICharacter parent)
+        public SubtractHealthBehaviour(IEntity parent)
         {
             character = parent;
         }

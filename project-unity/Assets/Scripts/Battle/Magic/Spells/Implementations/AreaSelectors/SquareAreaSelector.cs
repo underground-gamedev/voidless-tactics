@@ -28,7 +28,7 @@ namespace Battle
             return GetFullArea(ctx);
         }
 
-        public string GetDescription(Character caster)
+        public string GetDescription(IEntity caster)
         {
             return $"square: {range}";
         }

@@ -5,9 +5,9 @@ using JetBrains.Annotations;
 
 namespace Battle
 {
-    public class HealthComponent: IComponent, ICharacterAttachable, IEntityAttachable
+    public class HealthComponent: IComponent, IEntityAttachable
     {
-        private ICharacter character;
+        private IEntity character;
         private int initialHealth;
 
         private SubtractHealthBehaviour subtractHealthBehaviour;
@@ -17,8 +17,9 @@ namespace Battle
         {
             this.initialHealth = initialHealth;
         }
-        public void OnAttached([NotNull] ICharacter character)
+        public void OnAttached([NotNull] IEntity character)
         {
+            character.Correspond(Archtypes.Character);
             this.character = character;
             
             var stats = this.character.GetStatComponent();
@@ -31,13 +32,7 @@ namespace Battle
             character.AddBehaviour(checkDeathBehaviour);
         }
 
-        public void OnAttached(IEntity entity)
-        {
-            if (entity is ICharacter) return;
-            throw new InvalidOperationException("Health component not support custom entity. Expected ICharacter");
-        }
-
-        void ICharacterAttachable.OnDeAttached()
+        void IEntityAttachable.OnDeAttached()
         {
             if (character == null) return;
             
@@ -49,10 +44,6 @@ namespace Battle
             character.RemoveBehaviour(checkDeathBehaviour);
 
             character = null;
-        }
-
-        void IEntityAttachable.OnDeAttached()
-        {
         }
     }
 }

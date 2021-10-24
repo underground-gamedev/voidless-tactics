@@ -16,7 +16,7 @@ namespace UnitTests.Entities.Characters.Components
             mockEmitter.Setup(emitter => emitter.Emit(It.IsAny<EndTurnGameEvent>()))
                 .Callback<IGlobalEvent>(globalEvent => endTurnTriggered |= globalEvent != null);
             
-            var character = new Character();
+            var character = new Entity();
             character.AddComponent(new MinimalControllerComponent());
             character.AddWithAssociation<IGlobalEventEmitter>(mockEmitter.Object);
             

@@ -7,12 +7,12 @@ namespace Battle
     public interface ITimeLine
     {
         event Action OnOrderChanged;
-        event Action<ICharacter> OnActiveChanged;
+        event Action<IEntity> OnActiveChanged;
 
-        IReadOnlyList<ICharacter> Order { get; }
-        [CanBeNull] ICharacter Active { get; }
+        IReadOnlyList<IEntity> Order { get; }
+        [CanBeNull] IEntity Active { get; }
 
-        void Set([NotNull] ICharacter character, float priority);
-        void Remove([NotNull] ICharacter character);
+        void Set([NotNull] IEntity character, float priority);
+        void Remove([NotNull] IEntity character);
     }
 }

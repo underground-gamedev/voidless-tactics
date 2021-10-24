@@ -2,11 +2,11 @@ using Core.Components;
 
 namespace Battle.Components.MinimalControllerComponent
 {
-    public class MinimalControllerComponent : IComponent, ICharacterAttachable
+    public class MinimalControllerComponent : IComponent, IEntityAttachable
     {
         private SkipTurnBehaviour skipTurnBehaviour;
-        private ICharacter character;
-        public void OnAttached(ICharacter character)
+        private IEntity character;
+        public void OnAttached(IEntity character)
         {
             skipTurnBehaviour = new SkipTurnBehaviour(character);
             character.AddBehaviour(skipTurnBehaviour);
@@ -21,8 +21,8 @@ namespace Battle.Components.MinimalControllerComponent
         
         private class SkipTurnBehaviour : IBehaviour<TakeTurnPersonalEvent>
         {
-            private ICharacter character;
-            public SkipTurnBehaviour(ICharacter character)
+            private IEntity character;
+            public SkipTurnBehaviour(IEntity character)
             {
                 this.character = character;
             }

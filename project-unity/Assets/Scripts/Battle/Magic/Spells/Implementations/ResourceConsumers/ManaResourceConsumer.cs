@@ -19,7 +19,7 @@ namespace Battle
             return ctx.Caster.ManaContainerComponent.Mana.Count >= manaRequired;
         }
 
-        public string GetDescription(Character caster)
+        public string GetDescription(IEntity caster)
         {
             return $"mana: {manaRequired}";
         }

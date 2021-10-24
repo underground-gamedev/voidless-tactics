@@ -2,9 +2,9 @@ namespace Battle.Components
 {
     public static class CharacterComponentsExt
     {
-        public static IGlobalEventEmitter GetGlobalEmitter(this ICharacter character)
+        public static IGlobalEventEmitter GetGlobalEmitter(this IEntity entity)
         {
-            return character.GetComponent<IGlobalEventEmitter>();
+            return entity.GetComponent<IGlobalEventEmitter>();
         }
 
         public static IStatComponent GetStatComponent(this IEntity entity)

@@ -4,6 +4,6 @@ namespace Battle
     {
         bool ConsumeAvailable(SpellComponentContext ctx);
         void Consume(SpellComponentContext ctx);
-        string GetDescription(Character caster);
+        string GetDescription(IEntity caster);
     }
 }

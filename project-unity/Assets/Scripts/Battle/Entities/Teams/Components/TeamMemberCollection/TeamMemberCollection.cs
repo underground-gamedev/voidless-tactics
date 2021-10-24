@@ -5,20 +5,20 @@ namespace Battle
 {
     public class TeamMemberCollection : ITeamMemberCollection
     {
-        public event Action<ICharacter> OnCharacterAdded;
-        public event Action<ICharacter> OnCharacterRemoved;
+        public event Action<IEntity> OnCharacterAdded;
+        public event Action<IEntity> OnCharacterRemoved;
         
-        private List<ICharacter> members = new List<ICharacter>();
+        private List<IEntity> members = new List<IEntity>();
         
-        public IReadOnlyList<ICharacter> Members { get; }
+        public IReadOnlyList<IEntity> Members { get; }
         
-        public void Add(ICharacter character)
+        public void Add(IEntity character)
         {
             members.Add(character);
             OnCharacterAdded?.Invoke(character);
         }
 
-        public void Remove(ICharacter character)
+        public void Remove(IEntity character)
         {
             if (members.Remove(character))
             {

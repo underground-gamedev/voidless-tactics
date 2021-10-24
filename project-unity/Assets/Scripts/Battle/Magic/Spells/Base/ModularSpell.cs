@@ -19,11 +19,11 @@ namespace Battle
         private ISpellEffect spellEffect;
         [SerializeField]
         private IResourceConsumer resourceConsumer;
-        private Character caster;
+        private IEntity caster;
 
         public string SpellName => spellName;
 
-        public Task ApplyEffect(Character caster, MapCell target)
+        public Task ApplyEffect(IEntity caster, MapCell target)
         {
             var ctx = MakeContext();
 
@@ -40,7 +40,7 @@ namespace Battle
             // return new SpellComponentContext(caster);
         }
 
-        public bool CastAvailable(Character caster, MapCell target)
+        public bool CastAvailable(IEntity caster, MapCell target)
         {
             var ctx = MakeContext();
             var realTargetArea = targetArea.GetRealArea(ctx);
@@ -53,7 +53,7 @@ namespace Battle
             return true;
         }
 
-        public bool CastAvailable(Character caster)
+        public bool CastAvailable(IEntity caster)
         {
             var ctx = MakeContext();
             var realTargetArea = targetArea.GetRealArea(ctx);
@@ -63,19 +63,19 @@ namespace Battle
             return true;
         }
 
-        public List<MapCell> GetEffectArea(Character caster, MapCell target)
+        public List<MapCell> GetEffectArea(IEntity caster, MapCell target)
         {
             var ctx = MakeContext();
             return spellEffectArea.GetRealArea(ctx.SetTargetCell(target));
         }
 
-        public List<MapCell> GetTargetArea(Character caster)
+        public List<MapCell> GetTargetArea(IEntity caster)
         {
             var ctx = MakeContext();
             return targetArea.GetRealArea(ctx);
         }
 
-        public string GetDescription(Character caster)
+        public string GetDescription(IEntity caster)
         {
             return string.Join("\n", $@"
                 [b]Name[/b]

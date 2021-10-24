@@ -5,25 +5,25 @@ namespace Battle
 {
     public class TimeLine: ITimeLine
     {
-        private PriorityQueue<ICharacter> queue;
+        private PriorityQueue<IEntity> queue;
         public event Action OnOrderChanged;
-        public event Action<ICharacter> OnActiveChanged;
-        public IReadOnlyList<ICharacter> Order => queue.Elements;
-        public ICharacter Active => queue.Active;
+        public event Action<IEntity> OnActiveChanged;
+        public IReadOnlyList<IEntity> Order => queue.Elements;
+        public IEntity Active => queue.Active;
 
         public TimeLine()
         {
-            queue = new PriorityQueue<ICharacter>();
+            queue = new PriorityQueue<IEntity>();
             queue.OnQueueChanged += OnQueueChangedTrigger;
             queue.OnActiveChanged += OnActiveChangedTrigger;
         }
 
-        public void Set(ICharacter character, float initiative)
+        public void Set(IEntity character, float initiative)
         {
             queue.Set(character, initiative);
         }
 
-        public void Remove(ICharacter character)
+        public void Remove(IEntity character)
         {
             queue.Remove(character);
         }

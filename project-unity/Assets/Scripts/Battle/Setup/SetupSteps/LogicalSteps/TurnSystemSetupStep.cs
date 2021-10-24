@@ -39,8 +39,8 @@ namespace Battle
 
             private HandleStatus Handle(BattleState state, StartRoundGameEvent startRoundEvent)
             {
-                var charLayer = state.Map.Map.GetLayer<ICharacterMapLayer>();
-                foreach (var character in charLayer?.GetAllCharacters() ?? new ICharacter[]{})
+                var charLayer = state.Map.Map.GetLayer<IEntityMapLayer>();
+                foreach (var character in charLayer?.GetAllCharacters() ?? new IEntity[]{})
                 {
                     character.HandleEvent(new StartRoundGameEvent());
                 }

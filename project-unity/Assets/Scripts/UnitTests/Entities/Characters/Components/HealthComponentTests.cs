@@ -12,7 +12,7 @@ namespace UnitTests.Entities.Characters.Components
         {
             var mockEmitter = new Mock<IGlobalEventEmitter>();
             
-            var character = new Character();
+            var character = new Entity();
             character.AddWithAssociation<IGlobalEventEmitter>(mockEmitter.Object);
             character.AddComponent(new HealthComponent(10));
 
@@ -26,7 +26,7 @@ namespace UnitTests.Entities.Characters.Components
         [Test]
         public void TestDamagedEmitOnTakeHitSend()
         {
-            var character = new Character();
+            var character = new Entity();
             var mockEmitter = new Mock<IGlobalEventEmitter>();
             character.AddWithAssociation<IGlobalEventEmitter>(mockEmitter.Object);
             character.AddComponent(new HealthComponent(10));
@@ -41,7 +41,7 @@ namespace UnitTests.Entities.Characters.Components
         [Test]
         public void TestCurrentHealthChangedOnTakeHitSend()
         {
-            var character = new Character();
+            var character = new Entity();
             character.AddComponent(new HealthComponent(10));
             
             var expectedHealth = 5;

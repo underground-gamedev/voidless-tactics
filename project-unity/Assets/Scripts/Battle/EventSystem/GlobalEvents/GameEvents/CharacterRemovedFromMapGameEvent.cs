@@ -5,9 +5,9 @@ namespace Battle
     public class CharacterRemovedFromMapGameEvent : IGlobalEvent
     {
         public readonly ILayeredMap Map;
-        public readonly ICharacter Character;
+        public readonly IEntity Character;
         
-        public CharacterRemovedFromMapGameEvent(ILayeredMap map, ICharacter character)
+        public CharacterRemovedFromMapGameEvent(ILayeredMap map, IEntity character)
         {
             Map = map;
             Character = character;

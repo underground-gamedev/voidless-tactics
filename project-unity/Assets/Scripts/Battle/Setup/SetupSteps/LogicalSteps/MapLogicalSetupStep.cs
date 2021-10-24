@@ -18,7 +18,7 @@ namespace Battle
             map.AddLayer<MapEventsEmitter>(new MapEventsEmitter());
                 
             map.AddLayer<ISolidMapLayer>(new NonSolidMapLayer())
-               .AddLayer<ICharacterMapLayer>(new CharacterMapLayer())
+               .AddLayer<IEntityMapLayer>(new CharacterMapLayer())
                .AddLayer<IManaEditorMapLayer>(new ManaEditorMapLayer())
                .AddLayer<IManaMapLayer, IManaInfoMapLayer>(new ManaMapLayer())
                .AddLayer<IPathfindMapLayer>(new PathfindLayer());

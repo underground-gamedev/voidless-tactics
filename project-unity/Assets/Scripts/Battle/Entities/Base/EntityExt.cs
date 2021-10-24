@@ -1,3 +1,4 @@
+using System.IO;
 using Core.Components;
 
 namespace Battle
@@ -41,6 +42,14 @@ namespace Battle
         public static void RemoveAssociation<TAssociation>(this IEntity ent)
         {
             ent.RemoveAssociation(typeof(TAssociation));
+        }
+
+        public static void Correspond(this IEntity ent, IArchtype archtype)
+        {
+            if (!ent.Is(archtype))
+            {
+                throw new InvalidDataException($"{ent} don't correspond {archtype} archtype");
+            }
         }
     }
 }

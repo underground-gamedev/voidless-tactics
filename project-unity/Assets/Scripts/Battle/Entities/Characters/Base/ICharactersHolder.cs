@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Battle
 {
-    public interface ICharactersHolder
+    public interface IEntitysHolder
     {
-        event Action<ICharacter> OnCharacterAdded;
-        event Action<ICharacter> OnCharacterRemoved;
+        event Action<IEntity> OnCharacterAdded;
+        event Action<IEntity> OnCharacterRemoved;
 
-        IReadOnlyList<ICharacter> Characters { get; }
+        IReadOnlyList<IEntity> Characters { get; }
 
-        void AddCharacter(ICharacter character);
-        void RemoveCharacter(ICharacter character);
+        void AddCharacter(IEntity character);
+        void RemoveCharacter(IEntity character);
     }
 }

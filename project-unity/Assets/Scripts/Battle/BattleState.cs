@@ -7,7 +7,7 @@ namespace Battle
     {
         public IEventQueue EventQueue { get; }
         public ILayeredMapHolder Map { get; }
-        public ICharactersHolder Characters { get; }
+        public IEntitysHolder Characters { get; }
         public ITeamsHolder Teams { get; }
         public ITimeLine TimeLine { get; }
 

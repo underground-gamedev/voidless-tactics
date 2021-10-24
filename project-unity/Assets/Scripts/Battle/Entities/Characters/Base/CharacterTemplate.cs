@@ -26,9 +26,9 @@ namespace Battle
         [SerializeField]
         private Vector2Int spawnPosition;
 
-        public ICharacter Generate()
+        public IEntity Generate()
         {
-            var character = new Character();
+            var character = new Entity();
             character.AddComponent(new TeamTagComponent(teamTag));
             character.AddComponent(new ViewTagComponent(viewTag));
             character.AddComponent(new HealthComponent(health));

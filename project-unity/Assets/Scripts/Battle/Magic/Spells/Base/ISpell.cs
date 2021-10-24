@@ -5,11 +5,11 @@ namespace Battle
 {
     public interface ISpell
     {
-        List<MapCell> GetTargetArea(Character caster);
-        List<MapCell> GetEffectArea(Character caster, MapCell target);
-        bool CastAvailable(Character caster, MapCell target);
-        bool CastAvailable(Character caster);
-        Task ApplyEffect(Character caster, MapCell target);
-        string GetDescription(Character caster);
+        List<MapCell> GetTargetArea(IEntity caster);
+        List<MapCell> GetEffectArea(IEntity caster, MapCell target);
+        bool CastAvailable(IEntity caster, MapCell target);
+        bool CastAvailable(IEntity caster);
+        Task ApplyEffect(IEntity caster, MapCell target);
+        string GetDescription(IEntity caster);
     }
 }

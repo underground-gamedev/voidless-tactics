@@ -9,6 +9,6 @@ namespace Battle
         bool GiveManaAvailable(MapBuilder mapMono);
         bool GiveManaAvailable(MapBuilder mapMono, MapCell target);
         List<MapCell> GetGiveManaArea(MapBuilder mapMono, MapCell src);
-        IEnumerator GiveMana(MapBuilder mapMono, Character target);
+        IEnumerator GiveMana(MapBuilder mapMono, IEntity target);
     }
 }

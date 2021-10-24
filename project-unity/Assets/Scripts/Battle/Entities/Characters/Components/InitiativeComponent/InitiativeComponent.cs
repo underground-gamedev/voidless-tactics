@@ -3,12 +3,12 @@ using Core.Components;
 
 namespace Battle.Components.InitiativeComponent
 {
-    public class InitiativeComponent : IComponent, ICharacterAttachable
+    public class InitiativeComponent : IComponent, IEntityAttachable
     {
         private int minInitiative;
         private int maxInitiative;
 
-        private ICharacter character;
+        private IEntity character;
         private TurnWaitBehaviour turnWaitBehaviour;
         public InitiativeComponent(int min, int max)
         {
@@ -16,7 +16,7 @@ namespace Battle.Components.InitiativeComponent
             maxInitiative = max;
         }
 
-        public void OnAttached(ICharacter character)
+        public void OnAttached(IEntity character)
         {
             if (character == null) return;
             
