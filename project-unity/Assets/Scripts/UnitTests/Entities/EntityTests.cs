@@ -33,12 +33,20 @@ namespace UnitTests.Entities
             
             
             entity.AddComponent(testComponent);
-            entity.AssociateComponent(typeof(ITestAssociation), typeof(TestComponent));
+            var rawCom = entity.GetComponent<TestComponent>();
+            entity.Associate<ITestAssociation, TestComponent>();
+            var associatedCom = entity.GetComponent<ITestAssociation>();
+            
+            entity.Associate<ITestNonAssociation, TestComponent>();
+            var secondAssociatedCom = entity.GetComponent<ITestAssociation>();
+            entity.RemoveAssociation<ITestNonAssociation>();
+            var secondAfterRemove = entity.GetComponent<ITestNonAssociation>();
             
             
-            Assert.AreSame(testComponent, entity.GetComponent<TestComponent>());
-            Assert.AreSame(testComponent, entity.GetComponent<ITestAssociation>());
-            Assert.IsNull(entity.GetComponent<ITestNonAssociation>());
+            Assert.AreSame(testComponent, rawCom);
+            Assert.AreSame(testComponent, associatedCom);
+            Assert.AreSame(testComponent, secondAssociatedCom);
+            Assert.IsNull(secondAfterRemove);
         }
         
         public class TestEvent : IPersonalEvent { }

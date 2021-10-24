@@ -32,5 +32,10 @@ namespace Battle
         {
             ent.AssociateComponent(typeof(TAssociation), typeof(TComponent));
         }
+
+        public static void RemoveAssociation<TAssociation>(this IEntity ent)
+        {
+            ent.RemoveAssociation(typeof(TAssociation));
+        }
     }
 }

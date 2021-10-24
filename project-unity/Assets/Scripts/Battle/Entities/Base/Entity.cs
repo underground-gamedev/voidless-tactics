@@ -53,6 +53,11 @@ namespace Battle
             associations.Add(associatedType, comType);
         }
 
+        public void RemoveAssociation(Type associatedType)
+        {
+            associations.Remove(associatedType);
+        }
+
         public void AddBehaviour(IBehaviour behaviour)
         {
             var behaviourComponent = coms.Get<IBehaviourComponent>();

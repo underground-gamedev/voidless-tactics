@@ -16,5 +16,6 @@ namespace Battle
         void HandleEvent<T>(T personalEvent) where T : IPersonalEvent;
 
         void AssociateComponent(Type associatedType, Type comType);
+        void RemoveAssociation(Type associatedType);
     }
 }
