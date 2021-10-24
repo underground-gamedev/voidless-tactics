@@ -35,17 +35,7 @@ namespace Battle
         public void AddComponent(IComponent com)
         {
             coms.Attach(com.GetType(), com);
-            OnComponentAssociated(com.GetType(), com);
-        }
-
-        public void RemoveComponent(Type associatedType)
-        {
-            var com = coms.Get(associatedType);
-            if (com != null)
-            {
-                coms.DeAttach(associatedType);
-                OnComponentUnAssociated(associatedType, com);
-            }
+            TryCallOnAttachedToEntity(com);
         }
         
         public void RemoveComponent(IComponent com)
@@ -87,14 +77,6 @@ namespace Battle
                 return coms.Get(comType);
             }
             return coms.Get(associatedType);
-        }
-
-        protected virtual void OnComponentUnAssociated(Type associatedType, IComponent com)
-        {
-        }
-
-        protected virtual void OnComponentAssociated(Type associatedType, IComponent com)
-        {
         }
 
         protected void OnNewComponentAttached(params Action<IComponent>[] handlers)
