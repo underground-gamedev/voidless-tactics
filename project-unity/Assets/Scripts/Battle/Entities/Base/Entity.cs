@@ -48,7 +48,7 @@ namespace Battle
             }
         }
 
-        public void AssociateComponent(Type comType, Type associatedType)
+        public void AssociateComponent(Type associatedType, Type comType)
         {
             associations.Add(associatedType, comType);
         }

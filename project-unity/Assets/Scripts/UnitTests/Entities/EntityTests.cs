@@ -33,7 +33,7 @@ namespace UnitTests.Entities
             
             
             entity.AddComponent(testComponent);
-            entity.AssociateComponent(typeof(TestComponent), typeof(ITestAssociation));
+            entity.AssociateComponent(typeof(ITestAssociation), typeof(TestComponent));
             
             
             Assert.AreSame(testComponent, entity.GetComponent<TestComponent>());

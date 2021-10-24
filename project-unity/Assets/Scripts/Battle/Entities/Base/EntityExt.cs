@@ -14,7 +14,7 @@ namespace Battle
             ent.AddComponent(com);
             if (typeof(T) != com.GetType())
             {
-                ent.AssociateComponent(com.GetType(), typeof(T));
+                ent.AssociateComponent(typeof(T), com.GetType());
             }
         }
 
