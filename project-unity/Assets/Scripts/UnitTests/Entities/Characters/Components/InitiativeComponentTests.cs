@@ -15,7 +15,7 @@ namespace UnitTests.Entities.Characters.Components
             var maxInitiative = 20;
 
             var character = new Character();
-            character.AddComponent<InitiativeComponent>(new InitiativeComponent(minInitiative, maxInitiative));
+            character.AddComponent(new InitiativeComponent(minInitiative, maxInitiative));
             
             var mockEventEmitter = new Mock<IGlobalEventEmitter>();
             character.AddComponent<IGlobalEventEmitter>(mockEventEmitter.Object);
@@ -39,7 +39,7 @@ namespace UnitTests.Entities.Characters.Components
             var character = new Character();
             
             
-            character.AddComponent<InitiativeComponent>(new InitiativeComponent(minInitiative, maxInitiative));
+            character.AddComponent(new InitiativeComponent(minInitiative, maxInitiative));
 
             
             var stats = character.Stats;

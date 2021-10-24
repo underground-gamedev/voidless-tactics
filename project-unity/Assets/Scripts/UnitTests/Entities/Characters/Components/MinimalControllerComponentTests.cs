@@ -17,7 +17,7 @@ namespace UnitTests.Entities.Characters.Components
                 .Callback<IGlobalEvent>(globalEvent => endTurnTriggered |= globalEvent != null);
             
             var character = new Character();
-            character.AddComponent<MinimalControllerComponent>(new MinimalControllerComponent());
+            character.AddComponent(new MinimalControllerComponent());
             character.AddComponent<IGlobalEventEmitter>(mockEmitter.Object);
             
             

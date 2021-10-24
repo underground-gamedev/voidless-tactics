@@ -48,7 +48,7 @@ namespace Battle
             charsToPos.Add(character, cell);
             posToChars.Add(cell, character);
 
-            character.AddComponent<MapBindingComponent>(new MapBindingComponent(map));
+            character.AddComponent(new MapBindingComponent(map));
 
             OnCharacterAdded?.Invoke(character, cell);
         }

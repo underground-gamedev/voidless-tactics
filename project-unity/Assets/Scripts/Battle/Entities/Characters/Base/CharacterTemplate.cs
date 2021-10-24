@@ -29,11 +29,11 @@ namespace Battle
         public ICharacter Generate()
         {
             var character = new Character();
-            character.AddComponent<TeamTagComponent>(new TeamTagComponent(teamTag));
-            character.AddComponent<ViewTagComponent>(new ViewTagComponent(viewTag));
-            character.AddComponent<HealthComponent>(new HealthComponent(health));
-            character.AddComponent<SpawnPositionComponent>(new SpawnPositionComponent(MapCell.FromVector(spawnPosition)));
-            character.AddComponent<InitiativeComponent>(new InitiativeComponent(minInitiative, maxInitiative));
+            character.AddComponent(new TeamTagComponent(teamTag));
+            character.AddComponent(new ViewTagComponent(viewTag));
+            character.AddComponent(new HealthComponent(health));
+            character.AddComponent(new SpawnPositionComponent(MapCell.FromVector(spawnPosition)));
+            character.AddComponent(new InitiativeComponent(minInitiative, maxInitiative));
 
             return character;
         }

@@ -125,7 +125,7 @@ namespace Battle
                 var view = viewBindings.CreateView(viewTag);
                 if (view == null) return HandleStatus.Skipped;
 
-                character.AddComponent<CharacterViewComponent>(view);
+                character.AddComponent(view);
                 var viewDest = coordinateConverter.MapToGlobal(position);
                 view.Relocate(viewDest);
                 
