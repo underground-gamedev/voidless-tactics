@@ -11,6 +11,7 @@ namespace Battle
         [CanBeNull] IComponent GetComponent(Type associatedType);
 
         void AddBehaviour(IBehaviour behaviour);
+        void RemoveBehaviour(IBehaviour behaviour);
         void HandleEvent<T>(T personalEvent) where T : IPersonalEvent;
     }
 }

@@ -13,13 +13,16 @@ namespace UnitTests.Entities
         {
             IEntity entity = new Entity();
             var mockBehaviour = new Mock<IBehaviour<TestEvent>>();
+            
+            
             entity.AddBehaviour(mockBehaviour.Object);
-            
-            
+            entity.HandleEvent(new TestEvent());
+            entity.RemoveBehaviour(mockBehaviour.Object);
             entity.HandleEvent(new TestEvent());
             
             
             mockBehaviour.Verify(beh => beh.Handle(It.IsAny<TestEvent>()), Times.Once());
         }
+        
     }
 }

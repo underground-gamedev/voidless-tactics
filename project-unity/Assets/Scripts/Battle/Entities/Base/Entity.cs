@@ -50,6 +50,12 @@ namespace Battle
             behaviourComponent.Add(behaviour);
         }
 
+        public void RemoveBehaviour(IBehaviour behaviour)
+        {
+            var behaviourComponent = coms.Get<IBehaviourComponent>();
+            behaviourComponent.Remove(behaviour);
+        }
+
         public void HandleEvent<T>(T personalEvent) where T : IPersonalEvent {
             var behaviourComponent = coms.Get<IBehaviourComponent>();
             behaviourComponent.Handle(personalEvent);
