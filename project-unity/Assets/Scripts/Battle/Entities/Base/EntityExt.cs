@@ -6,7 +6,7 @@ namespace Battle
     {
         public static T GetComponent<T>(this IEntity ent) where T : class
         {
-            return ent.GetComponent(typeof(T)) as T;
+            return (T)ent.GetComponent(typeof(T));
         }
 
         public static void AddComponent<T>(this IEntity ent, T com) where T : class, IComponent
@@ -30,7 +30,7 @@ namespace Battle
 
         public static bool HasComponent<T>(this IEntity ent) where T : class
         {
-            return ent.GetComponent<T>() != null;
+            return ent.GetComponent(typeof(T)) != null;
         }
 
         public static void Associate<TAssociation, TComponent>(this IEntity ent) where TComponent : class, IComponent
