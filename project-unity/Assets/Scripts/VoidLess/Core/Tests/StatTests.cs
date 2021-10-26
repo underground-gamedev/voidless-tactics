@@ -39,8 +39,8 @@ namespace VoidLess.Game.Tests.Entities
                 .Returns(0);
             
             
-            var modifiedStat = stat.AddModifier(StatModifierSource.Test, mockModifier.Object);
-            var unmodifiedStat = modifiedStat.RemoveModifier(StatModifierSource.Test);
+            var modifiedStat = stat.AddModifier(Source.Test, mockModifier.Object);
+            var unmodifiedStat = modifiedStat.RemoveModifier(Source.Test);
             
             
             Assert.AreEqual(baseValue, modifiedStat.BaseValue);
@@ -63,7 +63,7 @@ namespace VoidLess.Game.Tests.Entities
 
             
             var statAddition = stat + baseValue;
-            var modifiedStat = statAddition.AddModifier(StatModifierSource.Test, mockModifier.Object);
+            var modifiedStat = statAddition.AddModifier(Source.Test, mockModifier.Object);
             var statSecondAddition = modifiedStat + baseValue;
             
             
@@ -79,5 +79,7 @@ namespace VoidLess.Game.Tests.Entities
             Assert.AreEqual(new Stat(10), new Stat(5) + 5);
             Assert.AreNotEqual(new Stat(10), new Stat(11));
         }
+        
+        private enum Source { Test }
     }
 }
