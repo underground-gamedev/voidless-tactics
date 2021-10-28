@@ -24,4 +24,7 @@ MonoBehaviour:
   teamTag: 1
   viewTag: 1
   health: 10
+  minInitiative: 0
+  maxInitiative: 0
+  speed: 5
   spawnPosition: {x: 20, y: 0}

@@ -1,5 +1,7 @@
 using System.Linq;
 using UnityEngine;
+using VoidLess.Core.Stats;
+using VoidLess.Game.Entities.Characters.Components;
 using VoidLess.Game.EventSystem.Base;
 using VoidLess.Game.EventSystem.GlobalEvents;
 using VoidLess.Game.EventSystem.GlobalEvents.GameEvents;
@@ -45,7 +47,13 @@ namespace VoidLess.Game.Setup.SetupSteps.GameSteps
 
                 var pathResult = pathfinder.Pathfind(currCell.Value, targetCell);
                 if (!pathResult.IsSuccess) return HandleStatus.Skipped;
-                
+
+                var stats = ent.Stats();
+                var speed = stats?.Get(StatType.Speed);
+                if (speed == null) return HandleStatus.Skipped;
+
+                if (pathResult.Cost > speed.ModifiedValue) return HandleStatus.Skipped;
+
                 entityLayer.RelocateCharacter(ent, targetCell);
                 state.EventQueue.Handle(new CharacterRelocatedGameEvent(map, ent, currCell.Value, targetCell));
                 state.EventQueue.Handle(new EndTurnGameEvent(ent));
@@ -69,7 +77,11 @@ namespace VoidLess.Game.Setup.SetupSteps.GameSteps
                 var currCell = entityLayer.GetPosition(ent);
                 if (!currCell.HasValue) return HandleStatus.Skipped;
 
-                var availableMoveArea = pathfinder.GetAreaByDistance(currCell.Value, 4);
+                var stats = ent.Stats();
+                var speed = stats?.Get(StatType.Speed);
+                if (speed == null) return HandleStatus.Skipped;
+
+                var availableMoveArea = pathfinder.GetAreaByDistance(currCell.Value, speed.ModifiedValue);
 
                 highlightLayer.HighlightArea(availableMoveArea.Select(cell => cell.Pos).ToArray());
                 

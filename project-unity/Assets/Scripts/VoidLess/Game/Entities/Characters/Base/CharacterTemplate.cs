@@ -1,6 +1,8 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 using VoidLess.Core.Entities;
+using VoidLess.Core.Stats;
+using VoidLess.Game.Entities.Characters.Components;
 using VoidLess.Game.Entities.Characters.Components.HealthComponent;
 using VoidLess.Game.Entities.Characters.Components.InitiativeComponent;
 using VoidLess.Game.Entities.Characters.Components.SpawnPositionComponent;
@@ -26,6 +28,9 @@ namespace VoidLess.Game.Entities.Characters.Base
         private int minInitiative;
         [SerializeField]
         private int maxInitiative;
+
+        [SerializeField]
+        private int speed;
         
         [SerializeField]
         private Vector2Int spawnPosition;
@@ -33,6 +38,7 @@ namespace VoidLess.Game.Entities.Characters.Base
         public IEntity Generate()
         {
             var character = new Entity();
+            character.Stats().Add(StatType.Speed, new Stat(speed));
             character.AddComponent(new TeamTagComponent(teamTag));
             character.AddComponent(new ViewTagComponent(viewTag));
             character.AddComponent(new HealthComponent(health));
