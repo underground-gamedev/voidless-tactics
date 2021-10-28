@@ -1,8 +1,10 @@
+using System.Linq;
 using UnityEngine;
 using VoidLess.Game.EventSystem.Base;
 using VoidLess.Game.EventSystem.GlobalEvents;
 using VoidLess.Game.EventSystem.GlobalEvents.GameEvents;
 using VoidLess.Game.Map.Layers.CharacterMapLayer;
+using VoidLess.Game.Map.Layers.HighlightAreaLayer;
 using VoidLess.Game.Map.Layers.PathfindLayer;
 
 namespace VoidLess.Game.Setup.SetupSteps.GameSteps
@@ -24,6 +26,7 @@ namespace VoidLess.Game.Setup.SetupSteps.GameSteps
                 return globalEvent switch
                 {
                     MoveToGameEvent moveTo => Handle(state, moveTo),
+                    SelectNextActiveGameEvent needAction => Handle(state, needAction),
                     _ => HandleStatus.Skipped,
                 };
             }
@@ -46,6 +49,29 @@ namespace VoidLess.Game.Setup.SetupSteps.GameSteps
                 entityLayer.RelocateCharacter(ent, targetCell);
                 state.EventQueue.Handle(new CharacterRelocatedGameEvent(map, ent, currCell.Value, targetCell));
                 state.EventQueue.Handle(new EndTurnGameEvent(ent));
+                
+                return HandleStatus.Handled;
+            }
+
+            private HandleStatus Handle(BattleState state, SelectNextActiveGameEvent nextActive)
+            {
+                var ent = state.TimeLine.Active;
+                if (ent == null) return HandleStatus.Skipped;
+                
+                var map = state.Map.Map;
+                
+                var highlightLayer = map.GetLayer<HighlightAreaLayer>();
+                if (highlightLayer == null) return HandleStatus.Skipped;
+                
+                var pathfinder = map.GetLayer<IPathfindMapLayer>();
+                var entityLayer = map.GetLayer<ICharacterMapLayer>();
+                
+                var currCell = entityLayer.GetPosition(ent);
+                if (!currCell.HasValue) return HandleStatus.Skipped;
+
+                var availableMoveArea = pathfinder.GetAreaByDistance(currCell.Value, 4);
+
+                highlightLayer.HighlightArea(availableMoveArea.Select(cell => cell.Pos).ToArray());
                 
                 return HandleStatus.Handled;
             }

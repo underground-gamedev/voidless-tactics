@@ -38,7 +38,7 @@ namespace VoidLess.Game.Map.Layers.PathfindLayer
             this.defaultPatternRule = null;
             this.defaultCheckDestRule = null;
         }
-
+        
         public IEnumerable<MapCell> GetAreaByDistance(MapCell src, float distance, 
             IPathfindMapLayer.SearchNeighbours neighbourPattern = null,
             IPathfindMapLayer.DistanceBetween neighbourDistance = null,
@@ -50,37 +50,41 @@ namespace VoidLess.Game.Map.Layers.PathfindLayer
             
             var result = new HashSet<MapCell>();
             var closed = new HashSet<MapCell>();
-            var open = new HashSet<MapCell>() { src };
-            var pathCostCalc = new Dictionary<MapCell, float>();
-
-            pathCostCalc[src] = 0;
+            var open = new HashSet<MapCell> { src };
+            var costs = new Dictionary<MapCell, float> { [src] = 0 };
 
             while(open.Count > 0)
             {
-                var curr = open.First();
+                var curr = GetNextCell(closed, costs);
 
                 open.Remove(curr);
                 closed.Add(curr);
 
-                Action<MapCell, MapCell, float> addNeighbour = (curr, neigh, cost) =>
+                void AddNeighbour(MapCell curr, MapCell neigh, float cost)
                 {
-                    var tempG = pathCostCalc[curr] + cost;
-                    if (!open.Contains(curr) && tempG < distance)
+                    var tempG = costs[curr] + cost;
+                    
+                    if (costs.ContainsKey(neigh))
                     {
-                        pathCostCalc[neigh] = tempG;
-                        if (!closed.Contains(neigh)) open.Add(neigh);
-                        if (validDest(map, neigh))
-                        {
-                            result.Add(neigh);
-                        }
+                        costs[neigh] = Math.Min(costs[neigh], tempG);
                     }
-                };
+                    else
+                    {
+                        costs[neigh] = tempG;
+                    }
+                    
+                    if (tempG <= distance && validDest(map, neigh))
+                    {
+                        result.Add(neigh);
+                    }
+                    open.Add(neigh);
+                }
 
                 var neighbours = neighbourPattern(map, curr);
                 foreach (var neigh in neighbours.Where(neigh => !closed.Contains(neigh)))
                 {
                     var neighDistance = neighbourDistance(map, curr, neigh);
-                    addNeighbour(curr, neigh, neighDistance);
+                    AddNeighbour(curr, neigh, neighDistance);
                 }
             }
 

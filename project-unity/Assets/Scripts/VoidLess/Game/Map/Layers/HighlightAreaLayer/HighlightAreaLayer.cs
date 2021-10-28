@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using VoidLess.Game.Map.Base;
 
 namespace VoidLess.Game.Map.Layers.HighlightAreaLayer
 {
-    public class HighlightAreaLayer: MonoBehaviour
+    public class HighlightAreaLayer: MonoBehaviour, IMapLayer
     {
-        [SerializeField]
-        private List<Vector2Int> positions;
         [SerializeField]
         private MeshFilter meshFilter;
     
@@ -21,12 +20,6 @@ namespace VoidLess.Game.Map.Layers.HighlightAreaLayer
             Bottom = 1 << 1,
             Left =   1 << 2,
             Up =     1 << 3,
-        }
-    
-        [Button(ButtonSizes.Medium)]
-        private void Regenerate()
-        {
-            HighlightArea(positions.ToArray(), Color.red);
         }
     
         private void AddPosition(List<Vector3> vertices, List<Vector3Int> triangles, 
@@ -105,7 +98,7 @@ namespace VoidLess.Game.Map.Layers.HighlightAreaLayer
             }
         }
     
-        public void HighlightArea(Vector2Int[] positions, Color color)
+        public void HighlightArea(Vector2Int[] positions)
         {
             var vertices = new List<Vector3>();
             var triangles = new List<Vector3Int>();
@@ -124,11 +117,19 @@ namespace VoidLess.Game.Map.Layers.HighlightAreaLayer
                 AddPosition(vertices, triangles, pos, connectionType);
             }
 
-            var resultMesh = new Mesh();
-            resultMesh.vertices = vertices.ToArray();
-            resultMesh.triangles =
-                triangles.SelectMany(triangle => new int[] {triangle.x, triangle.y, triangle.z}).ToArray();
-            meshFilter.mesh = resultMesh;
+            meshFilter.mesh = new Mesh
+            {
+                vertices = vertices.ToArray(), 
+                triangles = triangles.SelectMany(triangle => new int[] {triangle.x, triangle.y, triangle.z}).ToArray()
+            };
+        }
+
+        public void OnAttached(ILayeredMap map)
+        {
+        }
+
+        public void OnDeAttached()
+        {
         }
     }
 }

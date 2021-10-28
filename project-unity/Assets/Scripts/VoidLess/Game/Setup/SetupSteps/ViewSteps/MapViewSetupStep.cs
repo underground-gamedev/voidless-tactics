@@ -3,6 +3,7 @@ using Sirenix.Serialization;
 using UnityEngine;
 using VoidLess.Game.Map;
 using VoidLess.Game.Map.Layers.CoordinateConverterLayer;
+using VoidLess.Game.Map.Layers.HighlightAreaLayer;
 using VoidLess.Game.Map.Layers.InputEmitterLayer;
 using VoidLess.Game.Map.Layers.VisualMapLayer;
 
@@ -35,6 +36,7 @@ namespace VoidLess.Game.Setup.SetupSteps.ViewSteps
             map.AddLayer<ICoordinateConverterLayer>(view.CoordinateConverterLayer);
             map.AddLayer<IVisualMapLayer>(view.VisualPresentation);
             map.AddLayer<InputEmitterLayer>(view.InputEmitterLayer);
+            map.AddLayer<HighlightAreaLayer>(view.HighlightAreaLayer);
         }
 
         protected override SetupOrder SetupOrder => SetupOrder.MapView;
