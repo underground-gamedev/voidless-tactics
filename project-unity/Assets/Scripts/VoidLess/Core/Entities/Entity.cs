@@ -42,6 +42,7 @@ namespace VoidLess.Core.Entities
         public void RemoveComponent(IComponent com)
         {
             coms.DeAttach(com.GetType());
+            TryCallOnDeAttachedFromEntity(com);
         }
 
         public void AssociateComponent(Type associatedType, Type comType)
