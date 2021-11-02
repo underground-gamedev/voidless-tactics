@@ -5,9 +5,11 @@ using VoidLess.Game.Entities.Characters.Components;
 using VoidLess.Game.EventSystem.Base;
 using VoidLess.Game.EventSystem.GlobalEvents;
 using VoidLess.Game.EventSystem.GlobalEvents.GameEvents;
+using VoidLess.Game.Map.Base;
 using VoidLess.Game.Map.Layers.CharacterMapLayer;
 using VoidLess.Game.Map.Layers.HighlightAreaLayer;
 using VoidLess.Game.Map.Layers.PathfindLayer;
+using VoidLess.Game.Map.Structs;
 
 namespace VoidLess.Game.Setup.SetupSteps.GameSteps
 {
@@ -45,7 +47,7 @@ namespace VoidLess.Game.Setup.SetupSteps.GameSteps
                 var currCell = entityLayer.GetPosition(ent);
                 if (!currCell.HasValue) return HandleStatus.Skipped;
 
-                var pathResult = pathfinder.Pathfind(currCell.Value, targetCell);
+                var pathResult = pathfinder.Pathfind(currCell.Value, targetCell, validDest: IsValidEndpoint);
                 if (!pathResult.IsSuccess) return HandleStatus.Skipped;
 
                 var stats = ent.Stats();
@@ -81,11 +83,18 @@ namespace VoidLess.Game.Setup.SetupSteps.GameSteps
                 var speed = stats?.Get(StatType.Speed);
                 if (speed == null) return HandleStatus.Skipped;
 
-                var availableMoveArea = pathfinder.GetAreaByDistance(currCell.Value, speed.ModifiedValue);
+                var availableMoveArea = pathfinder.GetAreaByDistance(currCell.Value, speed.ModifiedValue, validDest: IsValidEndpoint);
 
                 highlightLayer.HighlightArea(availableMoveArea.Select(cell => cell.Pos).ToArray());
                 
                 return HandleStatus.Handled;
+            }
+            
+            private static bool IsValidEndpoint(ILayeredMap map, MapCell cell)
+            {
+                var characterLayer = map.GetLayer<ICharacterMapLayer>();
+                var character = characterLayer.GetCharacter(cell);
+                return character == null;
             }
         }
     }
