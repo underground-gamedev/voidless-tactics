@@ -3,7 +3,7 @@ using VoidLess.Game.EventSystem.Base;
 using VoidLess.Game.EventSystem.GlobalEvents;
 using VoidLess.Game.EventSystem.GlobalEvents.UtilityEvents;
 
-namespace VoidLess.Game.Setup.SetupSteps.DebugSteps
+namespace VoidLess.Game.Systems
 {
     public class UniYieldSystem : IEventHandler
     {

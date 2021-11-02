@@ -5,7 +5,7 @@ using VoidLess.Game.EventSystem.GlobalEvents;
 using VoidLess.Game.EventSystem.GlobalEvents.GameEvents;
 using VoidLess.Game.Map.Layers.CoordinateConverterLayer;
 
-namespace VoidLess.Game.Setup.SetupSteps.ViewSteps
+namespace VoidLess.Game.Systems
 {
     public class CharacterViewRelocateSystem : IEventHandler
     {

@@ -2,7 +2,7 @@ using VoidLess.Game.EventSystem.Base;
 using VoidLess.Game.EventSystem.GlobalEvents;
 using VoidLess.Game.EventSystem.GlobalEvents.GameEvents;
 
-namespace VoidLess.Game.Setup.SetupSteps.ViewSteps
+namespace VoidLess.Game.Systems.CharacterViewDynamicBindSystem
 {
     public class CharacterViewDynamicBindSystem : IEventHandler
     {

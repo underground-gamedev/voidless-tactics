@@ -4,6 +4,8 @@ using UnityEngine;
 using VoidLess.Core.Entities;
 using VoidLess.Game.Entities.Characters.Components.CharacterViewComponent;
 using VoidLess.Game.Map.Layers.CharacterMapLayer;
+using VoidLess.Game.Systems;
+using VoidLess.Game.Systems.CharacterViewDynamicBindSystem;
 
 namespace VoidLess.Game.Setup.SetupSteps.ViewSteps
 {

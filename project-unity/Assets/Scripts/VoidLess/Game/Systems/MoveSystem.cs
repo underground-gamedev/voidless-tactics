@@ -10,7 +10,7 @@ using VoidLess.Game.Map.Layers.HighlightAreaLayer;
 using VoidLess.Game.Map.Layers.PathfindLayer;
 using VoidLess.Game.Map.Structs;
 
-namespace VoidLess.Game.Setup.SetupSteps.GameSteps
+namespace VoidLess.Game.Systems
 {
     public class MoveSystem : IEventHandler
     {

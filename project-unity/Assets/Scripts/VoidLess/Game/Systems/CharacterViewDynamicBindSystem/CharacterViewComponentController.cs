@@ -7,7 +7,7 @@ using VoidLess.Game.Map.Base;
 using VoidLess.Game.Map.Layers.CoordinateConverterLayer;
 using VoidLess.Game.Map.Structs;
 
-namespace VoidLess.Game.Setup.SetupSteps.ViewSteps
+namespace VoidLess.Game.Systems.CharacterViewDynamicBindSystem
 {
     public class CharacterViewComponentController
     {

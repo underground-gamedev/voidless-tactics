@@ -4,7 +4,7 @@ using VoidLess.Game.Entities.Characters.Components.GlobalEventEmitter;
 using VoidLess.Game.EventSystem.GlobalEvents.UtilityEvents;
 using VoidLess.Game.Map.Base;
 
-namespace VoidLess.Game.Setup.SetupSteps.LogicalSteps
+namespace VoidLess.Game.Map
 {
     public class MapEventEmitter : IMapLayer
     {

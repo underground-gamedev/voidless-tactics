@@ -5,7 +5,7 @@ using UnityEngine;
 using VoidLess.Game.Entities.Characters.Base;
 using VoidLess.Game.Entities.Characters.Components.CharacterViewComponent;
 
-namespace VoidLess.Game.Setup.SetupSteps.ViewSteps
+namespace VoidLess.Game.Systems.CharacterViewDynamicBindSystem
 {
     public class ViewBindings
     {

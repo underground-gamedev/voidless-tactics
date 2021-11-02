@@ -6,7 +6,7 @@ using VoidLess.Game.EventSystem.GlobalEvents.GameEvents;
 using VoidLess.Game.EventSystem.GlobalEvents.UtilityEvents;
 using VoidLess.Game.Map.Layers.CharacterMapLayer;
 
-namespace VoidLess.Game.Setup.SetupSteps.GameSteps
+namespace VoidLess.Game.Systems
 {
     public class TurnSystem : IEventHandler
     {
